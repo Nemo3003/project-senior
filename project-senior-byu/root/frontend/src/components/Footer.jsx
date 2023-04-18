@@ -6,6 +6,8 @@ import {
   RiTwitterLine,
   RiGithubLine,
 } from "react-icons/ri";
+//Routes
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -45,12 +47,12 @@ const Footer = () => {
           Company
         </h3>
         <nav className="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <a
-            href="#"
+          <Link
+            to="/about"
             className="text-gray-700 mt-4 hover:text-white transition-colors"
           >
             About Us
-          </a>
+          </Link>
           <a
             href="#"
             className="text-gray-700 mt-4 hover:text-white transition-color"
