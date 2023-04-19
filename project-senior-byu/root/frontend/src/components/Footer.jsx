@@ -53,42 +53,37 @@ const Footer = () => {
           >
             About Us
           </Link>
-          <a
-            href="#"
-            className="text-gray-700 mt-4 hover:text-white transition-color"
-          >
-            Press
-          </a>
-          <a
-            href="#"
+          <Link
+            to="/investors"
             className="text-gray-700 mt-4 hover:text-white transition-color"
           >
             Investors
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/news"
             className="text-gray-700 mt-4 hover:text-white transition-color"
           >
-            Events
-          </a>
-          <a
-            href="#"
+            News
+          </Link>
+          <Link
+            to="/terms"
             className="text-gray-700 mt-4 hover:text-white transition-color"
           >
             Terms of use
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/privacy"
             className="text-gray-700 mt-4 hover:text-white transition-color"
           >
             Privacy policy
-          </a>
-          <button
+          </Link>
+          <Link
             type="button"
+            to="/contact"
             className="font-semibold py-2 px-6 bg-primary text-white rounded-xl"
           >
             Contact Us
-          </button>
+          </Link>
         </nav>
       </div>
       <div className="mt-20">
