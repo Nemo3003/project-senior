@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2'
 
 
 
@@ -12,8 +13,17 @@ export const ContactUs = () => {
     emailjs.sendForm('service_ooi6ilp', 'template_21wrskj', form.current, 'KtqminZO7K5bCpIz3')
       .then((result) => {
           e.target.reset();
+          Swal.fire(
+            'Good news!',
+            'Message succesfully sent!',
+            'success'
+          )
       }, (error) => {
-          console.log(error.text);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        })
       });
   };
 
@@ -22,7 +32,7 @@ export const ContactUs = () => {
     <form ref={form} onSubmit={sendEmail} className="lx:max-w-lg w-1/2 ">
       <div className="mb-4">
         <label  className="block font-medium text-gray-700 mb-2">Name</label>
-        <input type="text" name="user_name" id="name" className="border border-gray-300 p-2 w-full rounded-md" />
+        <input type="text" name="from_name" id="name" className="border border-gray-300 p-2 w-full rounded-md" />
       </div>
       <div className="mb-4">
         <label  className="block font-medium text-gray-700 mb-2">Email</label>

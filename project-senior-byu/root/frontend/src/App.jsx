@@ -9,6 +9,10 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import News from './components/News';
 import Investors from './components/Investos';
 import {ContactUs} from './components/Contact'
+import Login from './components/Auth/Login'
+import Signup from './components/Auth/SignUp';
+import AppCard from './components/Courses/Courses';
+import Welcome from './components/Institution/Welcome';
 
 function App() {
   return (
@@ -23,6 +27,10 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/investors" element={<Investors />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/courses" element={<AppCard />} />
+        <Route path="/institution" element={<Welcome />} />
       </Routes>
       <Footer />
     </Router>

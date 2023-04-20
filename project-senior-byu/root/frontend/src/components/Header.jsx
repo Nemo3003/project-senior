@@ -27,15 +27,15 @@ const Header = () => {
         <Link to="/" className="">
           Home
         </Link>
-        <a href="#institution" className="">
+        <Link to="/institution" className="">
           The institution
-        </a>
-        <a href="#careers" className="">
+        </Link>
+        <Link to="/courses" className="">
           Careers
-        </a>
-        <a href="#students" className="">
-          Students
-        </a>
+        </Link>
+        <Link to="/login" className="">
+          Sign In
+        </Link>
       </nav>
       <button
         onClick={() => setShowMenu(!showMenu)}
