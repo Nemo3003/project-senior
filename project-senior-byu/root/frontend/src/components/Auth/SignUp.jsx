@@ -1,14 +1,39 @@
 import { useState } from "react";
+import AWS from 'aws-sdk';
 
+AWS.config.update({
+  region: 'YOUR_REGION',
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+});
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isStudent, setIsStudent] = useState(false);
+  const [photo, setPhoto] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle signup logic here
+  
+    const s3 = new AWS.S3();
+    const fileName = photo.name;
+    const fileType = photo.type;
+  
+    s3.putObject({
+      Bucket: 'YOUR_BUCKET_NAME',
+      Key: fileName,
+      Body: photo,
+      ContentType: fileType,
+    }, (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
   };
+  
 
   return (
     <div className=" flex justify-center items-center">
@@ -52,6 +77,42 @@ function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block font-medium text-gray-700 mb-2">
+              Are you a student?
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                className="form-radio"
+                name="isStudent"
+                checked={isStudent}
+                onChange={() => setIsStudent(true)}
+              />
+              <span className="ml-2">Yes</span>
+            </label>
+            <label className="inline-flex items-center ml-6">
+              <input
+                type="radio"
+                className="form-radio"
+                name="isStudent"
+                checked={!isStudent}
+                onChange={() => setIsStudent(false)}
+              />
+              <span className="ml-2">No</span>
+            </label>
+          </div>
+          <div className="mb-4">
+            <label className="block font-medium text-gray-700 mb-2" htmlFor="photo">
+              Upload your photo
+            </label>
+            <input
+              className="block appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="photo"
+              type="file"
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
           </div>
           <div className="flex items-center justify-between">
