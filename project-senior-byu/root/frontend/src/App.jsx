@@ -13,6 +13,7 @@ import Login from './components/Auth/Login'
 import Signup from './components/Auth/SignUp';
 import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
+import Student from './components/Institution/Student';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/courses" element={<AppCard />} />
         <Route path="/institution" element={<Welcome />} />
+        <Route path="/student" element={<Student />} />
       </Routes>
       <Footer />
     </Router>

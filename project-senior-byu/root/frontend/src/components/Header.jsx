@@ -33,6 +33,9 @@ const Header = () => {
         <Link to="/courses" className="">
           Careers
         </Link>
+        <Link to="/student"> 
+          I am Student
+        </Link>
         <Link to="/login" className="">
           Sign In
         </Link>
