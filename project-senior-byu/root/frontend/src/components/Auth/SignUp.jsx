@@ -1,11 +1,11 @@
 import { useState } from "react";
-import AWS from 'aws-sdk';
+//import AWS from 'aws-sdk';
 
-AWS.config.update({
+/*AWS.config.update({
   region: 'YOUR_REGION',
   accessKeyId: 'YOUR_ACCESS_KEY_ID',
   secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
-});
+});*/
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ function Signup() {
   const handleSubmit = (event) => {
     event.preventDefault();
   
-    const s3 = new AWS.S3();
+   /* const s3 = new AWS.S3();
     const fileName = photo.name;
     const fileType = photo.type;
   
@@ -31,7 +31,7 @@ function Signup() {
       } else {
         console.log(data);
       }
-    });
+    });*/
   };
   
 

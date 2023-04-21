@@ -1,30 +1,35 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { User } = require('./models'); // Assuming you have a User model defined
+let http = require('http'); // Import Node.js core module
 
-const app = express();
-app.use(bodyParser.json());
+let server = http.createServer(function (req, res) {   //create web server
+    if (req.url == '/') { //check the URL of the current request
+        
+        // set response header
+        res.writeHead(200, { 'Content-Type': 'text/html' }); 
+        
+        // set response content    
+        res.write('<html><body><p>This is home Page.</p></body></html>');
+        res.end();
+    
+    }
+    else if (req.url == "/student") {
+        
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write('<html><body><p>This is student Page.</p></body></html>');
+        res.end();
+    
+    }
+    else if (req.url == "/admin") {
+        
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write('<html><body><p>This is admin Page.</p></body></html>');
+        res.end();
+    
+    }
+    else
+        res.end('Invalid Request!');
 
-// Route for handling user registration
-app.post('/register', async (req, res) => {
-  const { name, email, password, isStudent } = req.body;
-  try {
-    // Create a new user record in the database
-    const user = await User.create({
-      name,
-      email,
-      password,
-      isStudent
-    });
-    // Send a success response to the client
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    // Handle errors that may occur during the registration process
-    console.error(error);
-    res.status(500).json({ message: 'Error registering user' });
-  }
 });
 
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
-});
+server.listen(5000); //6 - listen for any incoming requests
+
+console.log('Node.js web server at port 5000 is running..')
