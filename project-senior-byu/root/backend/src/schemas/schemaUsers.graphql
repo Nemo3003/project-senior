@@ -29,5 +29,5 @@ type Course {
     id: ID!
     name: String!
     teacher: Teacher!
-    students: [Student!]!
+    students: [Student!]
 }
