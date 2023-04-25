@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 //import AWS from 'aws-sdk';
 
@@ -7,11 +8,12 @@ import { useState } from "react";
   secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
 });*/
 function Signup() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isStudent, setIsStudent] = useState(false);
-  const [photo, setPhoto] = useState(null);
+  const [isStudent, setIsStudent] = useState("");
+  const [loginStatus, setLoginStatus] = useState("");
+  const [registerStatus, setRegisterStatus] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,6 +37,21 @@ function Signup() {
   };
   
 
+  const signup = (e) =>{
+    e.preventDefault();
+    axios.post("http://localhost:5173/signup",{
+      email: email,
+      username: username,
+      password: password,
+    }).then((res) =>{
+      if(res.data.message){
+        setRegisterStatus(res.data.message);
+      }else{
+        setRegisterStatus("Account created correctly")
+      }
+    })
+  }
+
   return (
     <div className=" flex justify-center items-center">
       <div className="max-w-md w-full mx-auto shadow-lg rounded-md p-8">
@@ -48,8 +65,8 @@ function Signup() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -119,6 +136,7 @@ function Signup() {
             <button
               className="bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              onClick={signup}
             >
               Sign Up
             </button>

@@ -14,9 +14,14 @@ import Signup from './components/Auth/SignUp';
 import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
-
+import {Auth0Provider} from '@auth0/auth0-react';
+ 
 function App() {
   return (
+    <Auth0Provider 
+    domain='dev-nd67wypi0pti2u8w.us.auth0.com' 
+    clientId="PuYLeAHFHntWxxNFa3pMWftGq80Q66hP" 
+    redirectUri={window.location.origin}>
     <Router>
       <Header />
       <Routes>
@@ -36,6 +41,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
+    </Auth0Provider>
   );
 }
 
