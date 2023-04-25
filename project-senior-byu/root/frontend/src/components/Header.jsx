@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Login from "./Auth/Login"
 // Icons
 import {
     RiGovernmentFill,
@@ -36,9 +37,7 @@ const Header = () => {
         <Link to="/student"> 
           I am Student
         </Link>
-        <Link to="/login" className="">
-          Sign In
-        </Link>
+        <Login/>
       </nav>
       <button
         onClick={() => setShowMenu(!showMenu)}
