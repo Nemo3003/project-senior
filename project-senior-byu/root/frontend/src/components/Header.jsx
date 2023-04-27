@@ -38,6 +38,9 @@ const Header = () => {
           I am Student
         </Link>
         <Login/>
+        <Link to="/test">
+          TEST
+        </Link>
       </nav>
       <button
         onClick={() => setShowMenu(!showMenu)}
