@@ -16,9 +16,9 @@ import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
 import {Auth0Provider} from '@auth0/auth0-react';
 import SignIn from './components/Auth/SignIn';
-import EnrollmentForm from './components/Courses/EnrollmentForm';
 import AdminDashboard from './components/Admin/AdminDashboard';
-
+import PaymentPage from './components/Courses/PaymentPage';
+import ChatbotPage from "./components/Chatbot/Chatbot";
 
  
 function App() {
@@ -45,9 +45,10 @@ function App() {
         <Route path="/institution" element={<Welcome />} />
         <Route path="/student" element={<Student />} />
         <Route path="/test" element={<SignIn />} />
-        <Route path="/enroll" element={<EnrollmentForm />} />
         <Route path='/admin' element={<AdminDashboard/>}/>
+        <Route path='/payment' element={<PaymentPage/>}/>
       </Routes>
+      <ChatbotPage/>
       <Footer />
     </Router>
     </Auth0Provider>

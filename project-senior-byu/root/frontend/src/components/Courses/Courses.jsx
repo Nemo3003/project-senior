@@ -42,9 +42,8 @@ function CourseCard({ course }) {
         <p className="mt-2">{course.description}</p>
         <div className="mt-4 flex items-center justify-between">
           <span className="font-bold text-xl">{course.price}</span>
-          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">Enroll now</button>
+          <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"> <Link to="/payment">Enroll now</Link></button>
         </div>
-        <Link to={"/enroll"}>Enroll</Link>
       </div>
     </div>
   );

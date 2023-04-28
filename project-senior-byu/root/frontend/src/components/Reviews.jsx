@@ -1,4 +1,5 @@
 import React from "react";
+
 // Icons
 import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
 
@@ -52,8 +53,10 @@ const Reviews = () => {
               <h5 className="text-center text-[20px] text-gray-500">
                 {testimony.title}
               </h5>
+              
             </div>
           </div>
+          
         </div>
       ))}
     </div>
