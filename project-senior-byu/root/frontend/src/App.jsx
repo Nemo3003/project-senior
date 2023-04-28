@@ -16,6 +16,10 @@ import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
 import {Auth0Provider} from '@auth0/auth0-react';
 import SignIn from './components/Auth/SignIn';
+import EnrollmentForm from './components/Courses/EnrollmentForm';
+import AdminDashboard from './components/Admin/AdminDashboard';
+
+
  
 function App() {
   return (
@@ -23,6 +27,7 @@ function App() {
     domain='dev-nd67wypi0pti2u8w.us.auth0.com' 
     clientId="PuYLeAHFHntWxxNFa3pMWftGq80Q66hP" 
     redirectUri={window.location.origin}>
+      
     <Router>
       <Header />
       <Routes>
@@ -40,6 +45,8 @@ function App() {
         <Route path="/institution" element={<Welcome />} />
         <Route path="/student" element={<Student />} />
         <Route path="/test" element={<SignIn />} />
+        <Route path="/enroll" element={<EnrollmentForm />} />
+        <Route path='/admin' element={<AdminDashboard/>}/>
       </Routes>
       <Footer />
     </Router>

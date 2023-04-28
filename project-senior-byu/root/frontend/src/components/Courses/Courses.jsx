@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const courses = [
   {
@@ -43,6 +44,7 @@ function CourseCard({ course }) {
           <span className="font-bold text-xl">{course.price}</span>
           <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">Enroll now</button>
         </div>
+        <Link to={"/enroll"}>Enroll</Link>
       </div>
     </div>
   );

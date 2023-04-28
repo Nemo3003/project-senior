@@ -1,44 +1,37 @@
 import { useState } from "react";
 
-// Routes
-/*import { Link } from "react-router-dom";
-import { LoginValidation } from "./LoginValidation";*/
 
 function SignIn() {
-    const [loginEmail, setLoginEmail] = useState('');
-    const [loginPassword, setLoginPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
-    
-    const handleLogin = async (e) => {
-        e.preventDefault();
-      
-        try {
-          const response = await fetch('http://localhost:8081/test', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: loginEmail,
-              password: loginPassword,
-            }),
-          });
-      
-          const data = await response.json();
-      
-          if (response.ok) {
-            console.log(data.user);
-            // Redirect to the dashboard page
-            window.location.href = '/';
-          } else {
-            console.error(data.message);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      
-      
+  const handleLogin = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const response = await fetch('http://localhost:8081/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: loginEmail,
+          password: loginPassword,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        window.location.href = '/courses';
+        // This should log the user object returned by the server
+      } else {
+        console.error(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">

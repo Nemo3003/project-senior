@@ -41,6 +41,9 @@ const Header = () => {
         <Link to="/test">
           TEST
         </Link>
+        <Link to="/admin">
+          admin
+        </Link>
       </nav>
       <button
         onClick={() => setShowMenu(!showMenu)}
