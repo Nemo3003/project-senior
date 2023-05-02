@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import AdminNav from './AdminNav';
+
 
 const AdminDashboard = () => {
     const [numSignups, setNumSignups] = useState(256);
     const [numDocsUploaded, setNumDocsUploaded] = useState(128);
     const [numChatbotResponses, setNumChatbotResponses] = useState(512);
     const [numSuccessfulPayments, setNumSuccessfulPayments] = useState(64);
+    const [classes, setCourses] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    
+
+    useEffect(() => {
+    fetch('http://localhost:8081/courses')
+      .then(res => res.json())
+      .then(data => {
+        setCourses(data);
+      })
+      .catch(error => {
+        setErrorMessage(error.message);
+      });
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-gray-200">
       <header className="bg-white shadow">
-        <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <svg className="fill-current h-8 w-8 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path
-                d="M10.971 0L9.03 2.8l3.72 3.2H1v3h11.751l-3.72 3.199 1.94 2.8L20 10l-7.089-10z"
-              />
-            </svg>
-            <span className="font-semibold text-xl tracking-tight">Admin Dashboard</span>
-          </div>
-          <div className="block lg:hidden">
-            <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-              <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <title>Menu</title>
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-              </svg>
-            </button>
-          </div>
-        </nav>
+      <AdminNav/>
       </header>
       <main className="flex-1 overflow-y-auto p-4">
       <div className="max-w-7xl mx-auto">
@@ -52,58 +52,40 @@ const AdminDashboard = () => {
         </div>
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-bold mb-4">Classes</h1>
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul>
-              <li className="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="flex items-center text-sm font-medium text-gray-900">
-                  Math
-                </div>
-                <div className="mt-1 text-sm text-gray-600 sm:mt-0 sm:col-span-2">
-                  Math class description goes here.
-                </div>
-                <div className="mt-1 text-sm text-gray-600">
-                  <a
-                    href="#"
-                    className="text-teal-600 hover:text-teal-900"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </li>
-              <li className="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="flex items-center text-sm font-medium text-gray-900">
-                  Science
-                </div>
-                <div className="mt-1 text-sm text-gray-600 sm:mt-0 sm:col-span-2">
-                  Science class description goes here.
-                </div>
-                <div className="mt-1 text-sm text-gray-600">
-                  <a
-                    href="#"
-                    className="text-teal-600 hover:text-teal-900"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </li>
-              <li className="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="flex items-center text-sm font-medium text-gray-900">
-                  History
-                </div>
-                <div className="mt-1 text-sm text-gray-600 sm:mt-0 sm:col-span-2">
-                  History class description goes here.
-                </div>
-                <div className="mt-1 text-sm text-gray-600">
-                  <a
-                    href="#"
-                    className="text-teal-600 hover:text-teal-900"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </li>
-            </ul>
+          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div className="px-4 py-6 sm:px-0">
+        {errorMessage && (
+          <div className="mb-4 bg-red-100 text-red-900 border border-red-400 rounded-md py-3 px-4">
+            <p className="text-sm">{errorMessage}</p>
           </div>
+        )}
+
+        {classes.length > 0 ? (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Class Name
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Class Description
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {classes.map((course) => (
+                <tr key={course.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.className}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-sm text-gray-500">No courses available.</p>
+        )}
+      </div>
+    </div>
         </div>
       </main>
     </div>

@@ -40,6 +40,7 @@ function SignUp() {
       value={username}
       onChange={(e) => setUsername(e.target.value)}
       placeholder="Enter username"
+      required
     />
   </div>
   <div className="mb-4">

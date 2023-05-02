@@ -19,6 +19,9 @@ import SignIn from './components/Auth/SignIn';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import PaymentPage from './components/Courses/PaymentPage';
 import ChatbotPage from "./components/Chatbot/Chatbot";
+import AddClasses from './components/Courses/AddClasses';
+import SeeStudents from './components/Admin/SeeStudents';
+
 
  
 function App() {
@@ -45,8 +48,11 @@ function App() {
         <Route path="/institution" element={<Welcome />} />
         <Route path="/student" element={<Student />} />
         <Route path="/test" element={<SignIn />} />
+         {/**Admin stuff */}
         <Route path='/admin' element={<AdminDashboard/>}/>
         <Route path='/payment' element={<PaymentPage/>}/>
+        <Route path='/add-classes' element={<AddClasses/>}/>
+        <Route path='/see-students' element={<SeeStudents/>}/>
       </Routes>
       <ChatbotPage/>
       <Footer />

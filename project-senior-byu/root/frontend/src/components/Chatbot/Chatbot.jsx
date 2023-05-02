@@ -16,7 +16,7 @@ const ChatbotPage = () => {
 
       id: "Greet",
 
-      message: "Hello, Welcome to our shop",
+      message: "Hello, Welcome to OCACOPLUS",
 
       trigger: "Done",
 
@@ -60,15 +60,15 @@ const ChatbotPage = () => {
 
         {
 
-          value: "React",
+          value: "Class",
 
-          label: "React",
+          label: "Class",
 
-          trigger: "React",
+          trigger: "Class",
 
         },
 
-        { value: "Angular", label: "Angular", trigger: "Angular" },
+        { value: "Course", label: "Course", trigger: "Course" },
 
       ],
 
@@ -76,11 +76,11 @@ const ChatbotPage = () => {
 
     {
 
-      id: "React",
+      id: "Class",
 
       message:
 
-        "Thanks for letting your React issue, Our team will resolve your issue ASAP",
+        "Thanks for letting your concern issue, Our team will contact you ASAP",
 
       end: true,
 
@@ -88,7 +88,7 @@ const ChatbotPage = () => {
 
     {
 
-      id: "Angular",
+      id: "Course",
 
       message:
 

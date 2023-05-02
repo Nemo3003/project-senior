@@ -13,50 +13,87 @@ app.listen(port_nd, ()=>{
   console.log(`Listening on port ${port_nd}`);
 });
 
+
+
 const db = mysql.createConnection({
-  host: process.env.DATABASE_CONN,
+  host: process.env.DATABASE_CONN_ALT,
   port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
+  user: process.env.USER_ALT,
+  password: process.env.PASSWORD_ALT,
   database: process.env.HOST,
 });
 
+
+
 app.post('/signup', (req, res) => {
   const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
+
+    const values = [
+      req.body.username,
+      req.body.email,
+      hashedPassword
+    ];
+    
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error('Error creating user:', err);
+        return res.status(500).json({ error: 'Failed to create user' });
+      }
+
+      console.log('New user created:', result.insertId);
+      return res.status(201).json({ message: 'User created successfully' });
+    });
+  });
+
+
+//ADMIN
+app.post('/add-classes', (req, res)=>{
+  const sql = 'INSERT INTO ocacoplus.classes (className, classDescription) VALUES (?,?)';
   const values = [
-    req.body.username,
-    req.body.email,
-    req.body.password
+    req.body.className,
+    req.body.classDescription
   ];
 
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error('Error creating user:', err);
-      return res.status(500).json({ error: 'Failed to create user' });
+  db.query(sql, values, (err, result)=>{
+    if(err){
+      console.error('Error creating class', err);
+      return res.status(500).json({error: 'Could not create a new class'});
     }
 
-    console.log('New user created:', result.insertId);
-    return res.status(201).json({ message: 'User created successfully' });
+    console.log('New class created', result.insertId);
+    return res.status(201).json({message: 'Class created successfully'})
   });
 });
-/*
-app.post('/enroll', (req, res) => {
-  const { name, email, class } = req.body;
 
-  // Insert the enrollment into the MySQL database
-  const sql = 'INSERT INTO enrollments (name, email, class) VALUES (?, ?, ?)';
-  const values = [name, email, class];
-  pool.query(sql, values, (error, result) => {
-    if (error) {
-      console.error('Error inserting enrollment:', error);
-      res.status(500).send('Error inserting enrollment');
-    } else {
-      console.log('Enrollment inserted into MySQL');
-      res.send('Enrollment submitted');
+app.get('/see-students', (req, res) => {
+  const sql = 'SELECT username, email FROM users';
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
     }
-  });
-});*/
 
+    res.send(result);
+  });
+});
+
+// GENERAL
+app.get('/courses', (req, res) => {
+  const sql = 'SELECT className, classDescription FROM classes';
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+
+    res.send(result);
+  });
+});
+
+
+// TESTING PURPOSES
 app.post('/test', (req, res) => {
   const { email, password } = req.body;
 
