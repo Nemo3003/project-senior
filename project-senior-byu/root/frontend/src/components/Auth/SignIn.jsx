@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import jwt_decode from "jwt-decode";
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
@@ -13,7 +13,9 @@ function SignIn() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          
         },
+        'Credentials': true,
         body: JSON.stringify({
           email: loginEmail,
           password: loginPassword,
@@ -23,8 +25,14 @@ function SignIn() {
       const data = await response.json();
   
       if (response.ok) {
+        // Get the JWT from the server response
+        const jwt = data.jwt;
+        // Decode the JWT to get the user data
+        const user = jwt_decode(jwt);
+        // Store the JWT in local storage for future API calls
+        localStorage.setItem('jwt', jwt);
+        // Redirect the user to the courses page
         window.location.href = '/courses';
-        // This should log the user object returned by the server
       } else {
         console.error(data.message);
       }

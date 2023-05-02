@@ -17,6 +17,7 @@ const AdminNav = () => {
           </div>
           <div className="hidden md:block">
             <div className="ml-4 flex items-center md:ml-6">
+              <Link to="/courses" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">See Classes</Link>
               <Link to="/add-classes" className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Add Classes</Link>
               <Link to="/see-students" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">See Students</Link>
             </div>

@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const app = express();
@@ -109,7 +110,8 @@ app.post('/test', (req, res) => {
     }
 
     const user = data[0];
-    return res.status(200).json({ user });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return res.status(200).json({ token });
   });
 });
 
