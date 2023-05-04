@@ -94,18 +94,29 @@ app.get('/courses', (req, res) => {
 });
 
 //Enrollment
-app.post('/enroll', (req,res)=>{
-  const {classes_classes_id, users_users_id} = req.body;
-  const sql = 'INSERT INTO user_has_classes (classes_class_id, users_users_id) VALUES (?, ?)';
-  db.query(sql, [classes_classes_id, users_users_id], (error, results, fields) => {
-    if(error){
-      res.status(500).json({error: 'Failed to enroll in class'});
-    }else {
-      res.json({message: 'Enrolled in class'});
+//TODO: What happens is that I have no user so I cannot enroll anyone
+app.post('/enroll', (req, res) => {
+  const { classId, userId } = req.body;
+  const sql = 'USE ocacoplus ; INSERT INTO user_has_classes (classId, userId) VALUES (?, ?);';
+  db.query(sql, [classId, userId], (error, results, fields) => {
+    if (error) {
+      res.status(500).json({ error: 'Failed to enroll in class' });
+    } else {
+      res.json({ message: 'Enrolled in class' });
     }
-  })
-})
+  });
+});
 
+app.get('/enrollments', (req, res) => {
+  const sql = 'SELECT * FROM enrollments';
+  db.query(sql, (error, results, fields) => {
+    if (error) {
+      res.status(500).json({ error: 'Failed to fetch enrollments' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 // TESTING PURPOSES
 app.post('/test', (req, res) => {
   const { email, password } = req.body;

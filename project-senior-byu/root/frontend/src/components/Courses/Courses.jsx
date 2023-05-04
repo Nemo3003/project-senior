@@ -4,7 +4,7 @@ import axios from "axios";
 const Courses = () => {
   const [classes, setCourses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userId, classId] = useState('')
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
     fetch('http://localhost:8081/courses')
@@ -18,11 +18,11 @@ const Courses = () => {
   }, []);
 
   const enroll = (classId, userId) => {
-    axios.post('/enroll', { classId, userId })
+    axios.post('/enroll', { classId: classId, userId: userId })
       .then(response => {
         console.log('Enrolled successfully');
         // Refresh the courses list after enrolling
-        fetch('http://localhost:8081/enroll')
+        fetch('http://localhost:8081/courses')
           .then(res => res.json())
           .then(data => {
             setCourses(data);
@@ -67,7 +67,7 @@ const Courses = () => {
                 <tr key={course.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.className}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
-                  <td><EnrollButton classId={course.classes_id} userId={userId} /></td>
+                  <td><EnrollButton classId={course.id} userId={userId} /></td>
                 </tr>
               ))}
             </tbody>
