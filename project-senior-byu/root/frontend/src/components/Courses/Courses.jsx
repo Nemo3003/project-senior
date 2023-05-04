@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-
+import axios from "axios";
 
 const Courses = () => {
   const [classes, setCourses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [userId, classId] = useState('')
 
   useEffect(() => {
     fetch('http://localhost:8081/courses')
@@ -15,6 +16,31 @@ const Courses = () => {
         setErrorMessage(error.message);
       });
   }, []);
+
+  const enroll = (classId, userId) => {
+    axios.post('/enroll', { classId, userId })
+      .then(response => {
+        console.log('Enrolled successfully');
+        // Refresh the courses list after enrolling
+        fetch('http://localhost:8081/enroll')
+          .then(res => res.json())
+          .then(data => {
+            setCourses(data);
+          })
+          .catch(error => {
+            setErrorMessage(error.message);
+          });
+      })
+      .catch(err => {
+        console.log('Failed to enroll');
+      });
+  };
+
+  const EnrollButton = ({ classId, userId }) => {
+    return (
+      <button onClick={() => enroll(classId, userId)}>Enroll in class</button>
+    );
+  };
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -38,9 +64,10 @@ const Courses = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {classes.map((course) => (
-                <tr key={course.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.className}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
+                <tr key={course.classes_id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.class_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.class_description}</td>
+                  <td><EnrollButton classId={course.classes_id} userId={userId} /></td>
                 </tr>
               ))}
             </tbody>
