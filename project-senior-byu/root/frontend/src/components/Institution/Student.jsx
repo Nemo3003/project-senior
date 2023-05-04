@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import CampusPage from './CampusPage';
+import ResourcePage from './ResourcesPage';
+import SchedulePage from './SchedulePage';
+
 //import Robot from './Robot';
 
 const tabs = [
@@ -34,13 +38,13 @@ const Student = () => {
       {activeTab === 'campus' && (
         <div>
           <h1 className="text-3xl mb-2">Campus</h1>
-          <p>Here you can find information about the university campus.</p>
+          <CampusPage/>
         </div>
       )}
       {activeTab === 'schedule' && (
         <div>
           <h1 className="text-2xl mb-2">Schedule</h1>
-          <p>Here you can find your class schedule.</p>
+          <SchedulePage/>
         </div>
       )}
       {activeTab === 'grades' && (
@@ -52,7 +56,7 @@ const Student = () => {
       {activeTab === 'resources' && (
         <div>
           <h1 className="text-2xl mb-2">Resources</h1>
-          <p>Here you can find useful resources for your courses.</p>
+          <ResourcePage/>
         </div>
       )}
       
