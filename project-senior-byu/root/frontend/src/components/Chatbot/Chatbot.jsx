@@ -10,120 +10,123 @@ const ChatbotPage = () => {
     setShowChat(!showChat);
   };
 // TODO: Fix this
-  const steps = [
+const steps = [
+  {
+    id: 'Greet',
+    message: 'Hello, Welcome to OCACOPLUS',
+    trigger: 'Done',
+  },
+  {
+    id: 'Done',
+    message: 'Please enter your name!',
+    trigger: 'waiting1',
+  },
+  {
+    id: 'waiting1',
+    user: true,
+    trigger: 'GreetWithName',
+  },
+  {
+    id: 'GreetWithName',
+    message: 'Hi {previousValue}, nice to meet you!',
+    trigger: 'AskIssue',
+  },
+  {
+    id: 'AskIssue',
+    message: 'Please select your issue',
+    trigger: 'IssueOptions',
+  },
+  {
+    id: 'IssueOptions',
+    options: [
+      {
+        value: 'Class',
+        label: 'Enroll in a class',
+        trigger: 'EnrollClass',
+      },
+      {
+        value: 'Course',
+        label: 'Enroll in a course',
+        trigger: 'EnrollCourse',
+      },
+      {
+        value: 'Cancel',
+        label: 'Cancel',
+        trigger: 'Cancel',
+      },
+    ],
+  },
+  {
+    id: 'EnrollClass',
+    message: 'Great! Please visit our website to enroll in a class.',
+    end: true,
+  },
+  {
+    id: 'EnrollCourse',
+    message: 'Great! Please visit our website to enroll in a course.',
+    end: true,
+  },
+  {
+    id: 'Cancel',
+    message: 'Okay, let me know if you need any further assistance.',
+    end: true,
+  },
+  {
+    id: 'AskEmail',
+    message: 'Please enter your email address.',
+    trigger: 'GetEmail',
+  },
+  {
+    id: 'GetEmail',
+    user: true,
+    trigger: 'ThankYou',
+  },
+  {
+    id: 'ThankYou',
+    message:
+      'Thank you for providing your email address. We will contact you shortly.',
+    end: true,
+  },
+];
 
-    {
-
-      id: "Greet",
-
-      message: "Hello, Welcome to OCACOPLUS",
-
-      trigger: "Done",
-
-    },
-
-    {
-
-      id: "Done",
-
-      message: "Please enter your name!",
-
-      trigger: "waiting1",
-
-    },
-
-    {
-
-      id: "waiting1",
-
-      user: true,
-
-      trigger: "Name",
-
-    },
-
-    {
-
-      id: "Name",
-
-      message: "Hi {previousValue}, Please select your issue",
-
-      trigger: "issues",
-
-    },
-
-    {
-
-      id: "issues",
-
-      options: [
-
-        {
-
-          value: "Class",
-
-          label: "Class",
-
-          trigger: "Class",
-
-        },
-
-        { value: "Course", label: "Course", trigger: "Course" },
-
-      ],
-
-    },
-
-    {
-
-      id: "Class",
-
-      message:
-
-        "Thanks for letting your concern issue, Our team will contact you ASAP",
-
-      end: true,
-
-    },
-
-    {
-
-      id: "Course",
-
-      message:
-
-        "Thanks for letting your Angular issue, Our team will resolve your issue ASAP",
-
-      end: true,
-
-    },
-
-  ]; 
-
-  const handleEnd = () => {
-    // check if chat has already ended
-    if (!chatEnded) {
-      setChatEnded(true); // set chatEnded to true to prevent multiple calls
-      // handle end logic here
-    }
+const handleEnd = (result) => {
+  if (!chatEnded) {
+    setChatEnded(true);
+    let count = 0;
+    result.steps.forEach((step) => {
+      if (step.trigger && step.message) {
+        count++;
+      }
+    });
+    console.log('Number of responses: ', count);
   }
+};
 
-  return (
-    <div className="fixed bottom-6 right-6">
-      <button
-        className="bg-green-500 rounded-full w-16 h-16 text-white flex items-center justify-center"
-        onClick={handleChatToggle}
-      >
-        <FaComment size={30} />
-        <span className="sr-only">Chat</span>
-      </button>
-      {showChat && (
-        <div className="fixed bottom-24 right-6">
-          <Chatbot steps={steps} handleEnd={handleEnd} />
-        </div>
-      )}
-    </div>
-  );
+const handleFallback = () => {
+  return "Fallback";
+};
+
+return (
+  <div className="fixed bottom-6 right-6">
+    <button
+      className="bg-green-500 rounded-full w-16 h-16 text-white flex items-center justify-center"
+      onClick={handleChatToggle}
+    >
+      <FaComment size={30} />
+      <span className="sr-only">Chat</span>
+    </button>
+    {showChat && (
+      <div className="fixed bottom-24 right-6">
+        <Chatbot
+          steps={steps}
+          handleEnd={handleEnd}
+          handleFallback={handleFallback}
+        />
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default ChatbotPage;
