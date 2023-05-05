@@ -1,45 +1,42 @@
 import { useState } from "react";
-import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
+
+
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const response = await fetch('http://localhost:8081/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          
-        },
-        'Credentials': true,
-        body: JSON.stringify({
-          email: loginEmail,
-          password: loginPassword,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Get the JWT from the server response
-        const jwt = data.jwt;
-        // Decode the JWT to get the user data
-        const user = jwt_decode(jwt);
-        // Store the JWT in local storage for future API calls
-        localStorage.setItem('jwt', jwt);
-        // Redirect the user to the courses page
-        window.location.href = '/courses';
-      } else {
-        console.error(data.message);
-      }
-    } catch (err) {
-      console.error(err);
+  e.preventDefault();
+
+  try {
+    const response = await fetch('http://localhost:8081/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: loginEmail,
+        password: loginPassword,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+
+      window.location.href = '/courses';
+      /*console.log('Token:', data.token); // Log the token
+      localStorage.setItem('token', data.token);*/
+    } else {
+      console.error(data.message);
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
@@ -68,7 +65,9 @@ function SignIn() {
           <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             Log in
           </button>
+          
         </div>
+        <Link to="/signup">Do not have an account?</Link>
       </form>
     </div>
   );

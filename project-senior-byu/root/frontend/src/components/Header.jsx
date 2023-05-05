@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 
 
-const Header = () => {
+function Header({ isAdmin }) {
   const [showMenu, setShowMenu] = useState(false);
   return (
     <header className="flex items-center justify-between xl:justify-start w-full py-4 px-8 h-[10vh] z-50">
@@ -41,9 +41,7 @@ const Header = () => {
         <Link to="/test">
           TEST
         </Link>
-        <Link to="/admin">
-          admin
-        </Link>
+        {isAdmin && <Link to="/admin">admin</Link>}
       </nav>
       <button
         onClick={() => setShowMenu(!showMenu)}

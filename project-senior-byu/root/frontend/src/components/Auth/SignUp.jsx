@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 function SignUp() {
   const [username, setUsername] = useState('');
@@ -19,6 +19,7 @@ function SignUp() {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        window.location.href = '/test';
         // handle response data as needed
       })
       .catch(error => {
@@ -76,6 +77,7 @@ function SignUp() {
     >
       Sign up
     </button>
+    <Link to="/test">Already have an account?</Link>
   </div>
 </form>
 

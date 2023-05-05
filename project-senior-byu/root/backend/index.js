@@ -32,7 +32,7 @@ app.post('/signup', (req, res) => {
     const values = [
       req.body.username,
       req.body.email,
-      hashedPassword
+      req.body.password
     ];
     
     db.query(sql, values, (err, result) => {
@@ -118,26 +118,47 @@ app.get('/enrollments', (req, res) => {
   });
 });
 // TESTING PURPOSES
+
+
 app.post('/test', (req, res) => {
-  const { email, password } = req.body;
-
-  const sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
-  db.query(sql, [email, password], (err, data) => {
+  const sql = "SELECT * FROM users WHERE `email` = ?";
+  db.query(sql, [req.body.email], (err, data) => {
     if (err) {
-      console.error(err);
-      return res.status(500).json({ message: 'Server error' });
+      return res.json("Error");
     }
-    
-    if (data.length === 0) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+    if (data.length > 0) {
+      const user = data[0];
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+          return res.json("Error");
+        }
+        if (result) {
+          const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, 'secret');
+          return res.json({ token });
+        } else {
+          return res.json("Failed");
+        }
+      });
+    } else {
+      return res.json("Failed");
     }
-
-    const user = data[0];
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    return res.status(200).json({ token });
   });
 });
 
+
+app.get('/courses-test', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, 'secret');
+    if (decoded.isAdmin) {
+      res.json('You are admin');
+    } else {
+      res.json('You are not an admin');
+    }
+  } catch (err) {
+    res.sendStatus(401);
+  }
+});
 
 
 
