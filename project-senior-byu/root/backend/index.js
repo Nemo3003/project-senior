@@ -14,7 +14,7 @@ app.listen(port_nd, ()=>{
   console.log(`Listening on port ${port_nd}`);
 });
 
-
+//TODO: Perhaps using session I could finally make this work...
 
 const db = mysql.createConnection({
   host: process.env.DATABASE_CONN_ALT,

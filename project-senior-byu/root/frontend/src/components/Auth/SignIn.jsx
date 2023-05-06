@@ -27,8 +27,8 @@ function SignIn() {
     if (response.ok) {
 
       window.location.href = '/courses';
-      /*console.log('Token:', data.token); // Log the token
-      localStorage.setItem('token', data.token);*/
+      //console.log('Token:', data.token); // Log the token
+      //localStorage.setItem('token', data.token);
     } else {
       console.error(data.message);
     }
