@@ -15,7 +15,7 @@ import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
 import {Auth0Provider} from '@auth0/auth0-react';
-import SignIn from './components/Auth/SignIn';
+
 import AdminDashboard from './components/Admin/AdminDashboard';
 import PaymentPage from './components/Courses/PaymentPage';
 import ChatbotPage from "./components/Chatbot/Chatbot";
@@ -47,7 +47,6 @@ function App() {
         <Route path="/courses" element={<AppCard />} />
         <Route path="/institution" element={<Welcome />} />
         <Route path="/student" element={<Student />} />
-        <Route path="/test" element={<SignIn />} />
          {/**Admin stuff */}
         <Route path='/admin' element={<AdminDashboard/>}/>
         <Route path='/payment' element={<PaymentPage/>}/>

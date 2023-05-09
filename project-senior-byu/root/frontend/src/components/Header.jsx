@@ -38,9 +38,6 @@ function Header({ isAdmin }) {
           I am Student
         </Link>
         <Login/>
-        <Link to="/test">
-          TEST
-        </Link>
         {isAdmin && <Link to="/admin">admin</Link>}
       </nav>
       <button

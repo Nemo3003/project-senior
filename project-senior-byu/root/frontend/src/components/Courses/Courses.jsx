@@ -4,7 +4,8 @@ import axios from "axios";
 const Courses = () => {
   const [classes, setCourses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userId, setUserId] = useState('')
+  const [selectedClassId, setSelectedClassId] = useState('');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     fetch('http://localhost:8081/courses')
@@ -17,28 +18,16 @@ const Courses = () => {
       });
   }, []);
 
-  const enroll = (classId, userId) => {
-    axios.post('/enroll', { classId: classId, userId: userId })
-      .then(response => {
-        console.log('Enrolled successfully');
-        // Refresh the courses list after enrolling
-        fetch('http://localhost:8081/courses')
-          .then(res => res.json())
-          .then(data => {
-            setCourses(data);
-          })
-          .catch(error => {
-            setErrorMessage(error.message);
-          });
-      })
-      .catch(err => {
-        console.log('Failed to enroll');
-      });
+  const enroll = () => {
+    if (selectedClassId) {
+      // Redirect to enroll form
+      window.location.href = `/signup`;
+    }
   };
 
-  const EnrollButton = ({ classId, userId }) => {
+  const EnrollButton = ({ classId }) => {
     return (
-      <button onClick={() => enroll(classId, userId)}>Enroll in class</button>
+      <button onClick={() => window.location.href = `/signup`}>Enroll in class</button>
     );
   };
 
@@ -51,27 +40,44 @@ const Courses = () => {
           </div>
         )}
         {classes.length > 0 ? (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Class Name
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Class Description
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+          <>
+            <label htmlFor="classId">Select a class:</label>
+            <select id="classId" value={selectedClassId} onChange={(e) => setSelectedClassId(e.target.value)}>
+              <option value="">Select a class</option>
               {classes.map((course) => (
-                <tr key={course.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.className}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
-                  <td><EnrollButton classId={course.id} userId={userId} /></td>
-                </tr>
+                <option key={course.id} value={course.id}>{course.className}</option>
               ))}
-            </tbody>
-          </table>
+            </select>
+            <br />
+            <button onClick={enroll} disabled={!selectedClassId}>Enroll in class</button>
+            <br />
+            <br />
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Class Number
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Class Name
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Class Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {classes.map((course) => (
+                  <tr key={course.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.classes_id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{course.className}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
+                    <td><EnrollButton classId={course.id} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         ) : (
           <p className="text-sm text-gray-500">No courses available.</p>
         )}

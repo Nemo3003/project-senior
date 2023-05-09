@@ -28,7 +28,16 @@ const db = mysql.createConnection({
 
 app.post('/signup', (req, res) => {
   const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
+  const sql1 = 'SELECT className, classDescription FROM classes';
 
+  db.query(sql1, (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+
+    res.send(result);
+  }); 
     const values = [
       req.body.username,
       req.body.email,
@@ -81,7 +90,7 @@ app.get('/see-students', (req, res) => {
 
 // GENERAL
 app.get('/courses', (req, res) => {
-  const sql = 'SELECT className, classDescription FROM classes';
+  const sql = 'SELECT classes_id, className, classDescription FROM classes';
 
   db.query(sql, (err, result) => {
     if (err) {
@@ -94,27 +103,40 @@ app.get('/courses', (req, res) => {
 });
 
 //Enrollment
-//TODO: What happens is that I have no user so I cannot enroll anyone
+
 app.post('/enroll', (req, res) => {
-  const { classId, userId } = req.body;
-  const sql = 'USE ocacoplus ; INSERT INTO user_has_classes (classId, userId) VALUES (?, ?);';
-  db.query(sql, [classId, userId], (error, results, fields) => {
+  const { userId, classId } = req.body; // Assuming userId and classId are sent in the request body
+
+  // Insert a new row into the enrollments table
+  const insertQuery = `INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)`;
+  connection.query(insertQuery, [userId, classId], (error, results) => {
     if (error) {
-      res.status(500).json({ error: 'Failed to enroll in class' });
+      console.error('Error inserting enrollment:', error);
+      res.status(500).json({ message: 'Error enrolling in the course' });
     } else {
-      res.json({ message: 'Enrolled in class' });
+      console.log('Enrollment inserted successfully!');
+      res.status(200).json({ message: 'Enrollment successful' });
     }
   });
 });
 
-app.get('/enrollments', (req, res) => {
-  const sql = 'SELECT * FROM enrollments';
-  db.query(sql, (error, results, fields) => {
-    if (error) {
-      res.status(500).json({ error: 'Failed to fetch enrollments' });
-    } else {
-      res.json(results);
+// testing enrollments
+//TODO: I need to add some sort of form here in order to let the user enroll in whatever class they want
+app.post('/add-test', (req, res)=>{
+  const sql = 'INSERT INTO ocacoplus.enrollments (classes_id, users_id) VALUES (?,?)';
+  const values = [
+    req.body.classes_id,
+    req.body.users_id
+  ];
+
+  db.query(sql, values, (err, result)=>{
+    if(err){
+      console.error('Error creating class', err);
+      return res.status(500).json({error: 'Could not enroll in a new class'});
     }
+
+    console.log('New enrollment created', result.insertId);
+    return res.status(201).json({message: 'Enrolled successfully'})
   });
 });
 // TESTING PURPOSES

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 
 function SignIn() {
-  const [loginEmail, setLoginEmail] = useState('');
+  /*const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
   const handleLogin = async (e) => {
@@ -71,6 +71,6 @@ function SignIn() {
       </form>
     </div>
   );
-}
+}*/
 
 export default SignIn;
