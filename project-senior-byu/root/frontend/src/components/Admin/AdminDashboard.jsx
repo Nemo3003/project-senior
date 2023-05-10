@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminNav from './AdminNav';
+import UserCount from '../helper/UserCount';
 
 
 const AdminDashboard = () => {
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
               <h2 className="text-lg font-medium mb-2">Number of Signups</h2>
-              <p className="text-4xl font-bold">{numSignups}</p>
+              <UserCount/>
             </div>
             <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
               <h2 className="text-lg font-medium mb-2">Number of Docs Uploaded</h2>

@@ -28,16 +28,7 @@ const db = mysql.createConnection({
 
 app.post('/signup', (req, res) => {
   const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
-  const sql1 = 'SELECT className, classDescription FROM classes';
 
-  db.query(sql1, (err, result) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }
-
-    res.send(result);
-  }); 
     const values = [
       req.body.username,
       req.body.email,
@@ -55,6 +46,26 @@ app.post('/signup', (req, res) => {
     });
   });
 
+
+  app.post('/reclass', (req, res) => {
+    const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
+  
+      const values = [
+        req.body.username,
+        req.body.email,
+        req.body.password
+      ];
+      
+      db.query(sql, values, (err, result) => {
+        if (err) {
+          console.error('Error creating user:', err);
+          return res.status(500).json({ error: 'Failed to create user' });
+        }
+  
+        console.log('New user created:', result.insertId);
+        return res.status(201).json({ message: 'User created successfully' });
+      });
+    });
 
 //ADMIN
 app.post('/add-classes', (req, res)=>{
@@ -87,6 +98,31 @@ app.get('/see-students', (req, res) => {
     res.send(result);
   });
 });
+
+// count users
+
+
+const countUsers = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT COUNT(*) as total_users FROM ocacoplus.users";
+    db.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results[0].total_users);
+      }
+    });
+  });
+};
+app.get('/users/count', async (req, res) => {
+  try {
+    const totalUsers = await countUsers();
+    res.json({ total_users: totalUsers });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // GENERAL
 app.get('/courses', (req, res) => {
