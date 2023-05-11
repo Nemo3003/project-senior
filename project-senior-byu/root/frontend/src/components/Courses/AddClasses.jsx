@@ -26,16 +26,18 @@ const AddClasses = () => {
         })
     };
   return (
+    <>
+    <AdminNav/>
     
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <AdminNav/>
+        
     <div className="px-4 py-6 sm:px-0">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="class-name" className="block text-sm font-medium text-gray-700">
             Class Name
           </label>
-          <div className="mt-1">
+          <div className="mt-2 p-3 border shadow-md">
             <input
               id="className"
               name="className"
@@ -43,16 +45,16 @@ const AddClasses = () => {
               required
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-3"
             />
           </div>
         </div>
-
-        <div className="mt-6">
+        <br /><br />
+        <div className="border">
           <label htmlFor="class-description" className="block text-sm font-medium text-gray-700">
             Class Description
           </label>
-          <div className="mt-1">
+          <div className="mt-1 shadow-md">
             <textarea
               id="classDescription"
               name="classDescription"
@@ -60,7 +62,7 @@ const AddClasses = () => {
               required
               value={classDescription}
               onChange={(e) => setClassDescription(e.target.value)}
-              className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-4"
             ></textarea>
           </div>
         </div>
@@ -79,6 +81,7 @@ const AddClasses = () => {
       </form>
     </div>
   </div>
+  </>
   )
 }
 

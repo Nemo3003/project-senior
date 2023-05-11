@@ -20,6 +20,7 @@ const AdminNav = () => {
               <Link to="/courses" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">See Classes</Link>
               <Link to="/add-classes" className="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Add Classes</Link>
               <Link to="/see-students" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">See Students</Link>
+              <Link to="/setclass" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Assign classes</Link>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -38,6 +39,7 @@ const AdminNav = () => {
         <div className="px-2 pt-2 pb-3">
           <Link to="/add-classes" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 transition duration-150 ease-in-out">Add Classes</Link>
           <Link to="/see-students" className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 transition duration-150 ease-in-out">See Students</Link>
+          <Link to="/setclass" className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-500 transition duration-150 ease-in-out">Assign classes</Link>
         </div>
       </div>
     </nav>

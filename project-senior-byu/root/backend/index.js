@@ -87,7 +87,7 @@ app.post('/add-classes', (req, res)=>{
 });
 
 app.get('/see-students', (req, res) => {
-  const sql = 'SELECT username, email FROM users';
+  const sql = 'SELECT users_id, username, email FROM users';
 
   db.query(sql, (err, result) => {
     if (err) {
@@ -99,8 +99,26 @@ app.get('/see-students', (req, res) => {
   });
 });
 
-// count users
+app.post('/setclass', (req, res) => {
+  const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?,?)'
+  const values = [
+    req.body.usersId,
+    req.body.classId
+  ];
+  
+  db.query(sql, values, (err, result) => {
+    if(err){
+      console.error('Error linking student and class', err)
+      return res.status(500).json({error: 'Could not link user to class'});
+    }
+    console.log('Successfully linked student to class', result);
+    return res.status(201).json({message: 'Successfully linked student to class'})
+  })
 
+})
+
+
+// count users
 
 const countUsers = () => {
   return new Promise((resolve, reject) => {

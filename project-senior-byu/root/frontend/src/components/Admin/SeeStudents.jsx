@@ -18,8 +18,11 @@ const SeeStudents = () => {
   }, []);
 
   return (
+    <>
+    <AdminNav/>
+    
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <AdminNav/>
+      
       <div className="px-4 py-6 sm:px-0">
         {errorMessage && (
           <div className="mb-4 bg-red-100 text-red-900 border border-red-400 rounded-md py-3 px-4">
@@ -53,6 +56,7 @@ const SeeStudents = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

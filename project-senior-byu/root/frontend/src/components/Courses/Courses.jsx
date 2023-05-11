@@ -56,6 +56,9 @@ const Courses = () => {
                 ))}
               </tbody>
             </table>
+            <Link to={`/check`} className="px-6 py-3 bg-blue text-gray-400 rounded-full shadow-lg hover:bg-blue-dark transition-colors duration-200 hover:text-red-400">
+        I already have a ticket!
+      </Link>
           </>
         ) : (
           <p className="text-sm text-gray-500">No courses available.</p>

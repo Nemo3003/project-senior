@@ -42,7 +42,8 @@ function RegisterClass() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="container mx-auto max-w-md">
+    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-4 pt-6 pb-8 mb-4">
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
           Username:
@@ -111,6 +112,7 @@ function RegisterClass() {
           </button>
           </div>
           </form>
+          </div>
           );
           }
           
