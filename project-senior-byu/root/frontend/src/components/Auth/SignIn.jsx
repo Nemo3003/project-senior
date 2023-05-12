@@ -35,7 +35,7 @@ function SignIn() {
   };
 
   return (
-    <div className="min-h-[50vh] bg-gray-100 flex justify-center items-center">
+    <div className="container mx-auto max-w-md">
       <form onSubmit={handleLogin} className="bg-white p-8 rounded-md shadow-md">
         <div className="mb-6">
           <label htmlFor="email" className="block font-medium text-gray-700 mb-2">Email</label>
@@ -43,8 +43,9 @@ function SignIn() {
             id="email"
             type="email"
             value={loginEmail}
+            placeholder="example@example.com"
             onChange={(e) => setLoginEmail(e.target.value)}
-            className="block w-full border-gray-400 p-2 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+            className="block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
           />
         </div>
         <div className="mb-6">
@@ -53,8 +54,9 @@ function SignIn() {
             id="password"
             type="password"
             value={loginPassword}
+            placeholder="*************"
             onChange={(e) => setLoginPassword(e.target.value)}
-            className="block w-full border-gray-400 p-2 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+            className="block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
           />
         </div>
         <div className="text-center">
