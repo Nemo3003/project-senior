@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ShowClass from '../helper/ShowClass';
 import ShowUsers from '../helper/ShowUsers';
 import AdminNav from './AdminNav';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 function AddUsClass() {
@@ -22,6 +23,10 @@ function AddUsClass() {
         .catch(error =>{
             console.error(error)
         })
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Link created successfully'})
     }
 
     return (

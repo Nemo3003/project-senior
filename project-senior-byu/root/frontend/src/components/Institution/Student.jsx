@@ -9,7 +9,6 @@ import SchedulePage from './SchedulePage';
 const tabs = [
   { id: 'campus', label: 'Campus' },
   { id: 'schedule', label: 'Schedule' },
-  { id: 'grades', label: 'Grades' },
   { id: 'resources', label: 'Resources' },
 ];
 
@@ -17,7 +16,7 @@ const Student = () => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   return (
-    <div className="flex justify-center h-[60vh] p-[6rem]">
+    <div className="flex justify-center screen-h-[50vh] p-[6rem]">
     <div className="p-4">
       <div className="flex mb-4">
         {tabs.map(tab => (
@@ -45,12 +44,6 @@ const Student = () => {
         <div>
           <h1 className="text-2xl mb-2">Schedule</h1>
           <SchedulePage/>
-        </div>
-      )}
-      {activeTab === 'grades' && (
-        <div>
-          <h1 className="text-2xl mb-2">Grades</h1>
-          <p>Here you can find your grades for each course.</p>
         </div>
       )}
       {activeTab === 'resources' && (

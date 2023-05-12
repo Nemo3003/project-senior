@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 dotenv.config();
 
 const app = express();
@@ -117,6 +118,19 @@ app.post('/setclass', (req, res) => {
 
 })
 
+// Students and their respective classes
+app.get('/stuclass', (req, res)=>{
+  const sql = 'SELECT users.*, classes.* FROM ocacoplus.users INNER JOIN enrollments ON users.users_id = enrollments.users_id INNER JOIN classes ON enrollments.classes_id = classes.classes_id;'
+  
+  db.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+
+    res.send(result);
+  });
+})
 
 // count users
 
@@ -174,6 +188,25 @@ app.post('/enroll', (req, res) => {
   });
 });
 
+//UPLOADING FILES
+
+/*
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/upload', upload.single('myFile'), (req, res) => {
+  res.send('File uploaded successfully');
+});*/
+
+
 // testing enrollments
 //TODO: I need to add some sort of form here in order to let the user enroll in whatever class they want
 app.post('/add-test', (req, res)=>{
@@ -195,31 +228,38 @@ app.post('/add-test', (req, res)=>{
 });
 // TESTING PURPOSES
 
-
-app.post('/test', (req, res) => {
+app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
   db.query(sql, [req.body.email], (err, data) => {
     if (err) {
+      console.log("Database query error:", err);
       return res.json("Error");
     }
     if (data.length > 0) {
       const user = data[0];
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (err) {
+          console.log("bcrypt compare error:", err);
           return res.json("Error");
         }
         if (result) {
-          const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, 'secret');
+          console.log("Password comparison successful");
+          console.log(`The JWT_SECRET is "${JWT_SECRET}"`);
+          const token = jwt.sign({ id: user.id }, JWT_SECRET);
           return res.json({ token });
         } else {
+          console.log("Password comparison failed");
           return res.json("Failed");
         }
       });
     } else {
+      console.log("No user found");
       return res.json("Failed");
     }
   });
 });
+
+
 
 
 app.get('/courses-test', (req, res) => {
