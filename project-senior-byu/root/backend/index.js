@@ -48,6 +48,21 @@ app.post('/signup', (req, res) => {
     });
   });
 
+  app.get('/logout', (req, res) => {
+    // Check if the user is authenticated
+    if (!req.session.user) {
+      // Redirect the user to the login page
+      res.redirect('/');
+      return;
+    }
+  
+    // Delete the JWT token from the user's session
+    delete req.session.user;
+  
+    // Redirect the user to the home page
+    res.redirect('/');
+  });
+
 
   app.post('/reclass', (req, res) => {
     const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
@@ -231,30 +246,31 @@ app.post('/add-test', (req, res)=>{
 
 app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
-  db.query(sql, [req.body.email], (err, data) => {
+  db.query(sql, [req.body.email, req.body.password], (err, data) => {
     if (err) {
       debug("Database query error:", err);
       return res.json("Error");
     }
     if (data.length > 0) {
       const user = data[0];
+      console.log(user)
       try {
         const result = bcrypt.compare(req.body.password, user.password);
+        
         if (result) {
-          debug("Password comparison successful");
-          console.log(`The JWT_SECRET is "${JWT_SECRET}"`);
-          const token = jwt.sign({ id: user.id }, JWT_SECRET);
+          console.log("Password comparison successful");
+          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
           return res.json({ token });
         } else {
-          debug("Password comparison failed");
+          console.log("Password comparison failed");
           return res.json("Failed");
         }
       } catch (err) {
-        debug("bcrypt compare error:", err);
+        console.log("bcrypt compare error:", err);
         return res.json("Error");
       }
     } else {
-      debug("No user found");
+      console.log("No user found");
       return res.json("Failed");
     }
   });

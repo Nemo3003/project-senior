@@ -26,7 +26,7 @@ function SignIn() {
         debug("Response from backend:", data); // Log the response from the backend
         console.error(data.message);
       } else {
-        window.location.href = '/courses';
+        //window.location.href = '/courses';
       }
     } catch (err) {
       debug("Error:", err);
