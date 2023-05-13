@@ -5,6 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const debug = require("debug");
 dotenv.config();
 
 const app = express();
@@ -232,28 +233,28 @@ app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
   db.query(sql, [req.body.email], (err, data) => {
     if (err) {
-      console.log("Database query error:", err);
+      debug("Database query error:", err);
       return res.json("Error");
     }
     if (data.length > 0) {
       const user = data[0];
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (err) {
-          console.log("bcrypt compare error:", err);
-          return res.json("Error");
-        }
+      try {
+        const result = bcrypt.compare(req.body.password, user.password);
         if (result) {
-          console.log("Password comparison successful");
+          debug("Password comparison successful");
           console.log(`The JWT_SECRET is "${JWT_SECRET}"`);
           const token = jwt.sign({ id: user.id }, JWT_SECRET);
           return res.json({ token });
         } else {
-          console.log("Password comparison failed");
+          debug("Password comparison failed");
           return res.json("Failed");
         }
-      });
+      } catch (err) {
+        debug("bcrypt compare error:", err);
+        return res.json("Error");
+      }
     } else {
-      console.log("No user found");
+      debug("No user found");
       return res.json("Failed");
     }
   });

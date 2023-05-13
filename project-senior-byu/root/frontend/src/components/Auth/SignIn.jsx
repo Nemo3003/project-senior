@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import debug from "debug";
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
@@ -20,16 +21,15 @@ function SignIn() {
         }),
       });
 
-      const data = await response.json();
-
-      console.log('Response from backend:', data); // Log the response from the backend
-
-      if (response.ok) {
-        //window.location.href = '/courses';
-      } else {
+      if (!response.ok) {
+        const data = await response.json();
+        debug("Response from backend:", data); // Log the response from the backend
         console.error(data.message);
+      } else {
+        window.location.href = '/courses';
       }
     } catch (err) {
+      debug("Error:", err);
       console.error(err);
     }
   };
