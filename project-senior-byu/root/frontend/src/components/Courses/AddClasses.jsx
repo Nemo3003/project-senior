@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import AdminNav from '../Admin/AdminNav';
+import Swal from 'sweetalert2';
 
 
 const AddClasses = () => {
@@ -8,23 +9,33 @@ const AddClasses = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const classData = {className, classDescription}
-        fetch('http://localhost:8081/add-classes', {
-            method : 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(classData),
-        })
+      e.preventDefault();
+      const classData = { className, classDescription };
+      fetch('http://localhost:8081/add-classes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(classData),
+      })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+          console.log(data);
+          // Reset the values of className and classDescription
+          setClassName('');
+          setClassDescription('');
         })
         .catch(e => {
-            console.error(e)
-        })
+          console.error(e)
+        });
+    
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Class created successfully!'
+      });
     };
+    
   return (
     <>
     <AdminNav/>

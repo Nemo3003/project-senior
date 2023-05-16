@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import debug from "debug";
+import Swal from 'sweetalert2';
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
@@ -23,15 +23,20 @@ function SignIn() {
 
       if (!response.ok) {
         const data = await response.json();
-        debug("Response from backend:", data); // Log the response from the backend
+        console.log("Response from backend:", data); // Log the response from the backend
         console.error(data.message);
-      } else {
-        //window.location.href = '/courses';
+      } 
+      else{
+        window.location.href = '/courses';
       }
     } catch (err) {
-      debug("Error:", err);
+      console.log("Error:", err);
       console.error(err);
     }
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Successfully Logged in!'})
   };
 
   return (
