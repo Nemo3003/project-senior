@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const express = require('express');
+const session = require('express-session');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -7,10 +8,12 @@ const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const Signup = require('./src/controlers/auth.controler')
+const create = require('./src/controlers/auth.controler')
 const Signin = require('./src/controlers/auth.controler')
 const seeClasses = require('./src/controlers/getData.controller')
 const seeStudentEnrolled = require('./src/controlers/getData.controller')
 const seeCurrentStudents = require('./src/controlers/getData.controller')
+
 
 
 const app = express();
@@ -31,6 +34,12 @@ const db = mysql.createConnection({
   database: process.env.HOST,
 });
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
+}))
+
 app.post('/signup', Signup);
 
   app.get('/logout', (req, res) => {
@@ -47,6 +56,7 @@ app.post('/signup', Signup);
     // Redirect the user to the home page
     res.redirect('/');
   });
+
 
   app.post('/reclass', (req, res) => {
     const { username, email, password } = req.body;
@@ -81,12 +91,11 @@ app.post('/add-classes', (req, res) => {
   });
 });
 
-app.get('/see-students', seeCurrentStudents);
+app.get('/see-students', authenticateToken,seeCurrentStudents);
 
-app.post('/setclass', (req, res) => {
+app.post('/setclass', authenticateToken,(req, res) => {
   const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
   const values = [req.body.usersId, req.body.classId];
-
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error linking student and class', err);
@@ -102,15 +111,17 @@ app.post('/setclass', (req, res) => {
 app.get('/stuclass', seeStudentEnrolled)
 
 function authenticateToken(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.sendStatus(401);
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus (401)
+  jwt.verify(token, process.env.JWT_SECRET, (err,user)=>{
+    if(err) return res.sendStatus (403)
+    req.user = user
+    next()
+  })
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403);
-    req.userId = decoded.userId;
-    next();
-  });
-}
+};
+
 
 // count users
 
@@ -137,7 +148,7 @@ app.get('/users/count', async (req, res) => {
 });
 
 // GENERAL
-app.get('/courses', seeClasses);
+app.get('/courses',authenticateToken, seeClasses);
 
 //Enrollment
 
@@ -195,7 +206,37 @@ app.post('/add-test', (req, res) => {
 
 // TESTING PURPOSES
 
-app.post("/test", Signin);
+app.post("/test", (req, res) => {
+  const sql = "SELECT * FROM users WHERE `email` = ?";
+  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+    if (err) {
+      debug("Database query error:", err);
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      const user = data[0];
+      console.log(user)
+      try {
+        const result = bcrypt.compare(req.body.password, user.password);
+        
+        if (result) {
+          console.log("Password comparison successful");
+          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+          console.log(token)
+          return res.json({ token });
+        } else {
+          console.log("Password comparison failed");
+          return res.json("Failed");
+        }
+      } catch (err) {
+        console.log("bcrypt compare error:", err);
+        return res.json("Error");
+      }
+    } else {
+      console.log("No user found");
+      return res.json("Failed");
+    }
+  })});
 
 app.get('/courses-test', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];

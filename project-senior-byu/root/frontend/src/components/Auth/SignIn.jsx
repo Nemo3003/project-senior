@@ -49,6 +49,7 @@ function SignIn() {
             type="email"
             value={loginEmail}
             placeholder="example@example.com"
+            required
             onChange={(e) => setLoginEmail(e.target.value)}
             className="block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
           />
@@ -60,6 +61,7 @@ function SignIn() {
             type="password"
             value={loginPassword}
             placeholder="*************"
+            required
             onChange={(e) => setLoginPassword(e.target.value)}
             className="block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
           />
