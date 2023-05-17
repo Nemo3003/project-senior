@@ -79,8 +79,18 @@ app.post('/signup', (req, res) => {
   });
 
 
-  app.post('/reclass', (req, res) => {
+  app.post('/reclass', verifyToken,(req, res) => {
     const { username, email, password } = req.body;
+    jwt.verify(req.token, process.env.JWT_SECRET, (err, authData)=>{
+      if(err) {
+        res.sendStatus(403)
+      }else{
+        res.json({
+          message: "Give us the money!",
+          authData
+        })
+      }
+    })
     const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
     const values = [username, email, password];
   
@@ -93,6 +103,31 @@ app.post('/signup', (req, res) => {
       console.log('New user created:', result.insertId);
       return res.status(201).json({ message: 'User created successfully' });
     });
+  });
+
+
+  function verifyToken(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if(authHeader){
+      const token = authHeader.split(' ')[1];
+
+      jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
+        if(err){
+          return res.status(403).json("Token not valid")
+        }
+        req.user = user;
+        next();
+      });
+    }else{
+      res.status(401).json({ message: 'You do not belong here'})
+    }
+  }
+  
+  app.get('/home', verifyToken, (req, res) => {
+   if(req.user.id === req.params.userId){
+    res.status(200).json('User is here!')
+   }
+    
   });
   
 //ADMIN
@@ -132,6 +167,8 @@ app.post('/setclass', (req, res) => {
 app.get('/stuclass', seeStudentEnrolled)
 
 
+
+
 // count users
 
 const countUsers = () => {
@@ -169,7 +206,8 @@ app.get('/courses', seeClasses);
 
 //Enrollment
 
-app.post('/enroll', (req, res) => {
+app.post('/enroll', verifyToken,(req, res) => {
+  
   const { userId, classId } = req.body; // Assuming userId and classId are sent in the request body
 
   // Insert a new row into the enrollments table
@@ -227,28 +265,38 @@ app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
   db.query(sql, [req.body.email], (err, data) => {
     if (err) {
+      debug("Database query error:", err);
       return res.json("Error");
     }
     if (data.length > 0) {
       const user = data[0];
-      console.log(user)
-        bcrypt.compare(req.body.password.toString(), data[0].password, ((err,response)=>{
-          if(err) return res.json({Error:'Password comparison error'})
-          if(response) {
-            const username = data[0].username
-            const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '1d'})
-            res.cookie('token', token)
-            console.log(token)
-            return res.json({Status: 'Success'})
-          }else {
-            return res.json({Error: 'No match'})
-          }
-        }))
+      console.log(user);
+      try {
+        const passwordMatch = bcrypt.compare(
+          req.body.password.toString(),
+          user.password
+        );
+        
+        if (passwordMatch) {
+          console.log("Password comparison successful");
+          const token = jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
+          console.log({name: user.username, token, isAdmin: user.isAdmin });
+           res.json({name: user.username, isAdmin: user.isAdmin ,token });
+        } else {
+          console.log("Password comparison failed");
+          return res.json("Failed");
+        }
+      } catch (err) {
+        console.log("bcrypt compare error:", err);
+        return res.json("Error");
+      }
     } else {
       console.log("No user found");
       return res.json("Failed");
     }
-  })});
+  });
+});
+
 
 app.get('/courses-test', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
