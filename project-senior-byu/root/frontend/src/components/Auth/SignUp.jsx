@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
+useNavigate
 
 function SignUp() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = { username, email, password };
@@ -21,6 +23,13 @@ function SignUp() {
       .then(data => {
         console.log(data);
         // handle response data as needed
+      })
+      .then(res=>{
+        if(res.data.Status === 'Success'){
+          window.history.href='/test'
+        }else{
+          alert('Error')
+        }
       })
       .catch(error => {
         console.error(error);

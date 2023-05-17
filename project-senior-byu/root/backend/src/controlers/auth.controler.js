@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const salt = 10;
 dotenv.config();
 
 
@@ -17,22 +18,21 @@ const db = mysql.createConnection({
 
 const Signup = (req, res) => {
     const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
-  
+    bcrypt.hash(req.body.password.toString(), salt, (err, hash)=>{{
+      if(err) return res.json({Error: "Error hashing password"})
       const values = [
         req.body.username,
         req.body.email,
-        req.body.password
-      ];
-      
-      db.query(sql, values, (err, result) => {
-        if (err) {
-          console.error('Error creating user:', err);
-          return res.status(500).json({ error: 'Failed to create user' });
-        }
-  
-        console.log('New user created:', result.insertId);
-        return res.redirect('/test');
+        hash
+      ]
+      db.query(sql, [values], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Failed to create user' });
+        return res.json({Status: 'Success'});
       });
+    }})
+      
+      
+      
     }
 
 

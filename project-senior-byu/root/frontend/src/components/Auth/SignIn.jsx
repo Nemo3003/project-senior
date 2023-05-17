@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    
     try {
       const response = await fetch('http://localhost:8081/test', {
         method: 'POST',
@@ -19,25 +20,28 @@ function SignIn() {
           email: loginEmail,
           password: loginPassword,
         }),
+        credentials: 'include',
       });
-
+    
       if (!response.ok) {
         const data = await response.json();
         console.log("Response from backend:", data); // Log the response from the backend
         console.error(data.message);
-      } 
-      else{
-        window.location.href = '/courses';
+      } else {
+        // Call the navigation function here, outside the if-else block
+        navigate('/');
       }
+    
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Successfully Logged in!',
+      });
     } catch (err) {
       console.log("Error:", err);
       console.error(err);
     }
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: 'Successfully Logged in!'})
-  };
+  }
 
   return (
     <div className="container mx-auto max-w-md">

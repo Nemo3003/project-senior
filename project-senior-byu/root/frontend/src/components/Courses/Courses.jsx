@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Home from '../Home'
 
 const Courses = () => {
   const [classes, setCourses] = useState([]);
@@ -27,6 +28,7 @@ const Courses = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <Home></Home>
       <div className="px-4 py-6 sm:px-0">
        
         {classes.length > 0 ? (

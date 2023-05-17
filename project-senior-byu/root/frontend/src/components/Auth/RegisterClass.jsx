@@ -112,6 +112,7 @@ function RegisterClass() {
           </button>
           </div>
           </form>
+          
           </div>
           );
           }

@@ -6,6 +6,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 dotenv.config();
+const salt = 10;
 
 const Signup = require('./src/controlers/auth.controler')
 const create = require('./src/controlers/auth.controler')
@@ -18,7 +19,11 @@ const seeCurrentStudents = require('./src/controlers/getData.controller')
 
 const app = express();
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  method: ["POST", "GET"],
+  credentials: true
+}));
 const port_nd = 8081;
 app.listen(port_nd, ()=>{
   console.log(`Listening on port ${port_nd}`);
@@ -40,7 +45,23 @@ app.use(session({
   saveUninitialized: true
 }))
 
-app.post('/signup', Signup);
+app.post('/signup', (req, res) => {
+  const sql = "INSERT INTO ocacoplus.users (`username`,`email`, `password`) VALUES (?)";
+  bcrypt.hash (req.body.password.toString(), salt, (err, hash) => {
+  if(err) return res.json({Error: "Error for hassing password"});
+    const values = [
+      req.body.username,
+      req.body.email,
+      hash
+      ]
+  db.query(sql, [values], (err, result) => {
+    if(err) return res.json({Error: "Inserting data Errorr in server"});
+    return res.json({Status: "Success"})}
+    )
+  })
+    
+    
+  });
 
   app.get('/logout', (req, res) => {
     // Check if the user is authenticated
@@ -91,9 +112,9 @@ app.post('/add-classes', (req, res) => {
   });
 });
 
-app.get('/see-students', authenticateToken,seeCurrentStudents);
+app.get('/see-students', seeCurrentStudents);
 
-app.post('/setclass', authenticateToken,(req, res) => {
+app.post('/setclass', (req, res) => {
   const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
   const values = [req.body.usersId, req.body.classId];
   db.query(sql, values, (err, result) => {
@@ -109,18 +130,6 @@ app.post('/setclass', authenticateToken,(req, res) => {
 
 // Students and their respective classes
 app.get('/stuclass', seeStudentEnrolled)
-
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus (401)
-  jwt.verify(token, process.env.JWT_SECRET, (err,user)=>{
-    if(err) return res.sendStatus (403)
-    req.user = user
-    next()
-  })
-
-};
 
 
 // count users
@@ -146,13 +155,21 @@ app.get('/users/count', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+app.get('/auth/check', (req, res) => {
+  // Check if the user is authenticated based on your session or JWT logic
+  if (req.session.user) {
+    res.json({ authenticated: true });
+  } else {
+    res.json({ authenticated: false });
+  }
+});
 
 // GENERAL
-app.get('/courses',authenticateToken, seeClasses);
+app.get('/courses', seeClasses);
 
 //Enrollment
 
-app.post('/enroll', authenticateToken,(req, res) => {
+app.post('/enroll', (req, res) => {
   const { userId, classId } = req.body; // Assuming userId and classId are sent in the request body
 
   // Insert a new row into the enrollments table
@@ -208,30 +225,25 @@ app.post('/add-test', (req, res) => {
 
 app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
-  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+  db.query(sql, [req.body.email], (err, data) => {
     if (err) {
-      debug("Database query error:", err);
       return res.json("Error");
     }
     if (data.length > 0) {
       const user = data[0];
       console.log(user)
-      try {
-        const result = bcrypt.compare(req.body.password, user.password);
-        
-        if (result) {
-          console.log("Password comparison successful");
-          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-          console.log(token)
-          return res.json({ token });
-        } else {
-          console.log("Password comparison failed");
-          return res.json("Failed");
-        }
-      } catch (err) {
-        console.log("bcrypt compare error:", err);
-        return res.json("Error");
-      }
+        bcrypt.compare(req.body.password.toString(), data[0].password, ((err,response)=>{
+          if(err) return res.json({Error:'Password comparison error'})
+          if(response) {
+            const username = data[0].username
+            const token = jwt.sign({username}, process.env.JWT_SECRET, {expiresIn: '1d'})
+            res.cookie('token', token)
+            console.log(token)
+            return res.json({Status: 'Success'})
+          }else {
+            return res.json({Error: 'No match'})
+          }
+        }))
     } else {
       console.log("No user found");
       return res.json("Failed");
