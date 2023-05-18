@@ -26,7 +26,7 @@ function SignUp() {
       })
       .then(res=>{
         if(res.data.Status === 'Success'){
-          window.history.href='/test'
+          navigate('/test')
         }else{
           alert('Error')
         }

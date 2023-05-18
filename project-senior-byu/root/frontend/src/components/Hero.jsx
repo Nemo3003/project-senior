@@ -6,8 +6,7 @@ const Hero = () => {
   return (
     <section className="screen-h-[90vh] md:h-[90vh]  grid grid-cols-1 md:grid-cols-8">
   {/* Info */}
-  
-  <Home/>
+
   <div className="md:col-span-5 flex flex-col justify-center items-center md:items-start p-4 md:p-16">
     <h1 className="text-5xl xl:text-7xl font-bold xl:leading-[9rem]">
       We help you prepare for your professional <span className="text-primary py-2 px-6 border-8 border-primary relative inline-block">success</span>

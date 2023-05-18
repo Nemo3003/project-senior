@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 dotenv.config();
 const salt = 10;
 
@@ -18,7 +20,18 @@ const seeCurrentStudents = require('./src/controlers/getData.controller')
 
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}))
 app.use(cors({
   origin: ["http://localhost:5173"],
   method: ["POST", "GET"],
@@ -56,7 +69,7 @@ app.post('/signup', (req, res) => {
       ]
   db.query(sql, [values], (err, result) => {
     if(err) return res.json({Error: "Inserting data Errorr in server"});
-    return res.json({Status: "Success"})}
+    return res.json(result)}
     )
   })
     
@@ -107,28 +120,24 @@ app.post('/signup', (req, res) => {
 
 
   function verifyToken(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if(authHeader){
-      const token = authHeader.split(' ')[1];
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token == null) return res.sendStatus(401)
 
-      jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
-        if(err){
-          return res.status(403).json("Token not valid")
-        }
-        req.user = user;
-        next();
-      });
-    }else{
-      res.status(401).json({ message: 'You do not belong here'})
-    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
+      if(err) return res.sendStatus(403)
+      req.user = user
+      next()
+    })
   }
   
-  app.get('/home', verifyToken, (req, res) => {
-   if(req.user.id === req.params.userId){
-    res.status(200).json('User is here!')
+  app.get('/home', (req, res) => {
+   if(req.session.username){
+    return res.json({valid: true, username: req.session.username})
+   }else{
+    return res.json({valid: false})
    }
-    
-  });
+  }, []);
   
 //ADMIN
 app.post('/add-classes', (req, res) => {
@@ -202,7 +211,7 @@ app.get('/auth/check', (req, res) => {
 });
 
 // GENERAL
-app.get('/courses', seeClasses);
+app.get('/courses', verifyToken,seeClasses);
 
 //Enrollment
 
@@ -259,6 +268,9 @@ app.post('/add-test', (req, res) => {
   });
 });
 
+function generateToken(user){
+  return jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.JWT_SECRET, {expiresIn:'100s'});
+}
 // TESTING PURPOSES
 
 app.post("/test", (req, res) => {
@@ -270,6 +282,7 @@ app.post("/test", (req, res) => {
     }
     if (data.length > 0) {
       const user = data[0];
+      req.session.username = data[0].username;
       console.log(user);
       try {
         const passwordMatch = bcrypt.compare(
@@ -279,20 +292,21 @@ app.post("/test", (req, res) => {
         
         if (passwordMatch) {
           console.log("Password comparison successful");
-          const token = jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
-          console.log({name: user.username, token, isAdmin: user.isAdmin });
-           res.json({name: user.username, isAdmin: user.isAdmin ,token });
+          const token = generateToken(user)
+          const refreshToken = jwt.sign({id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.S_SECRET)
+
+          res.json({valid: true,Login: true, name: req.session.username, isAdmin: user.isAdmin ,token, refreshToken });
         } else {
           console.log("Password comparison failed");
-          return res.json("Failed");
+          return res.json({valid:false, Login:false},"Failed");
         }
       } catch (err) {
         console.log("bcrypt compare error:", err);
-        return res.json("Error");
+        return res.json({valid:false, Login:false},"Error");
       }
     } else {
       console.log("No user found");
-      return res.json("Failed");
+      return res.json({valid:false, Login: false},"Failed");
     }
   });
 });

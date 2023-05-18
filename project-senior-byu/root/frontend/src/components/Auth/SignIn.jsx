@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const navigate = useNavigate();
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+  
     try {
       const response = await fetch('http://localhost:8081/test', {
         method: 'POST',
@@ -22,16 +25,22 @@ function SignIn() {
         }),
         credentials: 'include',
       });
-    
+  
       if (!response.ok) {
         const data = await response.json();
         console.log("Response from backend:", data); // Log the response from the backend
-        console.error(data.message);
+        console.log(data.message);
       } else {
+        const data = await response.json();
+        console.log("Username:", data.name);
+        console.log("Login status:", data.Login);
+        console.log("Token:", data.token);
+        console.log("isAdmin:", data.isAdmin);
+        console.log('valid', data.valid);
         // Call the navigation function here, outside the if-else block
-        navigate('/');
+        navigate('/home');
       }
-    
+  
       Swal.fire({
         icon: 'success',
         title: 'Success!',
@@ -41,7 +50,7 @@ function SignIn() {
       console.log("Error:", err);
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto max-w-md">

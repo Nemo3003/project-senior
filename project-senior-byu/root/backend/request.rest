@@ -1,5 +1,11 @@
 
-GET
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODQyMjk1NjB9.cGD14pHE9DPYcljYYaPWVRIX5IQeMRctTzQjeqjwvHY
+GET http://localhost:8081/home
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibWFyaSIsImlzQWRtaW4iOm51bGwsImlhdCI6MTY4NDM5ODY4NH0.H3CpOMAez0_renMvjumQJxI5Ti7NgS3t9bikTKkeQ-k
 ###
-http://localhost:8081/courses
+POST http://localhost:8081/test
+Content-Type: application/json
+
+{
+    "email": "mar@mar.com",
+    "password": "12345"
+}
