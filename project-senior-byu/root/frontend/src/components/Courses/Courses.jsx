@@ -14,6 +14,7 @@ const Courses = () => {
       .then(res => res.json())
       .then(data => {
         setCourses(data);
+        console.log(data);
       })
       .catch(error => {
         setErrorMessage(error.message);
@@ -25,6 +26,7 @@ const Courses = () => {
       <button onClick={() => window.location.href = `/reclass`}>Enroll in class</button>
     );
   };
+  
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

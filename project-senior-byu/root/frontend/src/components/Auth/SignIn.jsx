@@ -38,7 +38,7 @@ function SignIn() {
         console.log("isAdmin:", data.isAdmin);
         console.log('valid', data.valid);
         // Call the navigation function here, outside the if-else block
-        navigate('/home');
+        navigate('/courses');
       }
   
       Swal.fire({
@@ -76,7 +76,7 @@ function SignIn() {
             placeholder="*************"
             required
             onChange={(e) => setLoginPassword(e.target.value)}
-            className="block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+            className= "block w-full border-gray-400 p-2 rounded-md shadow-md border focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
           />
         </div>
         <div className="text-center">

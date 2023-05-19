@@ -10,13 +10,12 @@ const bodyParser = require('body-parser');
 dotenv.config();
 const salt = 10;
 
-const Signup = require('./src/controlers/auth.controler')
-const create = require('./src/controlers/auth.controler')
-const Signin = require('./src/controlers/auth.controler')
-const seeClasses = require('./src/controlers/getData.controller')
-const seeStudentEnrolled = require('./src/controlers/getData.controller')
-const seeCurrentStudents = require('./src/controlers/getData.controller')
-
+const Signup = require('./src/controllers/auth.controller')
+const create = require('./src/controllers/auth.controller')
+const Signin = require('./src/controllers/auth.controller')
+const seeCourses = require('./src/controllers/getData.controller')
+const seeStudentEnrolled = require('./src/controllers/admin.controller')
+const seeCurrentStudents = require('./src/controllers/getData.controller')
 
 
 const app = express();
@@ -33,10 +32,12 @@ app.use(session({
   }
 }))
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173","http://localhost:8081"],
   method: ["POST", "GET"],
   credentials: true
 }));
+
+
 const port_nd = 8081;
 app.listen(port_nd, ()=>{
   console.log(`Listening on port ${port_nd}`);
@@ -52,12 +53,19 @@ const db = mysql.createConnection({
   database: process.env.HOST,
 });
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true
-}))
-
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Replace with your own secret key
+    resave: false,
+    httpOnly: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 86400000, // Cookie expiration time (in milliseconds)
+      secure: false, // Set to true if using HTTPS
+    },
+  })
+);
+//ready
 app.post('/signup', (req, res) => {
   const sql = "INSERT INTO ocacoplus.users (`username`,`email`, `password`) VALUES (?)";
   bcrypt.hash (req.body.password.toString(), salt, (err, hash) => {
@@ -75,7 +83,7 @@ app.post('/signup', (req, res) => {
     
     
   });
-
+//ready
   app.get('/logout', (req, res) => {
     // Check if the user is authenticated
     if (!req.session.user) {
@@ -84,15 +92,28 @@ app.post('/signup', (req, res) => {
       return;
     }
   
-    // Delete the JWT token from the user's session
-    delete req.session.user;
+    // Clear the session cookie
+    res.clearCookie('connect.sid');
   
     // Redirect the user to the home page
     res.redirect('/');
   });
+  
 
-
+  const isAuthenticated = (req, res, next) => {
+    // Check if the user is authenticated
+    if (!req.session.user) {
+      // Redirect the user to the login page
+      res.redirect('/test');
+    } else {
+      // Continue to the next middleware or controller
+      next();
+    }
+  };
+  
+  //Is it necessary?
   app.post('/reclass', verifyToken,(req, res) => {
+    
     const { username, email, password } = req.body;
     jwt.verify(req.token, process.env.JWT_SECRET, (err, authData)=>{
       if(err) {
@@ -106,7 +127,7 @@ app.post('/signup', (req, res) => {
     })
     const sql = 'INSERT INTO ocacoplus.users (username, email, password) VALUES (?, ?, ?)';
     const values = [username, email, password];
-  
+    
     db.query(sql, values, (err, result) => {
       if (err) {
         console.error('Error creating user:', err);
@@ -123,15 +144,18 @@ app.post('/signup', (req, res) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(' ')[1]
     if(token == null) return res.sendStatus(401)
-
+  
     jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
       if(err) return res.sendStatus(403)
-      req.user = user
+      req.session.user = user
       next()
     })
   }
   
+  
+  //testing page
   app.get('/home', (req, res) => {
+    
    if(req.session.username){
     return res.json({valid: true, username: req.session.username})
    }else{
@@ -139,7 +163,9 @@ app.post('/signup', (req, res) => {
    }
   }, []);
   
+
 //ADMIN
+//ready
 app.post('/add-classes', (req, res) => {
   const { className, classDescription } = req.body;
   const sql = 'INSERT INTO ocacoplus.classes (className, classDescription) VALUES (?, ?)';
@@ -155,9 +181,25 @@ app.post('/add-classes', (req, res) => {
     return res.status(201).json({ message: 'Class created successfully' });
   });
 });
+//ready
+app.get('/see-students', (req, res) => {
+  console.log('Session:', req.session.username); 
+  
+    const sql = 'SELECT users_id, username, email FROM users';
+   
+    db.query(sql, (err, result) => {
+      if (err) {
+        res.status(500).send(err.message);
+        return;
+      }
 
-app.get('/see-students', seeCurrentStudents);
+      res.send(result);
+    });
 
+});
+
+
+// Ready
 app.post('/setclass', (req, res) => {
   const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
   const values = [req.body.usersId, req.body.classId];
@@ -192,7 +234,7 @@ const countUsers = () => {
     });
   });
 };
-
+//ready
 app.get('/users/count', async (req, res) => {
   try {
     const totalUsers = await countUsers();
@@ -201,6 +243,8 @@ app.get('/users/count', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// testing purposes
 app.get('/auth/check', (req, res) => {
   // Check if the user is authenticated based on your session or JWT logic
   if (req.session.user) {
@@ -210,11 +254,17 @@ app.get('/auth/check', (req, res) => {
   }
 });
 
+
+// Use the middleware function to protect all routes
+
+
+
 // GENERAL
-app.get('/courses', verifyToken,seeClasses);
+// ready
+app.get('/courses', seeCourses);
 
 //Enrollment
-
+// Ready
 app.post('/enroll', verifyToken,(req, res) => {
   
   const { userId, classId } = req.body; // Assuming userId and classId are sent in the request body
@@ -269,10 +319,12 @@ app.post('/add-test', (req, res) => {
 });
 
 function generateToken(user){
-  return jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.JWT_SECRET, {expiresIn:'100s'});
+  return jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.JWT_SECRET, {expiresIn:'1m'});
 }
-// TESTING PURPOSES
 
+
+// TESTING PURPOSES
+// ready
 app.post("/test", (req, res) => {
   const sql = "SELECT * FROM users WHERE `email` = ?";
   db.query(sql, [req.body.email], (err, data) => {
@@ -283,7 +335,15 @@ app.post("/test", (req, res) => {
     if (data.length > 0) {
       const user = data[0];
       req.session.username = data[0].username;
-      console.log(user);
+      console.log("first",req.session.username = data[0].username)
+      console.log("second",req.session.user = data[0].user)
+      console.log("third",req.session.user = data[0].username)
+      console.log("zi",req.session.user = data[0].username)
+      console.log("third",req.session.user)
+      if(req.session.user){
+        console.log('zi',data[0])
+      }
+      
       try {
         const passwordMatch = bcrypt.compare(
           req.body.password.toString(),
@@ -309,6 +369,9 @@ app.post("/test", (req, res) => {
       return res.json({valid:false, Login: false},"Failed");
     }
   });
+  if(req.session.user){
+    console.log(('get back to work'))
+  }
 });
 
 
