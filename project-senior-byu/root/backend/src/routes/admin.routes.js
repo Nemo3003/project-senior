@@ -3,7 +3,6 @@ const addEnrollment = require('../controllers/admin.controller')
 const seeStudentEnrolled =  require('../controllers/admin.controller')
 const seeCurrentStudents =  require('../controllers/admin.controller')
 const addClasses =  require('../controllers/admin.controller')
-const countingStudents = require('../controllers/admin.controller')
 const usersRegistered = require('../controllers/admin.controller')
 const router = Router();
 

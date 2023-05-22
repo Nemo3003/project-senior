@@ -66,11 +66,18 @@ const Signup = (req, res) => {
           return res.json({ Error: "Error inserting data into the server" });
         }
         
-        return res.json(result);
+        const userId = result.insertId; // Get the inserted user's ID
+        console.log(userId);
+        const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+          expiresIn: 86400, // 24 hours
+        });
+        console.log(token)
+        return res.json({ token }); // Return the user's ID in the response
       });
     });
   });
 };
+
  
 
   function generateToken(user){
@@ -89,6 +96,8 @@ const Signup = (req, res) => {
       if (data.length > 0) {
         const user = data[0];
   
+        console.log(user.isAdmin)
+            console.log(user.id)
         try {
           const passwordMatch = bcrypt.compareSync(
             req.body.password.toString(),
@@ -98,6 +107,13 @@ const Signup = (req, res) => {
           if (passwordMatch) {
             console.log("Password comparison successful");
             const isAdmin = user.isAdmin; // Assuming you have an `isAdmin` field in your users table
+            const userId = user.id; // Access the user's ID
+            console.log(isAdmin)
+            console.log(userId)
+            const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+              expiresIn: 86400, // 24 hours
+            });
+            console.log(token)
   
             // Check if the user is an admin
             if (isAdmin) {
@@ -107,6 +123,9 @@ const Signup = (req, res) => {
               console.log("User is not an admin");
               // Perform actions for non-admin users
             }
+            
+            // You can use the user's ID for further processing or store it in the session if needed
+            req.session.userId = userId;
           } else {
             console.log("Password comparison failed");
             return res.json({ valid: false, Login: false }, "Failed");
@@ -120,6 +139,7 @@ const Signup = (req, res) => {
         return res.json({ valid: false, Login: false }, "Failed");
       }
     });
+    
     if (req.session.user) {
       console.log("get back to work");
     }
