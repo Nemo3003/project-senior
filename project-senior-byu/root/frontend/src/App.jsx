@@ -19,10 +19,10 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import CheckCourse from './components/Courses/CheckCourse';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
-import Upload from './components/Student/upload';
+
 import ListStuCla from './components/Admin/ListStuCla';
 import Home from './components/Home';
-//import WordCounter from './components/WordCounter';
+import Sh from './components/Upload';
 
 import AdminDashboard from './components/Admin/AdminDashboard';
 import PaymentPage from './components/Courses/PaymentPage';
@@ -57,10 +57,10 @@ function App() {
           <Route path="/check" element={<CheckCourse />} />
           <Route path="/test" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/upload" element={<Upload />} />
+
           <Route path="/stuclass" element={<ListStuCla />} />
           <Route path="/home" element={<Home />} />
-
+          <Route path="/up" element={<Sh />} />
           {/**Admin stuff */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/payment" element={<PaymentPage />} />

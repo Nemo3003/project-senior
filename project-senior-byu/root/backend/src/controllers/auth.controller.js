@@ -2,10 +2,15 @@ const mysql = require("mysql");
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const salt = 10;
 dotenv.config();
 
 
+const app = express();
 const db = mysql.createConnection({
   host: process.env.DATABASE_CONN_ALT,
   port: process.env.PORT,
@@ -14,73 +19,112 @@ const db = mysql.createConnection({
   database: process.env.HOST,
 });
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Replace with your own secret key
+    resave: false,
+    httpOnly: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 86400000, // Cookie expiration time (in milliseconds)
+      secure: false, // Set to true if using HTTPS
+    },
+  })
+);
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+
 
 
 const Signup = (req, res) => {
-  const sql = "INSERT INTO ocacoplus.users (`username`,`email`, `password`) VALUES (?)";
-  bcrypt.hash (req.body.password.toString(), salt, (err, hash) => {
-  if(err) return res.json({Error: "Error for hassing password"});
-    const values = [
-      req.body.username,
-      req.body.email,
-      hash
-      ]
-  db.query(sql, [values], (err, result) => {
-    if(err) return res.json({Error: "Inserting data Errorr in server"});
-    return res.json(result)}
-    )
-  }) 
-  } 
+  const { username, email, password } = req.body;
 
-
-const Signin = async (req, res) => {
-  const sql = "SELECT * FROM users WHERE `email` = ?";
-  db.query(sql, [req.body.email], (err, data) => {
+  // Check if username or email already exists
+  const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
+  db.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
-      debug("Database query error:", err);
-      return res.json("Error");
+      return res.json({ Error: "Database query error" });
     }
-    if (data.length > 0) {
-      const user = data[0];
-      req.session.username = data[0].username;
-      console.log("first",req.session.username = data[0].username)
-      console.log("second",req.session.user = data[0].user)
-      console.log("third",req.session.user = data[0].username)
-      console.log("zi",req.session.user = data[0].username)
-      console.log("third",req.session.user)
-      if(req.session.user){
-        console.log('zi',data[0])
-      }
-      
-      try {
-        const passwordMatch = bcrypt.compare(
-          req.body.password.toString(),
-          user.password
-        );
-        
-        if (passwordMatch) {
-          console.log("Password comparison successful");
-          const token = generateToken(user)
-          const refreshToken = jwt.sign({id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.S_SECRET)
 
-          res.json({valid: true,Login: true, name: req.session.username, isAdmin: user.isAdmin ,token, refreshToken });
-        } else {
-          console.log("Password comparison failed");
-          return res.json({valid:false, Login:false},"Failed");
-        }
-      } catch (err) {
-        console.log("bcrypt compare error:", err);
-        return res.json({valid:false, Login:false},"Error");
-      }
-    } else {
-      console.log("No user found");
-      return res.json({valid:false, Login: false},"Failed");
+    if (rows.length > 0) {
+      // Username or email already exists
+      return res.json({ Error: "Username or email already exists" });
     }
+
+    // Proceed with user creation
+    bcrypt.hash(password.toString(), salt, (err, hash) => {
+      if (err) {
+        return res.json({ Error: "Error hashing password" });
+      }
+
+      const insertQuery = "INSERT INTO ocacoplus.users (`username`, `email`, `password`) VALUES (?, ?, ?)";
+      const values = [username, email, hash];
+      db.query(insertQuery, values, (err, result) => {
+        if (err) {
+          return res.json({ Error: "Error inserting data into the server" });
+        }
+        
+        return res.json(result);
+      });
+    });
   });
-  if(req.session.user){
-    console.log(('get back to work'))
+};
+ 
+
+  function generateToken(user){
+    return jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.JWT_SECRET, {expiresIn:86400});
   }
-}
+
+
+  const Signin = async (req, res) => {
+    res.json({ message: 'success' });
+    const sql = "SELECT * FROM users WHERE `email` = ?";
+    db.query(sql, [req.body.email], (err, data) => {
+      if (err) {
+        debug("Database query error:", err);
+        return res.json("Error");
+      }
+      if (data.length > 0) {
+        const user = data[0];
+  
+        try {
+          const passwordMatch = bcrypt.compareSync(
+            req.body.password.toString(),
+            user.password
+          );
+  
+          if (passwordMatch) {
+            console.log("Password comparison successful");
+            const isAdmin = user.isAdmin; // Assuming you have an `isAdmin` field in your users table
+  
+            // Check if the user is an admin
+            if (isAdmin) {
+              console.log("User is an admin");
+              // Perform admin-specific actions or set a flag to indicate admin status
+            } else {
+              console.log("User is not an admin");
+              // Perform actions for non-admin users
+            }
+          } else {
+            console.log("Password comparison failed");
+            return res.json({ valid: false, Login: false }, "Failed");
+          }
+        } catch (err) {
+          console.log("bcrypt compare error:", err);
+          return res.json({ valid: false, Login: false }, "Error");
+        }
+      } else {
+        console.log("No user found");
+        return res.json({ valid: false, Login: false }, "Failed");
+      }
+    });
+    if (req.session.user) {
+      console.log("get back to work");
+    }
+  };
+  
 const Logout = (req, res) => {
   // Check if the user is authenticated
   if (!req.session.user) {

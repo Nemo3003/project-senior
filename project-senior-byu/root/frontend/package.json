@@ -29,6 +29,7 @@
     "pdf-to-text": "^0.0.7",
     "pdfjs-dist": "^3.6.172",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-pdf": "^6.2.2",

@@ -69,14 +69,26 @@ const seeCurrentStudents = (req, res) => {
     });
   }
 
-const countingStudents = async (req, res) => {
+  const countUsers = () => {
+    return new Promise((resolve, reject) => {
+      const query = "SELECT COUNT(*) as total_users FROM ocacoplus.users";
+      db.query(query, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0].total_users);
+        }
+      });
+    });
+  };
+const usersRegistered = async (req, res) => {
     try {
       const totalUsers = await countUsers();
       res.json({ total_users: totalUsers });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
 
 module.exports = [
@@ -84,5 +96,5 @@ module.exports = [
     seeStudentEnrolled,
     addClasses,
     seeCurrentStudents,
-    countingStudents
+    usersRegistered
 ]

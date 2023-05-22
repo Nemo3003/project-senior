@@ -19,23 +19,25 @@ function SignUp() {
       },
       body: JSON.stringify(formData),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error creating user');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log(data);
-        // handle response data as needed
-      })
-      .then(res=>{
-        if(res.data.Status === 'Success'){
-          navigate('/test')
-        }else{
-          alert('Error')
-        }
+        // handle successful user creation
+        navigate('/test');
       })
       .catch(error => {
         console.error(error);
-        // handle error as needed
+        // handle error
+        alert('Error creating user');
       });
   };
+  
+  
 
   return (
         <div className="container mx-auto max-w-md">
