@@ -28,7 +28,4 @@ const seeCourses = (req, res) => {
 
 
 
-module.exports = [
-    seeCourses,
-
-]
+module.exports = seeCourses

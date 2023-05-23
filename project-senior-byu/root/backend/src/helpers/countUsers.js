@@ -11,4 +11,4 @@ const countUsers = () => {
     });
   };
 
-export default countUsers;
+module.exports = countUsers;
