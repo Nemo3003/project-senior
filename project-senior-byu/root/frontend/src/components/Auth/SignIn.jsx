@@ -9,43 +9,48 @@ function SignIn() {
   const [loginPassword, setLoginPassword] = useState('');
   const navigate = useNavigate();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
   
     try {
-      const response = await fetch('http://localhost:8081/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: loginEmail,
-          password: loginPassword,
-        }),
-        credentials: 'include',
+      const response = await axios.post('http://localhost:8081/test', {
+        email: loginEmail,
+        password: loginPassword,
+      }, {
+        withCredentials: true, // Send credentials with the request
       });
   
-      if (!response.ok) {
-        const data = await response.json();
-        console.log("Response from backend:", data); // Log the response from the backend
-        console.log(data.message);
-      } else {
-        const data = await response.json();
+      const data = response.data;
+  
+      if (data.valid) {
         console.log("Username:", data.name);
         console.log("Login status:", data.Login);
         console.log("Token:", data.token);
         console.log("isAdmin:", data.isAdmin);
         console.log('valid', data.valid);
-        // Call the navigation function here, outside the if-else block
-        navigate('/courses');
-      }
-  
-      Swal.fire({
+        Toast.fire({
         icon: 'success',
-        title: 'Success!',
-        text: 'Successfully Logged in!',
+        title: 'Signed in successfully',
       });
+        if(data.isAdmin){
+          navigate('/admin');
+        }else{navigate('/courses');}
+      } else {
+        console.log("Response from backend:", data);
+        console.log(data.message);
+      }
     } catch (err) {
       console.log("Error:", err);
       console.error(err);

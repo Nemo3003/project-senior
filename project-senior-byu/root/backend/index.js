@@ -16,12 +16,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+
 app.use(cors({
-  origin: ["http://localhost:5173/*","http://localhost:8081/*"],
-  method: ["POST", "GET"],
-  credentials: true
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // other headers and configurations
+  next();
+});
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>{

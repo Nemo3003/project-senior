@@ -86,64 +86,66 @@ const Signup = (req, res) => {
 
 
   const Signin = async (req, res) => {
-    res.json({ message: 'success' });
     const sql = "SELECT * FROM users WHERE `email` = ?";
+    
     db.query(sql, [req.body.email], (err, data) => {
       if (err) {
-        debug("Database query error:", err);
-        return res.json("Error");
+        console.log("Database query error:", err);
+        return res.status(500).json({ error: "Database query error" });
       }
+  
       if (data.length > 0) {
         const user = data[0];
   
-        console.log(user.isAdmin)
-            console.log(user.id)
+        console.log(user.isAdmin);
+        console.log(user.id);
+  
         try {
-          const passwordMatch = bcrypt.compareSync(
+          const passwordMatch = bcrypt.compare(
             req.body.password.toString(),
             user.password
           );
   
           if (passwordMatch) {
             console.log("Password comparison successful");
-            const isAdmin = user.isAdmin; // Assuming you have an `isAdmin` field in your users table
-            const userId = user.id; // Access the user's ID
-            console.log(isAdmin)
-            console.log(userId)
-            const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+            const isAdmin = user.isAdmin;
+            console.log(isAdmin);
+            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
               expiresIn: 86400, // 24 hours
             });
-            console.log(token)
+            console.log(token);
   
-            // Check if the user is an admin
             if (isAdmin) {
               console.log("User is an admin");
-              // Perform admin-specific actions or set a flag to indicate admin status
+              
             } else {
               console.log("User is not an admin");
-              // Perform actions for non-admin users
             }
             
-            // You can use the user's ID for further processing or store it in the session if needed
-            req.session.userId = userId;
+            return res.json({
+              valid: true,
+              Login: true,
+              token: token,
+              isAdmin: isAdmin,
+            });
+
           } else {
             console.log("Password comparison failed");
-            return res.json({ valid: false, Login: false }, "Failed");
+            return res.json({ valid: false, Login: false, message: "Failed" });
           }
         } catch (err) {
           console.log("bcrypt compare error:", err);
-          return res.json({ valid: false, Login: false }, "Error");
+          return res.json({ valid: false, Login: false, message: "Error" });
         }
       } else {
         console.log("No user found");
-        return res.json({ valid: false, Login: false }, "Failed");
+        return res.json({ valid: false, Login: false, message: "Failed" });
       }
     });
-    
-    if (req.session.user) {
-      console.log("get back to work");
-    }
+  
+
   };
+  
   
 const Logout = (req, res) => {
   // Check if the user is authenticated
@@ -160,8 +162,7 @@ const Logout = (req, res) => {
   res.redirect('/');
 }
 
-module.exports = [
+module.exports = {
                 Signup, 
                 Signin,
-                Logout
-                ]
+                Logout};

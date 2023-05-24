@@ -13,7 +13,7 @@ const db = mysql.createConnection({
 });
 
 const addEnrollment = (req, res) => {
-    /*const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
+    const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
     const values = [req.body.usersId, req.body.classId];
     db.query(sql, values, (err, result) => {
       if (err) {
@@ -23,7 +23,7 @@ const addEnrollment = (req, res) => {
   
       console.log('Successfully linked student to class', result);
       return res.status(201).json({ message: 'Successfully linked student to class' });
-    });*/
+    });
   }
 
 const seeStudentEnrolled =  (req, res)=>{
@@ -55,20 +55,18 @@ const seeStudentEnrolled =  (req, res)=>{
     });
   }
 
-const seeCurrentStudents = (req, res) => {
+  const seeCurrentStudents = (req, res) => {
     const sql = 'SELECT users_id, username, email FROM users';
   
     db.query(sql, (err, result) => {
       if (err) {
-        res.status(500).send(err.message);
+        res.status(500).send({ message: "Oops!", error: err.message });
         return;
       }
-      if(req.session.user){
       res.send(result);
-    }
-    res.send({message: "Oops!"});
     });
-  }
+  };
+  
 
 const usersRegistered = async (req, res) => {
     try {
@@ -80,10 +78,10 @@ const usersRegistered = async (req, res) => {
   };
 
 
-module.exports = [
-    addEnrollment,
+module.exports = 
+    {addEnrollment,
     seeStudentEnrolled,
     addClasses,
     seeCurrentStudents,
     usersRegistered
-]
+};

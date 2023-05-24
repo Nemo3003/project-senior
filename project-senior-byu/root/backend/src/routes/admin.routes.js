@@ -1,10 +1,14 @@
 const express = require('express');
-const addEnrollment = require('../controllers/admin.controller')
-const seeStudentEnrolled =  require('../controllers/admin.controller')
-const seeCurrentStudents =  require('../controllers/admin.controller')
-const addClasses =  require('../controllers/admin.controller')
-const usersRegistered = require('../controllers/admin.controller')
 const router = express.Router();
+const verifyToken = require('../middleware/authJwt')
+
+const {addEnrollment,
+    seeStudentEnrolled,
+    addClasses,
+    seeCurrentStudents,
+    usersRegistered
+} = require('../controllers/admin.controller')
+
 
 //##############GET#################
 router.get('/stuclass', seeStudentEnrolled)

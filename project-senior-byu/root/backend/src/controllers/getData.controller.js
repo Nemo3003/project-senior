@@ -24,8 +24,4 @@ const seeCourses = (req, res) => {
     });
   }
 
-
-
-
-
 module.exports = seeCourses
