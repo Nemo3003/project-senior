@@ -18,7 +18,7 @@ function AddUsClass() {
     axios.post ('http://localhost:8081/setclass', formData)
         .then(response => {
             console.log(response.data);
-            window.location.href = '/setclass'
+            window.location.href = '/admin/setclass'
         })
         .catch(error =>{
             console.error(error)

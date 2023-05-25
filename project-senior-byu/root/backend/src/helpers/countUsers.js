@@ -1,3 +1,20 @@
+
+const mysql = require("mysql");
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+
+const db = mysql.createConnection({
+  host: process.env.DATABASE_CONN_ALT,
+  port: process.env.PORT,
+  user: process.env.USER_ALT,
+  password: process.env.PASSWORD_ALT,
+  database: process.env.HOST,
+});
+
+
+
 const countUsers = () => {
     return new Promise((resolve, reject) => {
       const query = "SELECT COUNT(*) as total_users FROM ocacoplus.users";

@@ -1,13 +1,15 @@
-import { useState,createContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 import Swal from 'sweetalert2';
 import axios from 'axios';
-
 
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const navigate = useNavigate();
+
+  const isAdminContext = useContext(UserContext);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -23,7 +25,7 @@ function SignIn() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('http://localhost:8081/test', {
         email: loginEmail,
@@ -31,9 +33,9 @@ function SignIn() {
       }, {
         withCredentials: true, // Send credentials with the request
       });
-  
+
       const data = response.data;
-  
+
       if (data.valid) {
         console.log("Username:", data.name);
         console.log("Login status:", data.Login);
@@ -41,16 +43,15 @@ function SignIn() {
         console.log("isAdmin:", data.isAdmin);
         console.log('valid', data.valid);
         Toast.fire({
-        icon: 'success',
-        title: 'Signed in successfully',
-      });
-      if (data.isAdmin) {
-        updateUserAdminStatus(true);
-        navigate('/admin');
-      } else {
-        updateUserAdminStatus(false);
-        navigate('/courses');
-      }
+          icon: 'success',
+          title: 'Signed in successfully',
+        });
+        if (data.isAdmin) {
+          isAdminContext.setIsAdmin(true);
+          navigate('/admin');
+        } else {
+          navigate('/courses');
+        }
       } else {
         console.log("Response from backend:", data);
         console.log(data.message);

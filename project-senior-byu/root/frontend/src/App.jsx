@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -15,7 +15,6 @@ import RegisterClass from './components/Auth/RegisterClass';
 import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
-import { Auth0Provider } from '@auth0/auth0-react';
 import CheckCourse from './components/Courses/CheckCourse';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
@@ -28,18 +27,15 @@ import ChatbotPage from './components/Chatbot/Chatbot';
 import AddClasses from './components/Courses/AddClasses';
 import SeeStudents from './components/Admin/SeeStudents';
 import AddUsClass from './components/Admin/AddUsClass';
-
+import { UserContext } from './components/Auth/UserContext';
 
 function App() {
-
+  const [isAdmin, setIsAdmin] = useState(false);
   return (
-    <Auth0Provider
-      domain="dev-nd67wypi0pti2u8w.us.auth0.com"
-      clientId="PuYLeAHFHntWxxNFa3pMWftGq80Q66hP"
-      redirectUri={window.location.origin}
-    >
-        <Router>
-          <Header />
+    <UserContext.Provider value={{ isAdmin, setIsAdmin }}>
+      <Router>
+        <Header />
+        
           <Routes>
             <Route path="/" element={<div><Hero /><Reviews /></div>} />
             <Route path="/reviews" element={<Reviews />} />
@@ -57,21 +53,33 @@ function App() {
             <Route path="/check" element={<CheckCourse />} />
             <Route path="/test" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/stuclass" element={<ListStuCla />} />
             <Route path="/home" element={<Home />} />
             <Route path="/up" element={<Sh />} />
-          
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/payment" element={<PaymentPage />} />
-                <Route path="/add-classes" element={<AddClasses />} />
-                <Route path="/see-students" element={<SeeStudents />} />
-                <Route path="/setclass" element={<AddUsClass />} />
-              
+            <Route path="/admin/*" element={<AdminProtectedRoutes />} />
           </Routes>
-          <ChatbotPage />
-          <Footer />
-        </Router>
-    </Auth0Provider>
+        
+        <ChatbotPage />
+        <Footer />
+      </Router>
+      </UserContext.Provider>
+  );
+}
+
+function AdminProtectedRoutes() {
+  const { isAdmin } = useContext(UserContext);
+
+  if (!isAdmin) {
+    return null; // Render nothing if the user is not an admin
+  }
+  return (
+    <Routes>
+      <Route path="/" element={<AdminDashboard />} />
+      <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/add-classes" element={<AddClasses />} />
+      <Route path="/see-students" element={<SeeStudents />} />
+      <Route path="/setclass" element={<AddUsClass />} />
+      <Route path="/stuclass" element={<ListStuCla />} />
+    </Routes>
   );
 }
 
