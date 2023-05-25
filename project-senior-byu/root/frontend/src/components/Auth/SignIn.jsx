@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -44,9 +44,13 @@ function SignIn() {
         icon: 'success',
         title: 'Signed in successfully',
       });
-        if(data.isAdmin){
-          navigate('/admin');
-        }else{navigate('/courses');}
+      if (data.isAdmin) {
+        updateUserAdminStatus(true);
+        navigate('/admin');
+      } else {
+        updateUserAdminStatus(false);
+        navigate('/courses');
+      }
       } else {
         console.log("Response from backend:", data);
         console.log(data.message);

@@ -19,6 +19,10 @@ const db = mysql.createConnection({
   database: process.env.HOST,
 });
 
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET, // Replace with your own secret key
@@ -31,12 +35,6 @@ app.use(
     },
   })
 );
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(bodyParser.json());
-
-
 
 const Signup = (req, res) => {
   const { username, email, password } = req.body;
@@ -96,7 +94,6 @@ const Signup = (req, res) => {
   
       if (data.length > 0) {
         const user = data[0];
-  
         console.log(user.isAdmin);
         console.log(user.id);
   
@@ -109,12 +106,12 @@ const Signup = (req, res) => {
           if (passwordMatch) {
             console.log("Password comparison successful");
             const isAdmin = user.isAdmin;
-            console.log(isAdmin);
+
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
               expiresIn: 86400, // 24 hours
             });
             console.log(token);
-  
+            
             if (isAdmin) {
               console.log("User is an admin");
               

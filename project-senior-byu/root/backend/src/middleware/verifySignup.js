@@ -1,1 +1,4 @@
-console.log('hi')
+
+const verifyAdmin = (user) => {
+    const sql = "SELECT * FROM ocacoplus.users"
+}
