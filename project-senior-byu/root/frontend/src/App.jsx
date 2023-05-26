@@ -10,7 +10,6 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import News from './components/News';
 import Investors from './components/Investos';
 import { ContactUs } from './components/Contact';
-import Login from './components/Auth/Login';
 import RegisterClass from './components/Auth/RegisterClass';
 import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
@@ -45,13 +44,12 @@ function App() {
             <Route path="/news" element={<News />} />
             <Route path="/investors" element={<Investors />} />
             <Route path="/contact" element={<ContactUs />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/reclass" element={<RegisterClass />} />
             <Route path="/courses" element={<AppCard />} />
             <Route path="/institution" element={<Welcome />} />
             <Route path="/student" element={<Student />} />
             <Route path="/check" element={<CheckCourse />} />
-            <Route path="/test" element={<SignIn />} />
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/home" element={<Home />} />
             <Route path="/up" element={<Sh />} />
@@ -64,6 +62,7 @@ function App() {
       </UserContext.Provider>
   );
 }
+
 
 function AdminProtectedRoutes() {
   const { isAdmin } = useContext(UserContext);

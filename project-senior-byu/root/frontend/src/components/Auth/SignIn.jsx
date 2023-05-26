@@ -10,6 +10,7 @@ function SignIn() {
   const navigate = useNavigate();
 
   const isAdminContext = useContext(UserContext);
+  const isAuthenticated = useContext(UserContext);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -27,7 +28,7 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8081/test', {
+      const response = await axios.post('http://localhost:8081/signin', {
         email: loginEmail,
         password: loginPassword,
       }, {
@@ -48,6 +49,7 @@ function SignIn() {
         });
         if (data.isAdmin) {
           isAdminContext.setIsAdmin(true);
+          isAuthenticated.setIsAuth(true);
           navigate('/admin');
         } else {
           navigate('/courses');

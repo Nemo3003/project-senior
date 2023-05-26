@@ -1,18 +1,12 @@
-import { useAuth0 } from "@auth0/auth0-react";
+
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
+  const navigate = useNavigate()
   return (
     <div>
-      {!isAuthenticated && (
-        <button onClick={loginWithRedirect}>Login</button>
-      )}
-      {isAuthenticated && (
-        <button onClick={() => logout({ redirectTo: "/" })}>
-          Logout
-        </button>
-      )}
+        <button onClick={()=> navigate('/signin') }>Get to the login</button>
     </div>
   );
 }
