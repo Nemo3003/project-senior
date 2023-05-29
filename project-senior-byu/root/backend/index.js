@@ -49,6 +49,10 @@ app.use('/',adminRoute)
 app.use('/',classesRoute)
 app.use('/',usersRoute)
 
+app.listen(3000, () => {
+  console.log('Server is running on')})
+
+
 
 
 db.connect(err => {

@@ -1,45 +1,47 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-function Sh() {
+const Sh = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileSelect = (event) => {
+  const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-      axios.post('/upload', formData, {
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress(progress);
-        },
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    fetch('http://localhost:8081/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('File uploaded successfully!');
+        // Handle any additional logic or display success message
       })
-      .then((response) => {
-        // Handle the response after successful upload
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
+      .catch(error => {
+        console.error('Error uploading file:', error);
+        // Handle error or display error message
       });
-    }
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleFileSelect} />
-      <button onClick={handleUpload}>Upload</button>
-      <div>{uploadProgress}%</div>
-      <progress value={uploadProgress} max="100" />
-    </div>
+    <form className="flex flex-col items-center" onSubmit={handleSubmit}>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="border p-2 mb-4"
+      />
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Upload
+      </button>
+    </form>
   );
 };
 
