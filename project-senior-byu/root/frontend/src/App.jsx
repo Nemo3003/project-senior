@@ -28,6 +28,7 @@ import SeeStudents from './components/Admin/SeeStudents';
 import AddUsClass from './components/Admin/AddUsClass';
 import { UserContext } from './components/Auth/UserContext';
 import FileDisplayPage from './components/FileDisplayPage';
+import FirebaseUpload from './components/FirebaseUpload';
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -55,6 +56,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/up" element={<Sh />} />
             <Route path="/ups" element={<FileDisplayPage />} />
+            <Route path="/upload" element={<FirebaseUpload />} />
             <Route path="/admin/*" element={<AdminProtectedRoutes />} />
           </Routes>
         
