@@ -10,7 +10,7 @@ function SignIn() {
   const navigate = useNavigate();
 
   const isAdminContext = useContext(UserContext);
-  const isAuthenticated = useContext(UserContext);
+
 
   const Toast = Swal.mixin({
     toast: true,
@@ -49,7 +49,7 @@ function SignIn() {
         });
         if (data.isAdmin) {
           isAdminContext.setIsAdmin(true);
-          isAuthenticated.setIsAuth(true);
+
           navigate('/admin');
         } else {
           navigate('/courses');

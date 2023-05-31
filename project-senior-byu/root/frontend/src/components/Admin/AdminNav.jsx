@@ -22,6 +22,7 @@ const AdminNav = () => {
               <Link to="/admin/see-students" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">See Students</Link>
               <Link to="/admin/setclass" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Assign classes</Link>
               <Link to="/admin/stuclass" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Enrollments</Link>
+              <Link to="/admin/upload" className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-500">Student Files</Link>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
