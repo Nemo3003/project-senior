@@ -10,6 +10,7 @@ function SignIn() {
   const navigate = useNavigate();
 
   const isAdminContext = useContext(UserContext);
+  const isAuthenticatedContext = useContext(UserContext)
 
 
   const Toast = Swal.mixin({
@@ -49,10 +50,13 @@ function SignIn() {
         });
         if (data.isAdmin) {
           isAdminContext.setIsAdmin(true);
+          isAuthenticatedContext.setIsAuthenticated(true)
 
           navigate('/admin');
         } else {
-          navigate('/courses');
+
+          isAuthenticatedContext.setIsAuthenticated(true)
+          navigate('/welcome');
         }
       } else {
         console.log("Response from backend:", data);

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Reviews from './components/Reviews';
@@ -30,16 +30,27 @@ import { UserContext } from './components/Auth/UserContext';
 import FileDisplayPage from './components/FileDisplayPage';
 import FirebaseUpload from './components/FirebaseUpload';
 import UploadedFiles from './components/Admin/UploadedFiles';
+import WelcomeStudent from './components/Student/WelcomeStudent';
+import AuthCourses from './components/Courses/AuthCourses';
+import ErrorMessage from './components/Student/ErrorMessage';
+import NotAdmin from './components/Admin/NotAdmin';
+
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  
   return (
-    <UserContext.Provider value={{ isAdmin, setIsAdmin }}>
+    <UserContext.Provider value={{ isAdmin, setIsAdmin, isAuthenticated, setIsAuthenticated }}>
       <Router>
         <Header />
         
           <Routes>
             <Route path="/" element={<div><Hero /><Reviews /></div>} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<TermsOfUse />} />
@@ -47,17 +58,13 @@ function App() {
             <Route path="/news" element={<News />} />
             <Route path="/investors" element={<Investors />} />
             <Route path="/contact" element={<ContactUs />} />
-            <Route path="/reclass" element={<RegisterClass />} />
-            <Route path="/courses" element={<AppCard />} />
             <Route path="/institution" element={<Welcome />} />
-            <Route path="/student" element={<Student />} />
-            <Route path="/check" element={<CheckCourse />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/up" element={<Sh />} />
-            <Route path="/ups" element={<FileDisplayPage />} />
-            <Route path="/upload" element={<FirebaseUpload />} />
+            <Route path="/courses" element={<AppCard />} />
+            <Route path="/not-admin" element={<NotAdmin/>} />
+            <Route path="/error" element={<ErrorMessage />} />
+            {/**Authenticated only */}
+            <Route path="/*" element={<AuthenticatedRoutes />} />
+
             <Route path="/admin/*" element={<AdminProtectedRoutes />} />
           </Routes>
         
@@ -68,12 +75,13 @@ function App() {
   );
 }
 
+//TODO: make so that if the user is not logged in, they cannot see the "I have a ticket"
 
 function AdminProtectedRoutes() {
   const { isAdmin } = useContext(UserContext);
 
   if (!isAdmin) {
-    return null; // Render nothing if the user is not an admin
+    return (<Navigate to="/not-admin"/>)
   }
   return (
     <Routes>
@@ -86,6 +94,29 @@ function AdminProtectedRoutes() {
       <Route path="/upload" element={<UploadedFiles />} />
     </Routes>
   );
+}
+
+function AuthenticatedRoutes () {
+
+  const { isAuthenticated } = useContext(UserContext);
+
+  if (!isAuthenticated) {
+    return (<Navigate to="/error" />)
+  }
+
+  return(
+    <Routes>
+      <Route path="/welcome" element={<WelcomeStudent />} />
+      <Route path="/reclass" element={<RegisterClass />} />
+      <Route path="/auth-class" element={<AuthCourses />} />
+      <Route path="/student" element={<Student />} />
+      <Route path="/check" element={<CheckCourse />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/upload" element={<FirebaseUpload />} />
+      <Route path="/admin/*" element={<AdminProtectedRoutes />} />
+    </Routes>
+  )
+  
 }
 
 export default App;
