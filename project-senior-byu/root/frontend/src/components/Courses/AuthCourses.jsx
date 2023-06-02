@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Home from '../Home'
+import Notice from "./Notice";
 
 const AuthCourses = () => {
   const [classes, setCourses] = useState([]);
@@ -23,7 +24,7 @@ const AuthCourses = () => {
 
   const EnrollButton = ({ classId }) => {
     return (
-      <button onClick={() => window.location.href = `/reclass`}>Enroll in class</button>
+      <button onClick={() => window.location.href = `https://mpago.la/2T3rCNL`}>Enroll in class</button>
     );
   };
   
@@ -31,6 +32,7 @@ const AuthCourses = () => {
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <Home></Home>
+      <Notice/>
       <div className="px-4 py-6 sm:px-0">
        
         {classes.length > 0 ? (

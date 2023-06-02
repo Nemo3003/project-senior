@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 dotenv.config();
 
@@ -16,11 +17,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use(morgan('dev'))
 
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
 }));
+
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
