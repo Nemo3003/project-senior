@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Home from '../Home'
 import Notice from "./Notice";
+import PaypalCheckoutButton from "./PaypalCheckout";
+
 
 const AuthCourses = () => {
   const [classes, setCourses] = useState([]);
@@ -24,6 +26,7 @@ const AuthCourses = () => {
 
   const EnrollButton = ({ classId }) => {
     return (
+      
       <button onClick={() => window.location.href = `https://mpago.la/2T3rCNL`}>Enroll in class</button>
     );
   };
@@ -63,9 +66,12 @@ const AuthCourses = () => {
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{course.classDescription}</td>
           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
             <EnrollButton classId={course.id} />
+            
           </td>
+          
         </tr>
       ))}
+      
     </tbody>
   </table>
 </div>
@@ -75,6 +81,7 @@ const AuthCourses = () => {
             <Link to={`/check`} className="px-6 py-3 bg-blue text-gray-400 rounded-full shadow-lg hover:bg-blue-dark transition-colors duration-200 hover:text-red-400">
         I already have a ticket!
       </Link>
+
           </>
         ) : (
           <p className="text-sm text-gray-500">No courses available.</p>
