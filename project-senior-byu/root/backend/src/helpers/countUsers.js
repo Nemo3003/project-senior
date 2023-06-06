@@ -27,5 +27,17 @@ const countUsers = () => {
       });
     });
   };
+  const countUsersEnrolled = () => {
+    return new Promise((resolve, reject) => {
+      const query = "SELECT COUNT(users_id) as total_users FROM ocacoplus.enrollments";
+      db.query(query, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results[0].total_users);
+        }
+      });
+    });
+  };
 
-module.exports = countUsers;
+module.exports = {countUsers, countUsersEnrolled}

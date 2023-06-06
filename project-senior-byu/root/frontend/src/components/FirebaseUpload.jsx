@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   ref,
   uploadBytes,
@@ -9,9 +9,12 @@ import { storage } from "../firebase/firebase";
 import { v4 } from "uuid";
 import Swal from "sweetalert2";
 
+import { UserContext } from "../components/Auth/UserContext";
+
 const FirebaseUpload = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
+  const [upload, setUpload] = useContext(UserContext)
 
   const imagesListRef = ref(storage, "images/");
 
@@ -51,6 +54,7 @@ const FirebaseUpload = () => {
 
   useEffect(() => {
     listAll(imagesListRef).then((response) => {
+
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
           const image = {

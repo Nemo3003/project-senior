@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AdminNav from './AdminNav';
 import UserCount from '../helper/UserCount';
+import UserCountEn from '../helper/UserCountEn';
 import { UserContext } from '../Auth/UserContext';
 
 
@@ -15,6 +16,7 @@ const AdminDashboard = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { isAdmin, setIsAdmin } = useContext(UserContext);
+  const {imageCount} = useContext(UserContext);
 
   useEffect(() => {
     fetch('http://localhost:8081/courses')
@@ -41,16 +43,16 @@ const AdminDashboard = () => {
               <UserCount />
             </div>
             <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
-              <h2 className="text-lg font-medium mb-2">Number of Docs Uploaded</h2>
-              <p className="text-4xl font-bold">{numDocsUploaded}</p>
+              <h2 className="text-lg font-medium mb-2">Number of processed docs</h2>
+              <UserCountEn />
             </div>
             <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
-              <h2 className="text-lg font-medium mb-2">Number of Chatbot Responses</h2>
-              <p className="text-4xl font-bold">{numChatbotResponses}</p>
+              <h2 className="text-lg font-medium mb-2">Number of Students Enrolled</h2>
+              <UserCountEn />
             </div>
             <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
               <h2 className="text-lg font-medium mb-2">Number of Successful Payments</h2>
-              <p className="text-4xl font-bold">{numSuccessfulPayments}</p>
+              <UserCountEn />
             </div>
           </div>
         </div>
@@ -92,12 +94,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </main>
-      <footer>
-        <h1>Admin Dashboard</h1>
-        <p>isAdmin: {isAdmin.toString()}</p>
-        <button onClick={() => setIsAdmin(false)}>Set isAdmin to false</button>
-        <button onClick={() => setIsAdmin(true)}>Set isAdmin to true</button>
-      </footer>
+
     </div>
   );
 };

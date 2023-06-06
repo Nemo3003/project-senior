@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const dotenv = require('dotenv');
-const countUsers = require('../helpers/countUsers')
+const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
 dotenv.config();
 
 
@@ -77,11 +77,21 @@ const usersRegistered = async (req, res) => {
     }
   };
 
+const usersEnrolled = async (req, res) => {
+    try {
+      const totalUsers = await countUsersEnrolled();
+      res.json({ total_usersu: totalUsers });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 
 module.exports = 
     {addEnrollment,
     seeStudentEnrolled,
     addClasses,
     seeCurrentStudents,
-    usersRegistered
+    usersRegistered,
+    usersEnrolled
 };

@@ -102,6 +102,7 @@ const UploadedFiles = () => {
           >
             Refresh Images
           </button>
+          <p>{imageUrls.length}</p>
             </div>
           </div>
         </>

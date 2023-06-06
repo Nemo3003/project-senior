@@ -37,6 +37,7 @@ import NotAdmin from './components/Admin/NotAdmin';
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [imageCount, setImageCount] = useState();
 
   
   return (
