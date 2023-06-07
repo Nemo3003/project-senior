@@ -109,7 +109,7 @@ function AuthenticatedRoutes () {
       <Route path="/reclass" element={<RegisterClass />} />
       <Route path="/auth-class" element={<AuthCourses />} />
       <Route path="/student" element={<Student />} />
-      <Route path="/check" element={<CheckCourse />} />
+      <Route path="/check" element={<FirebaseUpload />} />
       <Route path="/home" element={<Home />} />
       <Route path="/upload" element={<FirebaseUpload />} />
       <Route path="/admin/*" element={<AdminProtectedRoutes />} />
