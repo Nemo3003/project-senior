@@ -5,18 +5,14 @@ import AdminNav from './AdminNav';
 import UserCount from '../helper/UserCount';
 import UserCountEn from '../helper/UserCountEn';
 import { UserContext } from '../Auth/UserContext';
-
+import { Bar } from 'react-chartjs-2';
 
 const AdminDashboard = () => {
-  const [numSignups, setNumSignups] = useState(256);
-  const [numDocsUploaded, setNumDocsUploaded] = useState(128);
-  const [numChatbotResponses, setNumChatbotResponses] = useState(512);
-  const [numSuccessfulPayments, setNumSuccessfulPayments] = useState(64);
+
   const [classes, setCourses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const { isAdmin, setIsAdmin } = useContext(UserContext);
-  const {imageCount} = useContext(UserContext);
 
   useEffect(() => {
     fetch('http://localhost:8081/courses')

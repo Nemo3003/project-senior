@@ -33,60 +33,9 @@ const steps = [
   },
   {
     id: 'AskIssue',
-    message: 'Please select your issue',
-    trigger: 'IssueOptions',
-  },
-  {
-    id: 'IssueOptions',
-    options: [
-      {
-        value: 'Class',
-        label: 'Enroll in a class',
-        trigger: 'EnrollClass',
-      },
-      {
-        value: 'Course',
-        label: 'Enroll in a course',
-        trigger: 'EnrollCourse',
-      },
-      {
-        value: 'Cancel',
-        label: 'Cancel',
-        trigger: 'Cancel',
-      },
-    ],
-  },
-  {
-    id: 'EnrollClass',
-    message: 'Great! Please visit our website to enroll in a class.',
-    end: true,
-  },
-  {
-    id: 'EnrollCourse',
-    message: 'Great! Please visit our website to enroll in a course.',
-    end: true,
-  },
-  {
-    id: 'Cancel',
-    message: 'Okay, let me know if you need any further assistance.',
-    end: true,
-  },
-  {
-    id: 'AskEmail',
-    message: 'Please enter your email address.',
-    trigger: 'GetEmail',
-  },
-  {
-    id: 'GetEmail',
-    user: true,
-    trigger: 'ThankYou',
-  },
-  {
-    id: 'ThankYou',
-    message:
-      'Thank you for providing your email address. We will contact you shortly.',
-    end: true,
-  },
+    message: 'We are currently working on this assistant. Please send an email to ulimarian2000@gmail.com',
+    trigger: '', // Assign a unique trigger value
+  }
 ];
 
 const handleEnd = (result) => {

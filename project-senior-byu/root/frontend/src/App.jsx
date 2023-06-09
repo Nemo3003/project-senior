@@ -14,7 +14,6 @@ import RegisterClass from './components/Auth/RegisterClass';
 import AppCard from './components/Courses/Courses';
 import Welcome from './components/Institution/Welcome';
 import Student from './components/Institution/Student';
-import CheckCourse from './components/Courses/CheckCourse';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
 import ListStuCla from './components/Admin/ListStuCla';
