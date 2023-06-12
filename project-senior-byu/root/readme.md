@@ -11,7 +11,7 @@ Create an automatic chatbot to assist with answering frequently asked questions.
 Develop an admin dashboard to allow the administrator to view which courses or careers students have signed up for.
 Incorporate a payment mode such as PayPal or Mercado Pago.
 ## Measurements
- - To assess the success and effectiveness of the project, the following measurements will be taken:
+ To assess the success and effectiveness of the project, the following measurements will be taken:
  - The number of students who successfully sign up for courses or careers on the platform.
  - The number of students who successfully upload their documentation on the platform.
  - The number of chatbot responses provided to students successfully.
