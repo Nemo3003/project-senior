@@ -110,7 +110,6 @@ function AuthenticatedRoutes () {
       <Route path="/student" element={<Student />} />
       <Route path="/check" element={<FirebaseUpload />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/upload" element={<FirebaseUpload />} />
       <Route path="/admin/*" element={<AdminProtectedRoutes />} />
     </Routes>
   )
