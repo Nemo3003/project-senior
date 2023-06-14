@@ -33,11 +33,7 @@ app.use(function(req, res, next) {
 });
 
 const port_nd = 8081;
-app.listen(port_nd, ()=>{
-  console.log(`Listening on port ${port_nd}`);
-});
-
-//TODO: Perhaps using session I could finally make this work...
+app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
 const db = mysql.createConnection({
   host: process.env.DATABASE_CONN_ALT,
@@ -47,20 +43,11 @@ const db = mysql.createConnection({
   database: process.env.HOST,
 });
 
-app.use('/',authRoute)
-app.use('/',adminRoute)
-app.use('/',classesRoute)
-app.use('/',usersRoute)
+const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
-app.listen(3000, () => {
-  console.log('Server is running on')})
-
-
-
+app.use('/', ...routes)
 
 db.connect(err => {
-  if (err) {
-    console.error(err.message);
-  }
+  if (err) {console.error(err.message);}
   console.log("Database connected");
 });
