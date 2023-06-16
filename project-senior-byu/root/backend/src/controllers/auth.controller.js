@@ -50,6 +50,16 @@ const Signup = (req, res) => {
       // Username or email already exists
       return res.json({ Error: "Username or email already exists" });
     }
+    // Validate password strength
+    if (password.length < 8) {
+      return res.json({ Error: "Password should be at least 8 characters long" });
+    }
+    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasNumber = /\d/.test(password);
+    
+    if (!hasSpecialCharacter || !hasNumber) {
+      return res.json({ Error: "Password should contain a mix of special characters and numbers" });
+    }
 
     // Proceed with user creation
     bcrypt.hash(password.toString(), salt, (err, hash) => {
@@ -69,19 +79,15 @@ const Signup = (req, res) => {
         const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
           expiresIn: 86400, // 24 hours
         });
-        console.log(token)
         return res.json({ token }); // Return the user's ID in the response
       });
     });
   });
 };
 
- 
-
   function generateToken(user){
     return jwt.sign({ id: user.id, name: user.username, isAdmin: user.isAdmin, isStudent: user.isStudent }, process.env.JWT_SECRET, {expiresIn:86400});
   }
-
 
   const Signin = async (req, res) => {
     const sql = "SELECT * FROM users WHERE `email` = ?";

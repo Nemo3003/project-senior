@@ -8,6 +8,7 @@ import axios from 'axios';
 function SignIn() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const isAdminContext = useContext(UserContext);
@@ -36,15 +37,14 @@ function SignIn() {
       }, {
         withCredentials: true, // Send credentials with the request
       });
-
+      // Perform email and password validation
+      if (loginEmail === '' || loginPassword === '') {
+        setErrorMessage('Please enter both email and password');
+        return;
+      }
       const data = response.data;
 
       if (data.valid) {
-        console.log("Username:", data.name);
-        console.log("Login status:", data.Login);
-        console.log("Token:", data.token);
-        console.log("isAdmin:", data.isAdmin);
-        console.log('valid', data.valid);
         Toast.fire({
           icon: 'success',
           title: 'Signed in successfully',
@@ -62,7 +62,10 @@ function SignIn() {
       } else {
         console.log("Response from backend:", data);
         console.log(data.message);
+         // If sign-in fails:
+        setErrorMessage('Incorrect email or password');
       }
+     
     } catch (err) {
       console.log("Error:", err);
       console.error(err);
@@ -73,6 +76,9 @@ function SignIn() {
     <div className="container mx-auto max-w-md">
       <form onSubmit={handleLogin} className="bg-white p-8 rounded-md shadow-md">
         <div className="mb-6">
+        {errorMessage && (
+          <p className="text-red-500 text-xs italic mb-2">{errorMessage}</p>
+        )}
           <label htmlFor="email" className="block font-medium text-gray-700 mb-2">Email</label>
           <input 
             id="email"

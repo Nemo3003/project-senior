@@ -7,10 +7,29 @@ function SignUp() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Password strength validation
+    if (password.length < 8) {
+      setErrorMessage('Password should be at least 8 characters long and have a mix of special characters and numbers');
+      return;
+    }
+    
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setErrorMessage('Password should be at least 8 characters long and have a mix of special characters and numbers');
+      return;
+    }
+    // Email validation
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage('Please enter a valid email address');
+      return;
+    }
+
     const formData = { username, email, password };
     fetch('http://localhost:8081/signup', {
       method: 'POST',
@@ -28,7 +47,7 @@ function SignUp() {
       .then(data => {
         console.log(data);
         // handle successful user creation
-        navigate('/test');
+        navigate('/signin');
       })
       .catch(error => {
         console.error(error);
@@ -37,11 +56,12 @@ function SignUp() {
       });
   };
   
-  
-
   return (
         <div className="container mx-auto max-w-md">
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        {errorMessage && (
+          <p className="text-red-500 text-xs italic mb-2">{errorMessage}</p>
+        )}
         <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2" htmlFor="username">
         Username:
