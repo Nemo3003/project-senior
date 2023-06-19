@@ -39,7 +39,7 @@ app.use(
 const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
-  // Check if username or email already exists
+  // Check whether username or email already exists
   const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
   db.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
