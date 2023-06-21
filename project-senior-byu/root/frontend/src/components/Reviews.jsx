@@ -7,19 +7,19 @@ const testimonies = [
   {
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Risus vel lobortis tincidunt fames quisque mauris at diam.",
     name: "Ricky Aprilia",
-    title: "Founder of Varibo",
+    title: "Student at Varibo",
     image: "https://img.freepik.com/foto-gratis/empresaria-confiada-sonriente-que-presenta-brazos-cruzados_1262-20950.jpg",
   },
   {
     text: "Nullam morbi ipsum turpis amet id posuere torto quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     name: "John Doe",
-    title: "CEO of Acme Corp",
+    title: "Senior Student at Acme",
     image: "https://img.freepik.com/foto-gratis/hombre-barbudo-feliz-sorprendido-camisa-apuntando-lejos_171337-5021.jpg",
   },
   {
     text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
     name: "Jane Smith",
-    title: "CTO of XYZ Inc",
+    title: "Teacher at XYZ",
     image: "https://img.freepik.com/foto-gratis/feliz-joven_1098-20869.jpg",
   },
 ];

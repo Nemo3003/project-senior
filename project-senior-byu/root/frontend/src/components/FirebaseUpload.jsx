@@ -29,7 +29,7 @@ const FirebaseUpload = () => {
         Swal.fire({
           icon: "success",
           title: "Image Uploaded",
-          text: "Your image has been uploaded successfully!",
+          text: "Your receipt has been uploaded successfully!",
         });
 
         navigate('/auth-class')
@@ -50,7 +50,7 @@ const FirebaseUpload = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[40vh] bg-gray-100">
-    <h2 className="text-2xl font-semibold mb-6">Upload your ticket</h2>
+    <h2 className="text-2xl font-semibold mb-6">Upload your receipt</h2>
     <div className="flex flex-col items-center bg-white p-8 rounded shadow w-80">
       <label
         htmlFor="file-input"

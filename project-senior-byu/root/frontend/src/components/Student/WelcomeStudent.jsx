@@ -10,12 +10,12 @@ const WelcomeStudent = () => {
     <div className="flex items-center justify-center h-[50vh] bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">
-          Welcome, {studentName}!
+          Welcome!
         </h1>
         <div className="flex items-center justify-center">
           <FaUserGraduate className="text-6xl text-blue-500 mr-4" />
           <span className="text-xl text-gray-700">
-            You are part of our student community and we missed you! You have {classCount} classes to attend.
+            You are part of our student community and we missed you!
           </span>
         </div>
         <div className="flex justify-center mt-8">

@@ -27,7 +27,7 @@ const AuthCourses = () => {
   const EnrollButton = ({ classId }) => {
     return (
       
-      <button onClick={() => window.location.href = `https://mpago.la/2T3rCNL`}>Enroll in class</button>
+      <button onClick={() => window.location.href = `http://mpago.la/2a446Qx`}>Enroll in class</button>
     );
   };
   
