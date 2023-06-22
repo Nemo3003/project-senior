@@ -1,5 +1,5 @@
 ## Project Name
-University Course Sign-up Platform (ocacoplus)
+Online Career and Course Sign-up Platform for University Students (OCACOPLUS)
 
 ## Project Description
 The proposed project aims to create an online platform for university students to sign up for career or specialized courses. The platform will provide a user-friendly interface that allows students to upload their documentation and select one or multiple courses to sign up for. To enhance user experience, the platform will include a stretch goal of implementing an automatic chatbot to assist with answering frequently asked questions. Additionally, an admin dashboard will be developed to enable the administrator to view which courses or careers students have signed up for. The platform will be developed using React, NodeJS, Express, and AWS. Furthermore, it will integrate a secure and convenient payment mode such as PayPal or Mercado Pago.
