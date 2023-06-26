@@ -53,4 +53,4 @@ Open your web browser and visit http://localhost:3000 to access the platform.
 
 
 License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License
