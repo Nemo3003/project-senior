@@ -7,7 +7,7 @@ const db = () => {
         password: process.env.PASSWORD,
         database: process.env.DATABASE_NAME,
         ssl: {
-          rejectUnauthorized: false, // Disables SSL/TLS certificate verification
+          rejectUnauthorized: true, // Disables SSL/TLS certificate verification
         }
       });
 }
