@@ -34,7 +34,7 @@ const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
   // Check whether username or email already exists
-  const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
+  const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
   db.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
