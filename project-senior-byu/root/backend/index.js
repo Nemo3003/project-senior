@@ -39,7 +39,14 @@ const port_nd = 8081;
 // Create a server using http module
 const server = http.createServer(app);
 
-const db = mysql.createConnection(process.env.DATABASE_URL);
+const db = mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE_NAME,
+  ssl: {
+    rejectUnauthorized: false, // Disables SSL/TLS certificate verification
+ } });
 
 const routes = [authRoute, adminRoute, classesRoute, usersRoute];
 
