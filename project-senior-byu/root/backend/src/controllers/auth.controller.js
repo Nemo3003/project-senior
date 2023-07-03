@@ -61,7 +61,11 @@ const Signup = (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO ocacoplus.users (`username`, `email`, `password`) VALUES (?, ?, ?)";
+      const insertQuery = "CREATE TABLE IF NOT EXISTS ocacoplus.users (
+  username VARCHAR(255),
+  email VARCHAR(255),
+  password VARCHAR(255)
+); INSERT INTO ocacoplus.users (`username`, `email`, `password`) VALUES (?, ?, ?)";
       const values = [username, email, hash];
       db.query(insertQuery, values, (err, result) => {
         if (err) {
