@@ -39,7 +39,7 @@ const port_nd = 8081;
 // Create a server using http module
 const server = http.createServer(app);
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
