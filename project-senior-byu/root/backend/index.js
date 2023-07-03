@@ -21,13 +21,13 @@ app.use(bodyParser.json());
 app.use(morgan('dev'))
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://ocacoplus.onrender.com',
   credentials: true,
 }));
 
 
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', 'https://ocacoplus.onrender.com');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   // other headers and configurations
   next();

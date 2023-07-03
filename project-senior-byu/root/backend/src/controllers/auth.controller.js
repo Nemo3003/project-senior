@@ -34,7 +34,7 @@ const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
   // Check whether username or email already exists
-  const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
+  const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
   db.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
@@ -61,7 +61,7 @@ const Signup = (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO ocacoplus.users (`username`, `email`, `password`) VALUES (?, ?, ?)";
+      const insertQuery = "INSERT INTO users (`username`, `email`, `password`) VALUES (?, ?, ?)";
       const values = [username, email, hash];
       db.query(insertQuery, values, (err, result) => {
         if (err) {
