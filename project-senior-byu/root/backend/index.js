@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 dotenv.config();
 const mysql = require('mysql2')
+const http = require('http'); 
 
 const authRoute = require('./src/routes/auth.routes')
 const adminRoute = require('./src/routes/admin.routes')
@@ -26,7 +27,7 @@ app.use(cors({
 }));
 
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'https://ocacoplus.onrender.com');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   // other headers and configurations
@@ -34,15 +35,22 @@ app.use(function(req, res, next) {
 });
 
 const port_nd = 8081;
-app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
+
+// Create a server using http module
+const server = http.createServer(app);
 
 const db = mysql.createConnection(process.env.DATABASE_URL);
 
-const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
+const routes = [authRoute, adminRoute, classesRoute, usersRoute];
 
-app.use('/', ...routes)
+app.use('/', ...routes);
 
-db.connect(err => {
-  if (err) {console.error(err.message);}
-  console.log("Database connected");
+db.connect((err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Database connected');
 });
+
+// Listen for incoming requests
+server.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
