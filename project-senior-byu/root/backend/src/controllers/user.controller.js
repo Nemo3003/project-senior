@@ -1,6 +1,6 @@
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const dotenv = require('dotenv');
 const express = require('express');
 
@@ -8,13 +8,7 @@ dotenv.config();
 
 
 const app = express();
-const db = mysql.createConnection({
-  host: process.env.DATABASE_CONN_ALT,
-  port: process.env.PORT,
-  user: process.env.USER_ALT,
-  password: process.env.PASSWORD_ALT,
-  database: process.env.HOST,
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 const userUploads = (req, res) => {
     const file = req.file;

@@ -1,16 +1,10 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const dotenv = require('dotenv');
 const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
 dotenv.config();
 
 
-const db = mysql.createConnection({
-  host: process.env.DATABASE_CONN_ALT,
-  port: process.env.PORT,
-  user: process.env.USER_ALT,
-  password: process.env.PASSWORD_ALT,
-  database: process.env.HOST,
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 const addEnrollment = (req, res) => {
     const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';

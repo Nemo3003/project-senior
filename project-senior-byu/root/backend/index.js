@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 dotenv.config();
+const mysql = require('mysql2')
 
 const authRoute = require('./src/routes/auth.routes')
 const adminRoute = require('./src/routes/admin.routes')
@@ -35,13 +36,7 @@ app.use(function(req, res, next) {
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
-const db = mysql.createConnection({
-  host: process.env.DATABASE_CONN_ALT,
-  port: process.env.PORT,
-  user: process.env.USER_ALT,
-  password: process.env.PASSWORD_ALT,
-  database: process.env.HOST,
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 

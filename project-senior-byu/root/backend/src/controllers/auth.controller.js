@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -11,13 +11,7 @@ dotenv.config();
 
 
 const app = express();
-const db = mysql.createConnection({
-  host: process.env.DATABASE_CONN_ALT,
-  port: process.env.PORT,
-  user: process.env.USER_ALT,
-  password: process.env.PASSWORD_ALT,
-  database: process.env.HOST,
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 app.use(express.json());
 app.use(cookieParser());
