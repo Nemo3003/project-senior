@@ -1,13 +1,7 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const db = () => {
-    return  mysql.createConnection({
-        host: process.env.DATABASE_CONN_ALT,
-        port: process.env.PORT,
-        user: process.env.USER_ALT,
-        password: process.env.PASSWORD_ALT,
-        database: process.env.HOST,
-      });
+    return  mysql.createConnection(process.env.DATABASE_URL);
 }
 
 module.exports = db;
