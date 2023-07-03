@@ -8,7 +8,12 @@ dotenv.config();
 
 
 const app = express();
-const db = mysql.createConnection(process.env.DATABASE_URL);
+const db = mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE_NAME,
+});
 
 const userUploads = (req, res) => {
     const file = req.file;
