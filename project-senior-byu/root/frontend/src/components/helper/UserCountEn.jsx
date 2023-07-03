@@ -6,7 +6,7 @@ const UserCountEn = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8081/users/counten')
+    axios.get('https://ocacoplus.onrender.com/users/counten')
       .then(response => {
         setUserCountu(response.data.total_usersu);
       })

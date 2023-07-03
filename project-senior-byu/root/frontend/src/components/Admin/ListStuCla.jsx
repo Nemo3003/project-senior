@@ -6,7 +6,7 @@ const ListStuCla = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:8081/stuclass')
+    fetch('https://ocacoplus.onrender.com/stuclass')
       .then(res => res.json())
       .then(data => {
         setStudents(data);

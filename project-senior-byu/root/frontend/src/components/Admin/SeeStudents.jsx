@@ -8,7 +8,7 @@ const SeeStudents = () => {
   useEffect(() => {
     
 
-    fetch('http://localhost:8081/see-students')
+    fetch('https://ocacoplus.onrender.com/see-students')
       .then(res => res.json())
       .then(data => {
         setStudents(data);

@@ -15,7 +15,7 @@ function AddUsClass() {
             usersId,
             classId
         };
-    axios.post ('http://localhost:8081/setclass', formData)
+    axios.post ('https://ocacoplus.onrender.com/setclass', formData)
         .then(response => {
             console.log(response.data);
             window.location.href = '/admin/setclass'

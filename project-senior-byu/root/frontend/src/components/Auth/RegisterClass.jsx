@@ -29,7 +29,7 @@ function RegisterClass() {
       cvc,
       selectedClass,
     };
-    axios.post('http://localhost:8081/signup', formData)
+    axios.post('https://ocacoplus.onrender.com/signup', formData)
       .then(response => {
         console.log(response.data);
         window.location.href = '/test';

@@ -10,7 +10,7 @@ const Courses = () => {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:8081/courses')
+    fetch('https://ocacoplus.onrender.com/courses')
       .then(res => res.json())
       .then(data => {
         setCourses(data);
