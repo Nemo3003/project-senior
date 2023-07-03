@@ -31,7 +31,7 @@ function SignUp() {
     }
 
     const formData = { username, email, password };
-    fetch('http://localhost:8081/signup', {
+    fetch('https://ocacoplus.onrender.com/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
