@@ -30,12 +30,12 @@ app.use(
   })
 );
 
-const Signup = (req, res) => {
+const Signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   // Check whether username or email already exists
   const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
-  pool.query(checkQuery, [username, email], (err, rows) => {
+  await pool.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
     }
@@ -56,12 +56,12 @@ const Signup = (req, res) => {
     }
 
     // Proceed with user creation
-    bcrypt.hash(password.toString(), salt, (err, hash) => {
+    abcrypt.hash(password.toString(), salt, (err, hash) => {
       if (err) {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO ocacoplus.users (`username`,`password`, `email` ) VALUES (?, ?, ?)";
+      const insertQuery = "INSERT INTO users (`username`,`password`, `email` ) VALUES (?, ?, ?)";
       const values = [username, hash, email];
       pool.query(insertQuery, values, (err, result) => {
         if (err) {
