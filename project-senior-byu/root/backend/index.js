@@ -27,7 +27,7 @@ cors: {
 }
 
 app.use(cors({
-  origin: 'https://ocacoplus.onrender.com/*',
+  origin: 'https://ocacoplus.onrender.com',
   credentials: true,
 }));
 
