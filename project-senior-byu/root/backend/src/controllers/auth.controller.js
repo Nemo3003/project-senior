@@ -61,9 +61,8 @@ const Signup = (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO users (username,password, email ) VALUES (?, ?, ?)";
-      const values = [username, hash, email];
-      pool.query(insertQuery, values, (err, result) => {
+      const insertQuery = `INSERT INTO users (username,password, email ) VALUES (${username}, ${hash}, ${email})`;
+      pool.query(insertQuery, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
         }
