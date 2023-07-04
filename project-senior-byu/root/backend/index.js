@@ -22,21 +22,15 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'))
 
-cors: {
-  origin:;
-}
 
 app.use(cors({
   origin: 'https://ocacoplus.onrender.com',
   credentials: true,
 }));
 
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://ocacoplus.onrender.com');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  // other headers and configurations
-  next();
-});
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 
 const port_nd = 8081;
