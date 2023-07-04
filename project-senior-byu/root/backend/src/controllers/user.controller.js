@@ -13,7 +13,9 @@ const db = mysql.createConnection({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: process.env.PORT
+  ssl: {
+    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
+  }
 });
 
 const userUploads = (req, res) => {
