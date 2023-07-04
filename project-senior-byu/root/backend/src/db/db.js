@@ -1,11 +1,11 @@
 const {createPool} = require('mysql2/promise')
-import {
+const {
   DB_HOST,
   DB_NAME,
   DB_PASSWORD,
   DB_USER,
   DB_PORT
-} from './config.js'
+} = require('./config.js')
 
 export const pool = createPool({
   user: DB_USER,
