@@ -45,6 +45,9 @@ app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
 
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
+app.get('/', (req, res) => {
+  res.send('Hello, welcome to ocacoplus!');
+});
 
 app.use('/', ...routes)
 
