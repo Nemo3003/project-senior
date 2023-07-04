@@ -49,7 +49,3 @@ const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
 app.use('/', ...routes)
 
-db.connect(err => {
-  if (err) {console.error(err.message);}
-  console.log("Database connected");
-});
