@@ -32,7 +32,7 @@ app.use(cors({
 }));
 
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://ocacoplus.onrender.com/*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   // other headers and configurations
   next();
