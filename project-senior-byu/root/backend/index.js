@@ -12,7 +12,7 @@ const adminRoute = require('./src/routes/admin.routes')
 const classesRoute = require('./src/routes/classes.routes')
 const usersRoute = require('./src/routes/users.routes')
 
-const { pool } =  require('./db.js') 
+const { pool } =  require('./src/db/db.js') 
 const {PORT} = require('./config.js')
 
 const app = express();
