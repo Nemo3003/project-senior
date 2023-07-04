@@ -1,4 +1,3 @@
-
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -6,8 +5,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 dotenv.config();
-const mysql = require('mysql2/promise')
-const http = require('http'); 
+const mysql = require('mysql2')
 
 const authRoute = require('./src/routes/auth.routes')
 const adminRoute = require('./src/routes/admin.routes')
@@ -22,57 +20,36 @@ app.use(bodyParser.json());
 app.use(morgan('dev'))
 
 app.use(cors({
-  origin: 'https://ocacoplus.onrender.com',
+  origin: 'http://localhost:5173',
   credentials: true,
 }));
 
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://ocacoplus.onrender.com');
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   // other headers and configurations
   next();
 });
 
 const port_nd = 8081;
+app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
-// Create a server using http module
-const server = http.createServer(app);
-
-const dbConfig = {
+const db = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
   }
-}
-// Connect to the PlanetScale database
-async function connectToDatabase() {
-  try {
-    const db = await mysql.createConnection(dbConfig);
-    console.log('Database connected');
-    return db;
-  } catch (err) {
-    console.error('Failed to connect to the database:', err);
-    throw err(err)
-    process.exit(1); // Exit the application if the database connection fails
-  }
-}
+});
 
-const routes = [authRoute, adminRoute, classesRoute, usersRoute];
+const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
-app.use('/', ...routes);
+app.use('/', ...routes)
 
-// Start the server after the database connection is established
-connectToDatabase()
-  .then((db) => {
-    // Pass the database connection to routes or use it as needed
-    app.set('db', db);
-
-    server.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
-  })
-  .catch((err) => {
-    console.error('Failed to connect to the database:', err);
-  });
+db.connect(err => {
+  if (err) {console.error(err.message);}
+  console.log("Database connected");
+});
