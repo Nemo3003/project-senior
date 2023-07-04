@@ -9,9 +9,7 @@ const db = mysql.createConnection({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true,
-  }
+  port: process.env.PORT
 });
 
 const addEnrollment = (req, res) => {

@@ -40,9 +40,7 @@ const db = mysql.createConnection({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
-  }
+  port: process.env.PORT
 });
 
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
