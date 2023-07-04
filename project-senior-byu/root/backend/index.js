@@ -27,7 +27,7 @@ cors: {
 }
 
 app.use(cors({
-  origin: ["https://ocacoplus.onrender.com", "https://heartfelt-twilight-23e637.netlify.app"],
+  origin: [ "https://heartfelt-twilight-23e637.netlify.app"],
   credentials: true,
 }));
 
@@ -37,6 +37,7 @@ app.use(function(req, res, next) {
   // other headers and configurations
   next();
 });
+
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
