@@ -1,4 +1,4 @@
-import {createPool} from 'mysql2/promise'
+const {createPool} = require('mysql2/promise')
 import {
   DB_HOST,
   DB_NAME,
