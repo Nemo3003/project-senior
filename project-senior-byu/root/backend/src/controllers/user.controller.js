@@ -5,10 +5,9 @@ const mysql = require("mysql2");
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
-
+import { pool } from '../db/db.js'
 
 const app = express();
-const db = mysql.createConnection(process.env.DATABASE_URL)
 
 const userUploads = (req, res) => {
     const file = req.file;
@@ -17,7 +16,7 @@ const userUploads = (req, res) => {
     const insertQuery = `INSERT INTO files (name, size, file_data) VALUES (?, ?, ?)`;
     const values = [file.originalname, file.size, file.path];
   
-    db.query(insertQuery, values, (err, result) => {
+    pool.query(insertQuery, values, (err, result) => {
       if (err) {
         console.error('Error inserting file information:', err);
         // Handle the error response
@@ -36,7 +35,7 @@ const getDocument = (req, res) => {
   
     // Query the database to retrieve the file data
     const selectQuery = `SELECT file_data, name FROM files WHERE id = ?`;
-    db.query(selectQuery, [fileId], (err, results) => {
+    pool.query(selectQuery, [fileId], (err, results) => {
       if (err) {
         console.error('Error retrieving file data:', err);
         // Handle the error response

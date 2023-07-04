@@ -8,10 +8,10 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const salt = 10;
 dotenv.config();
-
+import { pool } from '../db/db.js'
 
 const app = express();
-const db = mysql.createConnection(process.env.DATABASE_URL)
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -35,7 +35,7 @@ const Signup = (req, res) => {
 
   // Check whether username or email already exists
   const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
-  db.query(checkQuery, [username, email], (err, rows) => {
+  pool.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
     }
@@ -63,7 +63,7 @@ const Signup = (req, res) => {
 
       const insertQuery = "INSERT INTO users (`username`, `email`, `password`) VALUES (?, ?, ?)";
       const values = [username, email, hash];
-      db.query(insertQuery, values, (err, result) => {
+      pool.query(insertQuery, values, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
         }
@@ -86,7 +86,7 @@ const Signup = (req, res) => {
   const Signin = async (req, res) => {
     const sql = "SELECT * FROM users WHERE `email` = ?";
     
-    db.query(sql, [req.body.email], (err, data) => {
+    pool.query(sql, [req.body.email], (err, data) => {
       if (err) {
         console.log("Database query error:", err);
         return res.status(500).json({ error: "Database query error" });

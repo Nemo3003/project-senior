@@ -1,15 +1,13 @@
 const mysql = require("mysql2");
 const dotenv = require('dotenv');
 const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
+import { pool } from '../db/db.js'
 dotenv.config();
-
-
-const db = mysql.createConnection(process.env.DATABASE_URL)
 
 const addEnrollment = (req, res) => {
     const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
     const values = [req.body.usersId, req.body.classId];
-    db.query(sql, values, (err, result) => {
+    pool.query(sql, values, (err, result) => {
       if (err) {
         console.error('Error linking student and class', err);
         return res.status(500).json({ error: 'Could not link user to class' });
@@ -23,7 +21,7 @@ const addEnrollment = (req, res) => {
 const seeStudentEnrolled =  (req, res)=>{
     const sql = 'SELECT users.*, classes.* FROM ocacoplus.users INNER JOIN enrollments ON users.users_id = enrollments.users_id INNER JOIN classes ON enrollments.classes_id = classes.classes_id;'
     
-    db.query(sql, (err, result) => {
+    pool.query(sql, (err, result) => {
       if (err) {
         res.status(500).send(err.message);
         return;
@@ -38,7 +36,7 @@ const seeStudentEnrolled =  (req, res)=>{
     const sql = 'INSERT INTO ocacoplus.classes (className, classDescription) VALUES (?, ?)';
     const values = [className, classDescription];
   
-    db.query(sql, values, (err, result) => {
+    pool.query(sql, values, (err, result) => {
       if (err) {
         console.error('Error creating class:', err);
         return res.status(500).json({ error: 'Could not create a new class' });
@@ -52,7 +50,7 @@ const seeStudentEnrolled =  (req, res)=>{
   const seeCurrentStudents = (req, res) => {
     const sql = 'SELECT users_id, username, email FROM users';
   
-    db.query(sql, (err, result) => {
+    pool.query(sql, (err, result) => {
       if (err) {
         res.status(500).send({ message: "Oops!", error: err.message });
         return;
