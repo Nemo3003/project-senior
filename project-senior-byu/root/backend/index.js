@@ -22,9 +22,12 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'))
 
-response.setHeader('Access-Control-Allow-Origin', '*');
-response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, UPDATE');
-response.setHeader('Access-Control-Max-Age', 2592000); //
+app.options('/*', function (req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.end();
+});
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
