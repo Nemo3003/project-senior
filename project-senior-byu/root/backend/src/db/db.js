@@ -7,6 +7,7 @@ const {
   DB_PORT
 } = require('./config.js')
 
+try{
 const pool = createPool({
   user: DB_USER,
   password: DB_PASSWORD,
@@ -14,5 +15,9 @@ const pool = createPool({
   port: DB_PORT,
   database: DB_NAME
 })
+}
+catch(err){
+  throw new Error(err)
+}
 
 module.exports = pool
