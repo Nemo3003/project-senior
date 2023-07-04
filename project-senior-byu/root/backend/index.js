@@ -39,7 +39,7 @@ const port_nd = 8081;
 // Create a server using http module
 const server = http.createServer(app);
 
-const db = mysql.createPool({
+const dbConfig = {
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
@@ -47,18 +47,31 @@ const db = mysql.createPool({
   ssl: {
     rejectUnauthorized: true, // Disables SSL/TLS certificate verification
   }
- });
+}
+// Connect to the PlanetScale database
+async function connectToDatabase() {
+  try {
+    const db = await mysql.createConnection(dbConfig);
+    console.log('Database connected');
+    return db;
+  } catch (err) {
+    console.error('Failed to connect to the database:', err);
+    process.exit(1); // Exit the application if the database connection fails
+  }
+}
 
 const routes = [authRoute, adminRoute, classesRoute, usersRoute];
 
 app.use('/', ...routes);
 
-db.connect((err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Database connected');
-});
+// Start the server after the database connection is established
+connectToDatabase()
+  .then((db) => {
+    // Pass the database connection to routes or use it as needed
+    app.set('db', db);
 
-// Listen for incoming requests
-server.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
+    server.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
+  })
+  .catch((err) => {
+    console.error('Failed to connect to the database:', err);
+  });
