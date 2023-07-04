@@ -56,7 +56,7 @@ const Signup = async (req, res) => {
     }
 
     // Proceed with user creation
-    abcrypt.hash(password.toString(), salt, (err, hash) => {
+    bcrypt.hash(password.toString(), salt, (err, hash) => {
       if (err) {
         return res.json({ Error: "Error hashing password" });
       }
