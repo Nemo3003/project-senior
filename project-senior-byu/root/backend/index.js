@@ -13,7 +13,7 @@ const classesRoute = require('./src/routes/classes.routes')
 const usersRoute = require('./src/routes/users.routes')
 
 const { pool } =  require('./src/db/db.js') 
-const {PORT} = require('./config.js')
+const {PORT} = require('./src/db/config.js')
 
 const app = express();
 app.use(express.json());
