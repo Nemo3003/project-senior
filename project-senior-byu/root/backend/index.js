@@ -22,16 +22,9 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'))
 
-
-app.use(cors({
-  origin: 'https://ocacoplus.onrender.com',
-  credentials: true,
-}));
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-
+response.setHeader('Access-Control-Allow-Origin', '*');
+response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+response.setHeader('Access-Control-Max-Age', 2592000); //
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
