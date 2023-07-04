@@ -1,7 +1,7 @@
 const mysql = require("mysql2");
 const dotenv = require('dotenv');
 const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
-import { pool } from '../db/db.js'
+const{ pool } = require('../db/db.js')
 dotenv.config();
 
 const addEnrollment = (req, res) => {

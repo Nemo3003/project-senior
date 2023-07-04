@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const salt = 10;
 dotenv.config();
-import { pool } from '../db/db.js'
+const{ pool } = require('../db/db.js')
 
 const app = express();
 
