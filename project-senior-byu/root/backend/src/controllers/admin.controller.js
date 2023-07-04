@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+
 const dotenv = require('dotenv');
 const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
 const{ pool } = require('../db/db.js')
