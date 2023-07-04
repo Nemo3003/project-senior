@@ -1,9 +1,9 @@
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const mysql = require("mysql2");
-const dotenv = require('dotenv');
-const express = require('express');
 
+const express = require('express');
+const dotenv = require('dotenv');
 dotenv.config();
 
 
