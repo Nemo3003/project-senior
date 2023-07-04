@@ -45,7 +45,7 @@ const dbConfig = {
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: {
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
   }
 }
 // Connect to the PlanetScale database

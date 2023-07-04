@@ -17,7 +17,7 @@ const db = mysql.createPool({
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: {
-    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
+    rejectUnauthorized: false, // Disables SSL/TLS certificate verification
   }
 });
 
