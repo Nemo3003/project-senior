@@ -22,31 +22,28 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'))
 
+cors: {
+  origin: ["http://localhost:8081","https://ocacoplus.onrender.com","https://heartfelt-twilight-23e637.netlify.app"]
+
+}
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: cors.origin,
   credentials: true,
 }));
 
 
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  // other headers and configurations
+app.all('*', function(req, res, next) {
+  const origin = cors.origin.includes(req.header('origin').toLowerCase()) ? req.headers.origin : cors.default;
+  res.header("Access-Control-Allow-Origin", origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
-const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
-  }
-});
+
 
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
