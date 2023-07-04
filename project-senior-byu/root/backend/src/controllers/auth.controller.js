@@ -61,7 +61,7 @@ const Signup = (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO users (`username`,`password`, `email` ) VALUES (?, ?, ?)";
+      const insertQuery = "INSERT INTO railway.users (`username`,`password`, `email` ) VALUES (?, ?, ?)";
       const values = [username, hash, email];
       pool.query(insertQuery, values, (err, result) => {
         if (err) {
