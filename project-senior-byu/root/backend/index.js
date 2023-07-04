@@ -27,16 +27,9 @@ cors: {
 }
 
 app.use(cors({
-  origin: '*',
+  origin: 'https://heartfelt-twilight-23e637.netlify.app',
   credentials: true,
 }));
-
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  // other headers and configurations
-  next();
-});
 
 
 const port_nd = 8081;
