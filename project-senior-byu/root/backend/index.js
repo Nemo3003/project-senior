@@ -12,8 +12,8 @@ const adminRoute = require('./src/routes/admin.routes')
 const classesRoute = require('./src/routes/classes.routes')
 const usersRoute = require('./src/routes/users.routes')
 
-import { pool } from './db.js'
-import {PORT} from './config.js'
+const { pool } =  require('./db.js') 
+const {PORT} = require('./config.js')
 
 const app = express();
 app.use(express.json());
