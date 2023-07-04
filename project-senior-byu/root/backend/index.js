@@ -34,7 +34,7 @@ app.use(function(req, res, next) {
 
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
-async function server() {
+
 const db =  mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
@@ -43,20 +43,13 @@ const db =  mysql.createConnection({
   ssl: {
     rejectUnauthorized: true, // Disables SSL/TLS certificate verification
   }
-
-  
 });
+
+const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
+
+app.use('/', ...routes)
 
 db.connect(err => {
   if (err) {console.error(err.message);}
   console.log("Database connected");
 });
-
-(await db).query("SELECT * FROM users")
-}
-
-server()
-const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
-
-app.use('/', ...routes)
-
