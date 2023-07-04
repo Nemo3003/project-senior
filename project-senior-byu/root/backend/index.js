@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'))
 
 response.setHeader('Access-Control-Allow-Origin', '*');
-response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, UPDATE');
 response.setHeader('Access-Control-Max-Age', 2592000); //
 
 const port_nd = 8081;
