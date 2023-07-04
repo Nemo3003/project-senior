@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 dotenv.config();
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise')
 const http = require('http'); 
 
 const authRoute = require('./src/routes/auth.routes')
@@ -45,7 +45,7 @@ const dbConfig = {
   password: process.env.PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: {
-    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
+    rejectUnauthorized: true,
   }
 }
 // Connect to the PlanetScale database
@@ -56,6 +56,7 @@ async function connectToDatabase() {
     return db;
   } catch (err) {
     console.error('Failed to connect to the database:', err);
+    throw err(err)
     process.exit(1); // Exit the application if the database connection fails
   }
 }
