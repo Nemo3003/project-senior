@@ -11,15 +11,7 @@ dotenv.config();
 
 
 const app = express();
-const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: false, // Disables SSL/TLS certificate verification
-  }
-});
+const db = mysql.createConnection(process.env.DATABASE_URL)
 
 app.use(express.json());
 app.use(cookieParser());

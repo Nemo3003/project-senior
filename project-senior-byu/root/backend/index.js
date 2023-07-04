@@ -35,15 +35,8 @@ app.use(function(req, res, next) {
 const port_nd = 8081;
 app.listen(port_nd, ()=>console.log(`Listening on port ${port_nd}`));
 
-const db =  mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true, // Disables SSL/TLS certificate verification
-  }
-});
+const db = mysql.createConnection(process.env.DATABASE_URL)
+console.log('Connected to PlanetScale!')
 
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
