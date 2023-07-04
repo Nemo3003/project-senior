@@ -30,12 +30,12 @@ app.use(
   })
 );
 
-const Signup = async (req, res) => {
+const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
   // Check whether username or email already exists
   const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
-  await pool.query(checkQuery, [username, email], (err, rows) => {
+  pool.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
     }
