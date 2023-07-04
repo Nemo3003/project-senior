@@ -55,6 +55,7 @@ db.connect(err => {
 (await db).query("SELECT * FROM users")
 }
 
+server()
 const routes = [authRoute,adminRoute,classesRoute,usersRoute,]
 
 app.use('/', ...routes)
