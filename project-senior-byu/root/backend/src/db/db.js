@@ -15,9 +15,9 @@ const pool = createPool({
   port: DB_PORT,
   database: DB_NAME
 })
+module.exports = pool
 }
 catch(err){
   throw new Error(err)
 }
 
-module.exports = pool
