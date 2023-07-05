@@ -7,8 +7,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const salt = 10;
+const {createPool} = require('mysql2/promise')
 dotenv.config();
-const{ pool } = require('../db/db.js')
+//const{ pool } = require('../db/db.js')
 
 const app = express();
 
@@ -29,6 +30,14 @@ app.use(
     },
   })
 );
+
+const pool = createPool({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME
+})
 
 const Signup = async (req, res) => {
   const { username, email, password } = req.body;
@@ -68,8 +77,10 @@ const Signup = async (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = `INSERT INTO railway.users (username, password, email) VALUES (${username}, ${hash}, ${email})`;
-      pool.query(insertQuery, (err, result) => {
+      const insertQuery = `INSERT INTO users (username, password, email) VALUES (?, ?, ?)`;
+      const values = [username, hash, email];
+
+      pool.query(insertQuery, values, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
         }
