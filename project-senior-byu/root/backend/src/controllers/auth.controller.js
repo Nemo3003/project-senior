@@ -36,7 +36,7 @@ const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
   // Check whether username or email already exists
-  const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
+  const checkQuery = "SELECT * FROM railway.users WHERE username = ? OR email = ?";
   pool.query(checkQuery, [username, email], (err, rows) => {
     if (err) {
       return res.json({ Error: "Database query error" });
@@ -64,8 +64,8 @@ const Signup = (req, res) => {
       }
 
           const connection = pool.getConnection();
-          const insertQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-          const values = [username, email, password];
+          const insertQuery = "INSERT INTO railway.users (username, email, password) VALUES (?, ?, ?)";
+          const values = [username, email, hash];
           const [result] = connection.query(insertQuery, values);
           connection.release();
           console.log("Data inserted successfully!");
@@ -87,7 +87,7 @@ const Signup = (req, res) => {
   }
 
   const Signin = async (req, res) => {
-    const sql = "SELECT * FROM users WHERE `email` = ?";
+    const sql = "SELECT * FROM railway.users WHERE `email` = ?";
     
     pool.query(sql, [req.body.email], (err, data) => {
       if (err) {
