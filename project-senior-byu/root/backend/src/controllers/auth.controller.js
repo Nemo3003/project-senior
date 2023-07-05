@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const salt = 10;
 const {createPool} = require('mysql2/promise')
 dotenv.config();
-//const{ pool } = require('../db/db.js')
+const{ pool } = require('../db/db.js')
 
 const app = express();
 
@@ -31,42 +31,28 @@ app.use(
   })
 );
 
-const pool = createPool({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME
-})
 
-const Signup = async (req, res) => {
+const Signup = (req, res) => {
   const { username, email, password } = req.body;
 
-  try {
-    // Check whether username or email already exists
-    const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
-    const rows = await new Promise((resolve, reject) => {
-      pool.query(checkQuery, [username, email], (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
+  // Check whether username or email already exists
+  const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
+  pool.query(checkQuery, [username, email], (err, rows) => {
+    if (err) {
+      return res.json({ Error: "Database query error" });
+    }
 
     if (rows.length > 0) {
       // Username or email already exists
       return res.json({ Error: "Username or email already exists" });
     }
-
     // Validate password strength
     if (password.length < 8) {
       return res.json({ Error: "Password should be at least 8 characters long" });
     }
     const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasNumber = /\d/.test(password);
-
+    
     if (!hasSpecialCharacter || !hasNumber) {
       return res.json({ Error: "Password should contain a mix of special characters and numbers" });
     }
@@ -77,14 +63,13 @@ const Signup = async (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = `INSERT INTO users (username, password, email) VALUES (?, ?, ?)`;
-      const values = [username, hash, email];
-
+      const insertQuery = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
+      const values = [username, email, hash];
       pool.query(insertQuery, values, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
         }
-
+        
         const userId = result.insertId; // Get the inserted user's ID
         console.log(userId);
         const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
@@ -93,10 +78,9 @@ const Signup = async (req, res) => {
         return res.json({ token }); // Return the user's ID in the response
       });
     });
-  } catch (error) {
-    return res.json({ Error: "Database query error" });
-  }
+  });
 };
+
 
 
   function generateToken(user){
