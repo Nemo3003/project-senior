@@ -63,23 +63,22 @@ const Signup = (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
-      const values = [username, email, hash];
-      pool.query(insertQuery, values, (err, result) => {
-        if (err) {
-          return res.json({ Error: "Error inserting data into the server" });
-        }
-        
+          const connection = pool.getConnection();
+          const insertQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+          const values = [username, email, password];
+          const [result] = connection.query(insertQuery, values);
+          connection.release();
+          console.log("Data inserted successfully!");
         const userId = result.insertId; // Get the inserted user's ID
         console.log(userId);
         const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
           expiresIn: 86400, // 24 hours
         });
         return res.json({ token }); // Return the user's ID in the response
-      });
-    });
-  });
-};
+      })
+    })
+  }
+
 
 
 
