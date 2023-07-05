@@ -39,7 +39,7 @@ const Signup = async (req, res) => {
     // Check whether username or email already exists
     const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
     const rows = await new Promise((resolve, reject) => {
-      pool.execute(checkQuery, [username, email], (err, rows) => {
+      pool.query(checkQuery, [username, email], (err, rows) => {
         if (err) {
           reject(err);
         } else {
@@ -71,7 +71,7 @@ const Signup = async (req, res) => {
       }
 
       const insertQuery = `INSERT INTO users (username, password, email) VALUES (${username}, ${hash}, ${email})`;
-      pool.execute(insertQuery, (err, result) => {
+      pool.query(insertQuery, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
         }
