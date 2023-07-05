@@ -37,7 +37,7 @@ const Signup = async (req, res) => {
 
   try {
     // Check whether username or email already exists
-    const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
+    const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
     const rows = await new Promise((resolve, reject) => {
       pool.execute(checkQuery, [username, email], (err, rows) => {
         if (err) {
@@ -70,7 +70,7 @@ const Signup = async (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = `INSERT INTO ocacoplus.users (username, password, email) VALUES (${username}, ${hash}, ${email})`;
+      const insertQuery = `INSERT INTO users (username, password, email) VALUES (${username}, ${hash}, ${email})`;
       pool.execute(insertQuery, (err, result) => {
         if (err) {
           return res.json({ Error: "Error inserting data into the server" });
