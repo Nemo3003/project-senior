@@ -60,8 +60,8 @@ const Signup = async (req, res) => {
     const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasNumber = /\d/.test(password);
 
-    if ( !hasNumber) {
-      return res.json({ Error: "Password should contain a mix of  numbers" });
+    if (!hasSpecialCharacter || !hasNumber) {
+      return res.json({ Error: "Password should contain a mix of special characters and numbers" });
     }
 
     // Proceed with user creation
@@ -86,7 +86,7 @@ const Signup = async (req, res) => {
       });
     });
   } catch (error) {
-    return res.json({ Error: "Database query error" });
+    throw new Error(error);
   }
 };
 
