@@ -100,8 +100,7 @@ const Signup = async (req, res) => {
     
     pool.query(sql, [req.body.email], (err, data) => {
       if (err) {
-        console.log("Database query error:", err);
-        return res.status(500).json({ error: "Database query error" });
+         throw new Error(err);
       }
   
       if (data.length > 0) {
