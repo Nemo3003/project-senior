@@ -17,12 +17,7 @@ function SignUp() {
       setErrorMessage('Password should be at least 8 characters long and have a mix of special characters and numbers');
       return;
     }
-    
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setErrorMessage('Password should be at least 8 characters long and have a mix of special characters and numbers');
-      return;
-    }
+
     // Email validation
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email)) {
