@@ -37,7 +37,7 @@ const Signup = async (req, res) => {
 
   try {
     // Check whether username or email already exists
-    const checkQuery = "SELECT * FROM ocacoplus.users WHERE username = ? OR email = ?";
+    const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
     const rows = await new Promise((resolve, reject) => {
       pool.query(checkQuery, [username, email], (err, rows) => {
         if (err) {
@@ -60,8 +60,8 @@ const Signup = async (req, res) => {
     const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasNumber = /\d/.test(password);
 
-    if (!hasSpecialCharacter || !hasNumber) {
-      return res.json({ Error: "Password should contain a mix of special characters and numbers" });
+    if ( !hasNumber) {
+      return res.json({ Error: "Password should contain a mix of  numbers" });
     }
 
     // Proceed with user creation
@@ -70,10 +70,11 @@ const Signup = async (req, res) => {
         return res.json({ Error: "Error hashing password" });
       }
 
-      const insertQuery = `INSERT INTO ocacoplus.users (username, password, email) VALUES (${username}, ${hash}, ${email})`;
-      pool.query(insertQuery, (err, result) => {
+      const insertQuery = `INSERT INTO users (username, password, email) VALUES (?, ?, ?)`;
+      const values = [username, hash, email]
+      pool.query(insertQuery, values,(err, result) => {
         if (err) {
-          return res.json({ Error: "Error inserting data into the server" });
+          throw new Error(err);
         }
 
         const userId = result.insertId; // Get the inserted user's ID

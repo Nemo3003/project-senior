@@ -42,5 +42,3 @@ app.get('/', (req, res) => {
 });
 
 app.use('/', ...routes);
-
-app.listen(PORT, () => console.log('Server on port', PORT));
