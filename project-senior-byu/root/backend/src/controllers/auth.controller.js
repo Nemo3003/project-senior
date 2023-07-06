@@ -57,11 +57,10 @@ const Signup = async (req, res) => {
     if (password.length < 8) {
       return res.json({ Error: "Password should be at least 8 characters long" });
     }
-    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const hasNumber = /\d/.test(password);
 
-    if (!hasSpecialCharacter || !hasNumber) {
-      return res.json({ Error: "Password should contain a mix of special characters and numbers" });
+    if ( !hasNumber) {
+      return res.json({ Error: "Password should contain a mix of letters and numbers" });
     }
 
     // Proceed with user creation
