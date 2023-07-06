@@ -31,7 +31,7 @@ function SignUp() {
     }
 
     const formData = { username, email, password };
-    fetch('https://backend-production-ad5f.up.railway.app/signup', {
+    fetch('https://ocacoplus.onrender.com/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
