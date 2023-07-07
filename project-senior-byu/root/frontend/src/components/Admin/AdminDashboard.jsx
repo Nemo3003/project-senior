@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const { isAdmin, setIsAdmin } = useContext(UserContext);
 
   useEffect(() => {
-    fetch('https://ocacoplus.onrender.com/courses')
+    fetch('https://ocacoplus-server.onrender.com/courses')
       .then(res => res.json())
       .then(data => {
         setCourses(data);

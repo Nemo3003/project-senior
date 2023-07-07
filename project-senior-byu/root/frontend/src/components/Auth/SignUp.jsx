@@ -26,7 +26,7 @@ function SignUp() {
     }
 
     const formData = { username, email, password };
-    fetch('project-senior.vercel.app/signup', {
+    fetch('https://ocacoplus-server.onrender.com/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

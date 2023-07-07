@@ -11,7 +11,7 @@ const AddClasses = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       const classData = { className, classDescription };
-      fetch('https://ocacoplus.onrender.com/add-classes', {
+      fetch('https://ocacoplus-server.onrender.com/add-classes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
