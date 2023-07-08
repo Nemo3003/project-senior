@@ -86,7 +86,7 @@ const usersEnrolled = async (req, res) => {
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          res.json({ total_usersu: results[0].total_users });
+          res.json(results[0].total_users.toString());
         }
       })
       
