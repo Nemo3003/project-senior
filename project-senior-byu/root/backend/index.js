@@ -22,6 +22,12 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   const allowedOrigins = ['http://localhost:8081', 'https://ocacoplus-server.onrender.com', 'https://heartfelt-twilight-23e637.netlify.app'];
