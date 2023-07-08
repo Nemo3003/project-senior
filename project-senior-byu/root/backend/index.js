@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 app.use(cors({
-  origin: "https://heartfelt-twilight-23e637.netlify.app"
+  origin: "https://heartfelt-twilight-23e637.netlify.app/signin"
 }))
 
 const port_nd = 8081;
