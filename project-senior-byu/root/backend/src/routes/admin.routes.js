@@ -9,7 +9,6 @@ const {addEnrollment,
     usersEnrolled
 } = require('../controllers/admin.controller')
 
-const {countUsers, countUsersEnrolled} = require('../helpers/countUsers')
 
 //##############GET#################
 router.get('/stuclass',seeStudentEnrolled)

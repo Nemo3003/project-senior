@@ -4,7 +4,6 @@ const mercadopago = require('mercadopago')
 
 const mysql = require("mysql");
 const dotenv = require('dotenv');
-const countUsers = require('../helpers/countUsers')
 dotenv.config();
 
 
