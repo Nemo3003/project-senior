@@ -80,7 +80,7 @@ const usersEnrolled = (req, res) => {
         console.error(error);
         return res.status(500).json({ error: 'Internal Server Error' });
       } else {
-        res.status(200).json({ total_users: results[0].total_usersu });
+        res.status(200).json({ total_users: results[0].total_users });
       }
     });
   } catch (error) {

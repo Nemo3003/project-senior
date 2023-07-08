@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const UserCountEn = () => {
-  const [userCountu, setUserCountu] = useState(0);
+  const [userCount, setUserCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     axios.get('https://project-senior-production.up.railway.app/users/counten')
       .then(response => {
-        setUserCountu(response.data.total_usersu);
+        setUserCountu(response.data.total_users);
       })
       .catch(error => {
         setErrorMessage(error.message);
@@ -22,7 +22,7 @@ const UserCountEn = () => {
           <p className="text-sm">{errorMessage}</p>
         </div>
       )}
-    <p className="text-4xl font-bold">{userCountu}</p>
+    <p className="text-4xl font-bold">{userCount}</p>
     </div>
   );
 };
