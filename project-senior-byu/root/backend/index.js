@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 const corsOptions = {
-  origin: 'https://heartfelt-twilight-23e637.netlify.app',
+  origin: '*',
   credentials: true,
 };
 
