@@ -8,7 +8,7 @@ const ShowClass = () => {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    fetch('https://ocacoplus-server.onrender.com/courses')
+    fetch('https://backend-production-2960.up.railway.app/courses')
       .then(res => res.json())
       .then(data => {
         setCourses(data);

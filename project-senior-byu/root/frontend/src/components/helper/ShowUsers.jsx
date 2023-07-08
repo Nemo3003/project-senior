@@ -7,7 +7,7 @@ const ShowUsers = () => {
   const [selectedUsersId, setSelectedUsersId] = useState('');
 
   useEffect(() => {
-    fetch('https://ocacoplus-server.onrender.com/see-students')
+    fetch('https://backend-production-2960.up.railway.app/see-students')
       .then(res => res.json())
       .then(data => {
         setStudents(data);
