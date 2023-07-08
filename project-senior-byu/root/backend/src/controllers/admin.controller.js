@@ -68,7 +68,7 @@ const seeStudentEnrolled =  (req, res)=>{
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          res.json( results[0].total_users );
+          res.json(results[0].total_users.toString());
         }
       });
     } catch (error) {
@@ -76,6 +76,7 @@ const seeStudentEnrolled =  (req, res)=>{
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+  
   
 const usersEnrolled = async (req, res) => {
     try {
