@@ -22,32 +22,12 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-const corsOptions = {
-  origin: '*',
-  credentials: true,
-};
+var corsOptions = {
+  origin: 'https://heartfelt-twilight-23e637.netlify.app',
+  optionsSuccessStatus: 200 
+}
 
 app.use(cors(corsOptions));
-
-app.use((req, res, next) => {
-  const allowedOrigins = ['http://localhost:8081', 'https://ocacoplus-server.onrender.com', 'https://heartfelt-twilight-23e637.netlify.app'];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-       res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  //res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8020');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', true);
-  return next();
-});
-app.options('/signin', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
 
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
