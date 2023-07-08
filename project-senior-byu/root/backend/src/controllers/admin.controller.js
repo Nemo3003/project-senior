@@ -63,7 +63,7 @@ const seeStudentEnrolled =  (req, res)=>{
 const usersRegistered = async (req, res) => {
     try {
       const sql = "SELECT COUNT(*) as total_users FROM users";
-      pool.query(query, (error, results) => {
+      pool.query(sql, (error, results) => {
         if (error) {
           console.error(error);
         } else {
