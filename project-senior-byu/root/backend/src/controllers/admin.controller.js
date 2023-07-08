@@ -63,26 +63,36 @@ const seeStudentEnrolled =  (req, res)=>{
   const usersRegistered = async (req, res) => {
     try {
       const sql = "SELECT COUNT(*) as total_users FROM users";
-      const results = await pool.query(sql);
-      res.json(results[0].total_users.toString());
+      pool.query(sql, (error, results) => {
+        if (error) {
+          console.error(error);
+          res.status(500).json({ error: "Internal Server Error" });
+        } else {
+          res.send( results[0].total_users );
+        }
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
   
-  
-  const usersEnrolled = async (req, res) => {
+const usersEnrolled = async (req, res) => {
     try {
       const query = "SELECT COUNT(users_id) as total_users FROM enrollments";
-      const results = await pool.query(query);
-      res.json(results[0].total_users.toString());
+      pool.query(query, (error, results)=>{
+        if (error) {
+          console.error(error);
+          res.status(500).json({ error: "Internal Server Error" });
+        } else {
+          res.json({ total_usersu: results[0].total_users });
+        }
+      })
+      
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: error.message });
     }
   };
-  
 
 module.exports = 
     {addEnrollment,
