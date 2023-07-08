@@ -15,7 +15,7 @@ function AddUsClass() {
             usersId,
             classId
         };
-    axios.post ('https://backend-production-2960.up.railway.app/setclass', formData)
+    axios.post ('https://project-senior-production.up.railway.app/setclass', formData)
         .then(response => {
             console.log(response.data);
             window.location.href = '/admin/setclass'

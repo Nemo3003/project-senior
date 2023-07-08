@@ -31,7 +31,7 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://backend-production-2960.up.railway.app/signin', {
+      const response = await axios.post('https://project-senior-production.up.railway.app/signin', {
         email: loginEmail,
         password: loginPassword,
       }, {

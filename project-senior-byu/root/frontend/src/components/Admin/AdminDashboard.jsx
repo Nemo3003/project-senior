@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const { isAdmin, setIsAdmin } = useContext(UserContext);
 
   useEffect(() => {
-    fetch('https://backend-production-2960.up.railway.app/courses')
+    fetch('https://project-senior-production.up.railway.app/courses')
       .then(res => res.json())
       .then(data => {
         setCourses(data);

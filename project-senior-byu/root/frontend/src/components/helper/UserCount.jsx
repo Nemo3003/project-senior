@@ -6,7 +6,7 @@ const UserCount = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    axios.get('https://backend-production-2960.up.railway.app/users/count')
+    axios.get('https://project-senior-production.up.railway.app/users/count')
       .then(response => {
         setUserCount(response.data.total_users);
       })

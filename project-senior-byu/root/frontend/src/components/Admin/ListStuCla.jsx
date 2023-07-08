@@ -6,7 +6,7 @@ const ListStuCla = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    fetch('https://backend-production-2960.up.railway.app/stuclass')
+    fetch('https://project-senior-production.up.railway.app/stuclass')
       .then(res => res.json())
       .then(data => {
         setStudents(data);

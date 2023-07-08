@@ -8,7 +8,7 @@ const SeeStudents = () => {
   useEffect(() => {
     
 
-    fetch('https://backend-production-2960.up.railway.app/see-students')
+    fetch('https://project-senior-production.up.railway.app/see-students')
       .then(res => res.json())
       .then(data => {
         setStudents(data);

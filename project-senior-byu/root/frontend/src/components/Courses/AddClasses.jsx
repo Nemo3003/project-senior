@@ -11,7 +11,7 @@ const AddClasses = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       const classData = { className, classDescription };
-      fetch('https://backend-production-2960.up.railway.app/add-classes', {
+      fetch('https://project-senior-production.up.railway.app/add-classes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
