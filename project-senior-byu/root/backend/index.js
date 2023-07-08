@@ -22,8 +22,6 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-app.use(cors());
-
 let corsOptions = {
   origin: "*",
 };
