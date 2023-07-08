@@ -22,20 +22,23 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
+var whitelist = ['https://heartfelt-twilight-23e637.netlify.app', 'http://localhost:8081']
 var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 ,
-  credential: true
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
 }
-
-app.use(cors(corsOptions));
 
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
 
 const routes = [authRoute, adminRoute, classesRoute, usersRoute];
-app.get('/', (req, res) => {
+app.get('/', cors(corsOptions),(req, res) => {
   res.send('Hello, welcome to ocacoplus!');
 });
 
-app.use('/',...routes);
+app.use('/',cors(corsOptions),...routes);
