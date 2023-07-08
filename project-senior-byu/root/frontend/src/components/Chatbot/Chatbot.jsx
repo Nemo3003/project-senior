@@ -99,10 +99,10 @@ const ChatBotPage = () => {
                 <div className="mt-4">
                   <p>Here, follow this link:</p>
                   <a
-                    href="https://example.com/enroll"
+                    href="https://heartfelt-twilight-23e637.netlify.app/courses"
                     className="text-blue-500 underline"
                   >
-                    https://example.com/enroll
+                    See classes
                   </a>
                 </div>
               )}
