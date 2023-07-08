@@ -18,7 +18,7 @@ function AddUsClass() {
     axios.post ('https://project-senior-production.up.railway.app/setclass', formData)
         .then(response => {
             console.log(response.data);
-            window.location.href = '/admin/setclass'
+
         })
         .catch(error =>{
             console.error(error)
