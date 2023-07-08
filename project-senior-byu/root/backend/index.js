@@ -22,16 +22,7 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-var whitelist = ['https://heartfelt-twilight-23e637.netlify.app', 'http://localhost:8081']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+app.use(cors())
 
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
