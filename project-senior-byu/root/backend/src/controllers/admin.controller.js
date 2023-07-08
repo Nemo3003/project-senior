@@ -62,15 +62,16 @@ const seeStudentEnrolled =  (req, res)=>{
 
   const usersRegistered = async (req, res) => {
     try {
-      const sql = "SELECT COUNT(*) FROM users";
-      pool.query(sql, (error, results) => {
+      const query = "SELECT COUNT(*) as total_users FROM users";
+    return new Promise((resolve, reject) => {
+      pool.query(query, (error, results) => {
         if (error) {
-          console.error(error);
-          res.status(500).json({ error: "Internal Server Error" });
+          reject(error);
         } else {
-          return (results[0]);
+          resolve(results[0].total_users);
         }
       });
+    });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -79,14 +80,15 @@ const seeStudentEnrolled =  (req, res)=>{
   
 const usersEnrolled = async (req, res) => {
     try {
-      const query = "SELECT COUNT(users_id) FROM enrollments";
+      const query = "SELECT COUNT(users_id) as total_users FROM enrollments";
+    return new Promise((resolve, reject) => {
       pool.query(query, (error, results) => {
         if (error) {
-          console.error(error)
+          reject(error);
         } else {
-          return (results[0]);
+          resolve(results[0].total_users);
         }
-      });
+      })})
     }catch(err) {
       console.error(err)
     }
