@@ -28,8 +28,8 @@ const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
 
 const routes = [authRoute, adminRoute, classesRoute, usersRoute];
-app.get('/', cors(corsOptions),(req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello, welcome to ocacoplus!');
 });
 
-app.use('/',cors(corsOptions),...routes);
+app.use('/',...routes);
