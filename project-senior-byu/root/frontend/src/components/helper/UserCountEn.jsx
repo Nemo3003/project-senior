@@ -8,7 +8,7 @@ const UserCountEn = () => {
   useEffect(() => {
     axios.get('https://project-senior-production.up.railway.app/users/counten')
       .then(response => {
-        setUserCountu(response.data.total_users);
+        setUserCount(response.data.total_users);
       })
       .catch(error => {
         setErrorMessage(error.message);
