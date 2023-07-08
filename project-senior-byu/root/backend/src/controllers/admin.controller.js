@@ -62,12 +62,14 @@ const seeStudentEnrolled =  (req, res)=>{
 
 const usersRegistered = async (req, res) => {
     try {
-      const totalUsers = await countUsers();
-      res.json({ total_users: totalUsers });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+      const sql = "SELECT COUNT(*) as total_users FROM users";
+      pool.query(query, (error, results) => {
+        if (error) {
+          console.error(error);
+        } else {
+          return( {total_users:results[0].total_users});
+        }
+  })
 
 const usersEnrolled = async (req, res) => {
     try {
