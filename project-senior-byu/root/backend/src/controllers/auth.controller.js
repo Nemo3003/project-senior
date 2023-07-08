@@ -7,7 +7,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const salt = 10;
-const {createPool} = require('mysql2/promise')
 dotenv.config();
 const{ pool } = require('../db/db.js')
 
@@ -97,7 +96,7 @@ const Signup = async (req, res) => {
 
   const Signin = async (req, res) => {
     
-    const sql = "SELECT * FROM ocacoplus.users WHERE `email` = ?";
+    const sql = "SELECT * FROM users WHERE `email` = ?";
     
     pool.query(sql, [req.body.email], (err, data) => {
       if (err) {
