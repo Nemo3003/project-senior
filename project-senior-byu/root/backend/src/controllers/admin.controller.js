@@ -62,13 +62,13 @@ const seeStudentEnrolled =  (req, res)=>{
 
   const usersRegistered = async (req, res) => {
     try {
-      const sql = "SELECT COUNT(*) as total_users FROM users";
+      const sql = "SELECT COUNT(*) FROM users";
       pool.query(sql, (error, results) => {
         if (error) {
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          return (results[0].total_users);
+          return (results[0]);
         }
       });
     } catch (error) {
@@ -79,10 +79,16 @@ const seeStudentEnrolled =  (req, res)=>{
   
 const usersEnrolled = async (req, res) => {
     try {
-      const totalUsers = await countUsersEnrolled();
-      res.json({ total_usersu: totalUsers });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+      const query = "SELECT COUNT(users_id) FROM enrollments";
+      pool.query(query, (error, results) => {
+        if (error) {
+          console.error(error)
+        } else {
+          return (results[0]);
+        }
+      });
+    }catch(err) {
+      console.error(err)
     }
   };
 
