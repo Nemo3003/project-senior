@@ -9,11 +9,11 @@ const addEnrollment = (req, res) => {
     pool.query(sql, values, (err, result) => {
       if (err) {
         console.error('Error linking student and class', err);
-        return res.status(500).json({ error: 'Could not link user to class' });
+        return res.sendStatus(500).json({ error: 'Could not link user to class' });
       }
   
       console.log('Successfully linked student to class', result);
-      return res.status(201).json({ message: 'Successfully linked student to class' });
+      return res.sendStatus(201).json({ message: 'Successfully linked student to class' });
     });
   }
 
@@ -22,7 +22,7 @@ const seeStudentEnrolled =  (req, res)=>{
     
     pool.query(sql, (err, result) => {
       if (err) {
-        res.status(500).send(err.message);
+        res.sendStatus(500).send(err.message);
         return;
       }      
         res.send(result);
@@ -38,11 +38,11 @@ const seeStudentEnrolled =  (req, res)=>{
     pool.query(sql, values, (err, result) => {
       if (err) {
         console.error('Error creating class:', err);
-        return res.status(500).json({ error: 'Could not create a new class' });
+        return res.sendStatus(500).json({ error: 'Could not create a new class' });
       }
   
       console.log('New class created:', result.insertId);
-      return res.status(201).json({ message: 'Class created successfully' });
+      return res.sendStatus(201).json({ message: 'Class created successfully' });
     });
   }
 
@@ -51,7 +51,7 @@ const seeStudentEnrolled =  (req, res)=>{
   
     pool.query(sql, (err, result) => {
       if (err) {
-        res.status(500).send({ message: "Oops!", error: err.message });
+        res.sendStatus(500).send({ message: "Oops!", error: err.message });
         return;
       }
       res.send(result);
@@ -65,14 +65,14 @@ const seeStudentEnrolled =  (req, res)=>{
       pool.query(sql, (error, results) => {
         if (error) {
           console.error(error);
-          res.status(500).json({ error: "Internal Server Error" });
+          res.sendStatus(500).json({ error: "Internal Server Error" });
         } else {
           res.send( results[0].total_users );
         }
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.sendStatus(500).json({ error: "Internal Server Error" });
     }
   };
   
@@ -82,14 +82,14 @@ const usersEnrolled = async (req, res) => {
       pool.query(query, (error, results)=>{
         if (error) {
           console.error(error);
-          res.status(500).json({ error: "Internal Server Error" });
+          res.sendStatus(500).json({ error: "Internal Server Error" });
         } else {
           res.json({ total_usersu: results[0].total_users });
         }
       })
       
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.sendStatus(500).json({ error: error.message });
     }
   };
 
