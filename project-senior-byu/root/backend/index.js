@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 const corsOptions = {
-  origin: ['https://heartfelt-twilight-23e637.netlify.app', 'https://heartfelt-twilight-23e637.netlify.app'],
+  origin: ['https://heartfelt-twilight-23e637.netlify.app', 'https://ocacoplus-server.onrender.com'],
   credentials: true,
 };
 
