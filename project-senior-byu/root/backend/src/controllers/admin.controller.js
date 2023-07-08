@@ -4,8 +4,6 @@ const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
 const{ pool } = require('../db/db.js')
 dotenv.config();
 
-const app = express()
-
 const addEnrollment = (req, res) => {
     const sql = 'INSERT INTO enrollments (users_id, classes_id) VALUES (?, ?)';
     const values = [req.body.usersId, req.body.classId];
@@ -70,8 +68,7 @@ const seeStudentEnrolled =  (req, res)=>{
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          const totalUsers = parseInt(results[0].total_users);
-          res.json(totalUsers);
+          res.json(results[0].total_users.toString());
         }
       });
     } catch (error) {
@@ -89,7 +86,7 @@ const usersEnrolled = async (req, res) => {
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          res.json(results[0].total_usersu.toString());
+          res.json(results[0].total_users.toString());
         }
       })
       
