@@ -130,6 +130,8 @@ const Signup = async (req, res) => {
             } else {
               console.log("User is not an admin");
             }
+            res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
             
             return res.json({
               valid: true,
