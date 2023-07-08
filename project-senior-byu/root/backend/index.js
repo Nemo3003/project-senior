@@ -44,4 +44,4 @@ app.get('/', (req, res) => {
   res.send('Hello, welcome to ocacoplus!');
 });
 
-app.use('/', cors(corsOptions),...routes);
+app.use('/',...routes);
