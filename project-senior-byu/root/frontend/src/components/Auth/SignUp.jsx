@@ -40,7 +40,6 @@ function SignUp() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         // handle successful user creation
         navigate('/signin');
       })

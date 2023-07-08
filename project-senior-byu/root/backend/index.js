@@ -41,6 +41,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', true);
   return next();
 });
+app.options('/signin', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200);
+});
 
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
