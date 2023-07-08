@@ -63,6 +63,7 @@ const AdminDashboard = () => {
               )}
 
               {classes.length > 0 ? (
+                <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -83,6 +84,7 @@ const AdminDashboard = () => {
                     ))}
                   </tbody>
                 </table>
+                </div>
               ) : (
                 <p className="text-sm text-gray-500">No courses available.</p>
               )}

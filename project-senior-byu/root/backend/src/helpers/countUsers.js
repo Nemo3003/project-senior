@@ -9,8 +9,8 @@ const pool = require("../db/db.js")
 
 
 const countUsers = () => {
+    const query = "SELECT COUNT(*) as total_users FROM users";
     return new Promise((resolve, reject) => {
-      const query = "SELECT COUNT(*) as total_users FROM users";
       pool.query(query, (error, results) => {
         if (error) {
           reject(error);
@@ -21,8 +21,8 @@ const countUsers = () => {
     });
   };
   const countUsersEnrolled = () => {
+    const query = "SELECT COUNT(users_id) as total_users FROM enrollments";
     return new Promise((resolve, reject) => {
-      const query = "SELECT COUNT(users_id) as total_users FROM enrollments";
       pool.query(query, (error, results) => {
         if (error) {
           reject(error);
