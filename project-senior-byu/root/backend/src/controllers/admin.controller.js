@@ -60,7 +60,7 @@ const seeStudentEnrolled =  (req, res)=>{
   };
   
 
-  const usersRegistered = async (req, res) => {
+  const usersRegistered = async () => {
     try {
       const query = "SELECT COUNT(*) as total_users FROM users";
     return new Promise((resolve, reject) => {
@@ -74,11 +74,10 @@ const seeStudentEnrolled =  (req, res)=>{
     });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
     }
   };
   
-const usersEnrolled = async (req, res) => {
+const usersEnrolled = async () => {
     try {
       const query = "SELECT COUNT(users_id) as total_users FROM enrollments";
     return new Promise((resolve, reject) => {
