@@ -14,8 +14,8 @@ const {countUsers, countUsersEnrolled} = require('../helpers/countUsers')
 //##############GET#################
 router.get('/stuclass',seeStudentEnrolled)
 router.get('/see-students', seeCurrentStudents)
-router.get('/users/count', countUsers)
-router.get('/users/counten', countUsersEnrolled)
+router.get('/users/count', usersRegistered)
+router.get('/users/counten', usersEnrolled)
 //#############POST###################
 router.post('/add-classes',  addClasses)
 router.post('/setclass', addEnrollment);
