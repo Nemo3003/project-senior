@@ -17,7 +17,6 @@ const AuthCourses = () => {
       .then(res => res.json())
       .then(data => {
         setCourses(data);
-        console.log(data);
       })
       .catch(error => {
         setErrorMessage(error.message);
