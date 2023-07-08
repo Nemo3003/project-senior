@@ -70,7 +70,10 @@ const usersRegistered = async (req, res) => {
           return( {total_users:results[0].total_users});
         }
   })
-
+    }catch(error){
+      console.error(error);
+        }
+  }
 const usersEnrolled = async (req, res) => {
     try {
       const totalUsers = await countUsersEnrolled();
