@@ -68,7 +68,7 @@ const seeStudentEnrolled =  (req, res)=>{
           console.error(error);
           res.status(500).json({ error: "Internal Server Error" });
         } else {
-          res.send( results[0].total_users );
+          res.json( results[0].total_users );
         }
       });
     } catch (error) {
