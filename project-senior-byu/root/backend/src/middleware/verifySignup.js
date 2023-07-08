@@ -1,4 +1,4 @@
 
 const verifyAdmin = (user) => {
-    const sql = "SELECT * FROM ocacoplus.users"
+    const sql = "SELECT * FROM users"
 }

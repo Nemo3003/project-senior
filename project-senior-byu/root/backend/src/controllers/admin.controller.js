@@ -5,7 +5,7 @@ const{ pool } = require('../db/db.js')
 dotenv.config();
 
 const addEnrollment = (req, res) => {
-    const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
+    const sql = 'INSERT INTO enrollments (users_id, classes_id) VALUES (?, ?)';
     const values = [req.body.usersId, req.body.classId];
     pool.query(sql, values, (err, result) => {
       if (err) {
@@ -19,7 +19,7 @@ const addEnrollment = (req, res) => {
   }
 
 const seeStudentEnrolled =  (req, res)=>{
-    const sql = 'SELECT users.*, classes.* FROM ocacoplus.users INNER JOIN enrollments ON users.users_id = enrollments.users_id INNER JOIN classes ON enrollments.classes_id = classes.classes_id;'
+    const sql = 'SELECT users.*, classes.* FROM users INNER JOIN enrollments ON users.users_id = enrollments.users_id INNER JOIN classes ON enrollments.classes_id = classes.classes_id;'
     
     pool.query(sql, (err, result) => {
       if (err) {
@@ -33,7 +33,7 @@ const seeStudentEnrolled =  (req, res)=>{
 
   const addClasses = (req, res) => {
     const { className, classDescription } = req.body;
-    const sql = 'INSERT INTO ocacoplus.classes (className, classDescription) VALUES (?, ?)';
+    const sql = 'INSERT INTO classes (className, classDescription) VALUES (?, ?)';
     const values = [className, classDescription];
   
     pool.query(sql, values, (err, result) => {
