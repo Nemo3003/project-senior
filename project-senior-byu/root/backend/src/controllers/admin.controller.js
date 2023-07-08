@@ -67,7 +67,7 @@ const usersRegistered = async (req, res) => {
         if (error) {
           console.error(error);
         } else {
-          return( {total_users:results[0].total_users});
+          res.json({total_users:results[0].total_users});
         }
   })
     }catch(error){
