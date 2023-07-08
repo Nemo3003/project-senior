@@ -4,6 +4,8 @@ const {countUsers,countUsersEnrolled} = require('../helpers/countUsers')
 const{ pool } = require('../db/db.js')
 dotenv.config();
 
+const app = express()
+
 const addEnrollment = (req, res) => {
     const sql = 'INSERT INTO enrollments (users_id, classes_id) VALUES (?, ?)';
     const values = [req.body.usersId, req.body.classId];
@@ -95,7 +97,12 @@ const usersEnrolled = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
-
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://heartfelt-twilight-23e637.netlify.app");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+  });
 
 module.exports = 
     {addEnrollment,
