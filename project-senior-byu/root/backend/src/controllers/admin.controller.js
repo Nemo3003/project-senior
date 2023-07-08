@@ -6,6 +6,7 @@ dotenv.config();
 
 const addEnrollment = (req, res) => {
     const sql = 'INSERT INTO ocacoplus.enrollments (users_id, classes_id) VALUES (?, ?)';
+    res.header("Access-Control-Allow-Origin", "*");
     const values = [req.body.usersId, req.body.classId];
     pool.query(sql, values, (err, result) => {
       if (err) {
@@ -32,6 +33,7 @@ const seeStudentEnrolled =  (req, res)=>{
   }
 
   const addClasses = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     const { className, classDescription } = req.body;
     const sql = 'INSERT INTO ocacoplus.classes (className, classDescription) VALUES (?, ?)';
     const values = [className, classDescription];
@@ -48,6 +50,7 @@ const seeStudentEnrolled =  (req, res)=>{
   }
 
   const seeCurrentStudents = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     const sql = 'SELECT users_id, username, email FROM users';
   
     pool.query(sql, (err, result) => {
@@ -61,6 +64,7 @@ const seeStudentEnrolled =  (req, res)=>{
   
 
 const usersRegistered = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
     try {
       const totalUsers = await countUsers();
       res.json({ total_users: totalUsers });
@@ -70,6 +74,7 @@ const usersRegistered = async (req, res) => {
   };
 
 const usersEnrolled = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
     try {
       const totalUsers = await countUsersEnrolled();
       res.json({ total_usersu: totalUsers });

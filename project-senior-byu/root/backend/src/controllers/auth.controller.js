@@ -33,6 +33,7 @@ app.use(
 
 
 const Signup = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const { username, email, password } = req.body;
 
   try {
@@ -96,7 +97,7 @@ const Signup = async (req, res) => {
   }
 
   const Signin = async (req, res) => {
-
+    res.header("Access-Control-Allow-Origin", "*");
     const sql = "SELECT * FROM ocacoplus.users WHERE `email` = ?";
     
     pool.query(sql, [req.body.email], (err, data) => {
