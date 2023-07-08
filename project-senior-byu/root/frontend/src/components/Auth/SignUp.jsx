@@ -26,7 +26,7 @@ function SignUp() {
     }
 
     const formData = { username, email, password };
-    fetch('https://backend-production-2960.up.railway.app//signup', {
+    fetch('https://backend-production-2960.up.railway.app/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
