@@ -96,6 +96,8 @@ const Signup = async (req, res) => {
   }
 
   const Signin = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://heartfelt-twilight-23e637.netlify.app');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     const sql = "SELECT * FROM ocacoplus.users WHERE `email` = ?";
     
     pool.query(sql, [req.body.email], (err, data) => {
