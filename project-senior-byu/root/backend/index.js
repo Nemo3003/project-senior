@@ -22,9 +22,11 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-let corsOptions = {
-  origin: "*",
+const corsOptions = {
+  origin: 'https://heartfelt-twilight-23e637.netlify.app',
+  credentials: true,
 };
+
 app.use(cors(corsOptions));
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
