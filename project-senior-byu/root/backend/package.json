@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage --silent --runInBand"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +23,8 @@
     "express-session": "^1.17.3",
     "graphql-yoga": "^3.9.1",
     "http": "^0.0.1-security",
+    "jest": "^29.6.1",
+    "jest-extended": "^4.0.0",
     "jsonwebtoken": "^9.0.0",
     "mercadopago": "^1.5.16",
     "morgan": "^1.10.0",

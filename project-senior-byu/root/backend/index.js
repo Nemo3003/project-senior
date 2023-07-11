@@ -10,10 +10,6 @@ const mysql = require('mysql2/promise');
 const authRoute = require('./src/routes/auth.routes');
 const adminRoute = require('./src/routes/admin.routes');
 const classesRoute = require('./src/routes/classes.routes');
-const usersRoute = require('./src/routes/users.routes');
-
-const { pool } = require('./src/db/db.js');
-const { PORT } = require('./src/db/config.js');
 
 const app = express();
 app.use(express.json());
@@ -32,7 +28,7 @@ app.use(function(req, res, next) {
 const port_nd = 8081;
 app.listen(port_nd, () => console.log(`Listening on port ${port_nd}`));
 
-const routes = [authRoute, adminRoute, classesRoute, usersRoute];
+const routes = [authRoute, adminRoute, classesRoute];
 app.get('/', (req, res) => {
   res.send('Hello, welcome to ocacoplus!');
 });
