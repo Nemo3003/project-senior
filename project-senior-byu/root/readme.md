@@ -10,6 +10,7 @@ Allow students to upload their documentation and select one or multiple courses 
 Create an automatic chatbot to assist with answering frequently asked questions.
 Develop an admin dashboard to allow the administrator to view which courses or careers students have signed up for.
 Incorporate a payment mode such as PayPal or Mercado Pago.
+
 ## Measurements
  To assess the success and effectiveness of the project, the following measurements will be taken:
  - The number of students who successfully sign up for courses or careers on the platform.
@@ -17,14 +18,16 @@ Incorporate a payment mode such as PayPal or Mercado Pago.
  - The number of chatbot responses provided to students successfully.
  - Admin's ability to access and utilize the dashboard effectively.
  - The number of successful payments made through the platform.
+   
 ## Technologies Used
    The project will be developed using the following technologies:
 
  - React
  - NodeJS
  - Express
- - AWS
-  - TailwindCSS
+ - railway (uses aws)
+ - Firebase
+ - TailwindCSS
 ## Installation and Setup
 To set up the University Course Sign-up Platform locally, follow these steps:
 
@@ -49,7 +52,7 @@ Start the development server:
 ```
 npm run dev
 ```
-Open your web browser and visit http://localhost:3000 to access the platform.
+Open your web browser and visit http://localhost:8081 to access the platform.
 
 
 License
